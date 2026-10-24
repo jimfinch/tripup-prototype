@@ -1,8 +1,8 @@
 import { cn } from "@/lib/cn";
 
 type StatusScrimProps = {
-  // Violet only on screens with the coloured (violet) background; white elsewhere.
-  tone?: "white" | "violet";
+  // Tint over the blur: white by default; "none" for blur only (Home).
+  tone?: "white" | "violet" | "none";
   visible?: boolean;
 };
 
@@ -25,13 +25,15 @@ export function StatusScrim({
       <span className="scroll-edge-blur-1" />
       <span className="scroll-edge-blur-2" />
       <span className="scroll-edge-blur-3" />
-      <span
-        className={
-          tone === "violet"
-            ? "scroll-edge-tint-violet"
-            : "scroll-edge-tint-white"
-        }
-      />
+      {tone !== "none" && (
+        <span
+          className={
+            tone === "violet"
+              ? "scroll-edge-tint-violet"
+              : "scroll-edge-tint-white"
+          }
+        />
+      )}
     </div>
   );
 }

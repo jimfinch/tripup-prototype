@@ -42,7 +42,7 @@ export default function HomePage() {
       onScroll={(e) => setScrolled(e.currentTarget.scrollTop > 8)}
       overlays={
         <>
-          <StatusScrim tone="violet" visible={scrolled} />
+          <StatusScrim tone="none" visible={scrolled} />
           <MainNav active="trips" compact={scrolled} />
         </>
       }
