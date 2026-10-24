@@ -161,6 +161,7 @@ export function TripView() {
                 theme="light"
                 size="xl"
                 onClick={() => pay({ kind: "activities" })}
+                rightIcon={<Icon framed name="card" />}
               >
                 Pay activity shares {formatPence(unpaidActivities)}
               </Button>
@@ -195,6 +196,7 @@ export function TripView() {
                 theme="light"
                 size="xl"
                 onClick={() => pay({ kind: "stay" })}
+                rightIcon={<Icon framed name="card" />}
               >
                 Pay stay shares {formatPence(s.stay.share)}
               </Button>
