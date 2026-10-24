@@ -5,6 +5,7 @@ export type CheckState = "yes" | "pending" | "selected" | "empty";
 
 // Figma "Check": 30 px status circle. "yes" and "pending" come from the
 // attendee list; "selected" / "empty" are its use as a poll radio.
+// Pending is the bare icon (no circle), kept in a 30 px slot so rows align.
 export function Check({
   state,
   className,
@@ -12,6 +13,20 @@ export function Check({
   state: CheckState;
   className?: string;
 }) {
+  if (state === "pending") {
+    return (
+      <span
+        aria-hidden
+        className={cn(
+          "flex size-7.5 shrink-0 items-center justify-center text-gunmetal",
+          className,
+        )}
+      >
+        <Icon name="pending-user" />
+      </span>
+    );
+  }
+
   return (
     <span
       aria-hidden
@@ -23,10 +38,8 @@ export function Check({
         className,
       )}
     >
-      {(state === "yes" || state === "selected") && (
-        <Icon name="check" className="size-4.5" />
-      )}
-      {state === "pending" && <Icon name="pending-user" className="size-4.5" />}
+      {/* size-6 renders the check glyph at its Figma size: 20 × 15 */}
+      {state !== "empty" && <Icon name="check" />}
     </span>
   );
 }
