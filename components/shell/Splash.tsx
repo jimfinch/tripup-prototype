@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 import { HomeIndicator } from "@/components/shell/HomeIndicator";
 import { LogoAnimation } from "@/components/shell/LogoAnimation";
-import { StatusBar } from "@/components/shell/StatusBar";
 import { useScenario } from "@/store/scenario";
 
 // Counted from when the logo animation is ready, long enough for its full
@@ -63,7 +62,6 @@ function SplashScreen() {
           </span>
         </span>
       </button>
-      <StatusBar tone="light" />
       <HomeIndicator tone="light" />
     </motion.div>
   );
