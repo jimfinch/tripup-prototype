@@ -33,7 +33,9 @@ export default function HomePage() {
   const needsVote = polls.find(
     (p) => p.status === "live" && p.ariVote === null,
   );
-  const shown = members.filter((m) => !m.guest || m.status === "yes");
+  // Only people who are coming count (Aylin stays Pending throughout), so the
+  // "+1" appears once Ren accepts.
+  const coming = members.filter((m) => m.status === "yes");
 
   return (
     <Screen
@@ -73,7 +75,7 @@ export default function HomePage() {
               image={LISBON.image}
               organiser={LISBON.organiser}
               avatars={LISBON.cardAvatars}
-              overflow={Math.max(0, shown.length - LISBON.cardAvatars.length)}
+              overflow={Math.max(0, coming.length - LISBON.cardAvatars.length)}
               livePolls={livePolls}
               paymentsDue={paymentsDue}
               poll={needsVote}
