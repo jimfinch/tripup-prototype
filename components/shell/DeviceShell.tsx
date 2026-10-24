@@ -3,6 +3,7 @@
 import { MotionConfig } from "framer-motion";
 import { useEffect, type ReactNode } from "react";
 import { GUIDES_KEY, useScenario } from "@/store/scenario";
+import { cn } from "@/lib/cn";
 import { DemoPanel } from "@/components/shell/DemoPanel";
 import { HomeIndicator } from "@/components/shell/HomeIndicator";
 import { SceneCard } from "@/components/shell/SceneCard";
@@ -14,6 +15,7 @@ import { Toast } from "@/components/ui/Toast";
 // left. Phone (≤ 430 px): full-bleed, no frame, no panel. Never scaled.
 export function DeviceShell({ children }: { children: ReactNode }) {
   const setGuides = useScenario((s) => s.setGuides);
+  const splash = useScenario((s) => s.splash);
 
   // Restore the reviewer's tap-hints choice (per browser).
   useEffect(() => {
@@ -28,8 +30,15 @@ export function DeviceShell({ children }: { children: ReactNode }) {
     <MotionConfig reducedMotion="user">
       <div className="min-h-dvh framed:grid framed:place-items-center framed:p-10 panel:grid-cols-[1fr_auto_1fr] panel:gap-16">
         <DemoPanel className="hidden justify-self-end panel:block" />
-        <div className="relative isolate h-dvh w-full overflow-hidden bg-white framed:h-device-h framed:w-device-w framed:shrink-0 framed:rounded-device framed:shadow-device">
-          {children}
+        {/* transform-gpu puts the screen on one compositing layer, so its
+            rounded corner is clipped once rather than per stacked layer (which
+            left a hairline of the page under the splash). */}
+        <div className="relative isolate h-dvh w-full overflow-hidden bg-white framed:h-device-h framed:w-device-w framed:shrink-0 framed:transform-gpu framed:rounded-device framed:bg-bezel framed:shadow-device">
+          {/* Hidden behind the splash so it can't bleed through the anti-aliased
+              corner; it reappears as the splash starts to fade. */}
+          <div className={cn("absolute inset-0", splash && "invisible")}>
+            {children}
+          </div>
           <StatusBar />
           <HomeIndicator />
           <Toast />
