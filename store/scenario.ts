@@ -419,7 +419,8 @@ export const useScenario = create<State>((set, get) => {
     goToStep: (step) => {
       clearTimers();
       set({ ...stateAtStep(step), sceneCard: sceneCardFor(step), toast: null });
-      if (step === 7) get().showToast("‘Belcanto’ won - added to itinerary");
+      if (step === 7)
+        get().showToast("‘Belcanto’ won - added to itinerary", "lime");
     },
     reset: () => {
       clearTimers();
@@ -512,7 +513,7 @@ export const useScenario = create<State>((set, get) => {
       set(applyClosePoll(get(), pollId));
       if (pollId === "dinner") {
         advance(7);
-        get().showToast("‘Belcanto’ won - added to itinerary");
+        get().showToast("‘Belcanto’ won - added to itinerary", "lime");
       }
     },
 
