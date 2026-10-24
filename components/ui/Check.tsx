@@ -38,7 +38,7 @@ export function Check({
         className,
       )}
     >
-      {state !== "empty" && <Icon name="check" width={16} />}
+      {state !== "empty" && <Icon name="check" width={15} />}
     </span>
   );
 }
