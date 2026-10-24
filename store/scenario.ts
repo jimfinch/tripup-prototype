@@ -359,7 +359,7 @@ export function stateAtStep(step: StepId): Data {
   if (step === 3) return { ...d, sheet: { kind: "invite" } };
 
   d = { ...withRen(d, "yes", true), renInvite: "accepted" };
-  if (step === 4) return { ...d, sheet: { kind: "createPoll" } };
+  if (step === 4) return d;
 
   d = { ...d, polls: [...d.polls, makeDinnerPoll(d, DINNER_POLL_DRAFT)] };
   if (step === 5) return d;
@@ -455,7 +455,18 @@ export const useScenario = create<State>((set, get) => {
       if (sheet.kind === "createPoll") return advance(4, { sheet });
       set({ sheet });
     },
-    closeSheet: () => set({ sheet: null }),
+    closeSheet: () => {
+      const s = get();
+      // Closing the invite sheet once Ren is invited moves the story on to 04.
+      if (
+        s.sheet?.kind === "invite" &&
+        s.renInvite !== "none" &&
+        s.renInvite !== "adding"
+      ) {
+        return advance(4, { sheet: null });
+      }
+      set({ sheet: null });
+    },
 
     // Other contacts can be invited too; they stay Pending (not in the story).
     inviteContact: (id) => {

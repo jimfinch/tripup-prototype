@@ -131,6 +131,9 @@ export const UPCOMING_TRIPS: UpcomingTrip[] = [
   },
 ];
 
+// The scenario takes place on the last night of the Lisbon trip.
+export const TODAY = { day: 24, month: "Oct" };
+
 export const PENDING_INVITE = {
   tripId: "dubrovnik",
   name: "Dubrovnik",

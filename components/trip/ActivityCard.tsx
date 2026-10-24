@@ -1,5 +1,6 @@
 import { PayState } from "@/components/pay/PayState";
 import { NewBadge } from "@/components/ui/Badge";
+import { TODAY } from "@/data/seed";
 import { HintBeacon } from "@/components/ui/HintBeacon";
 import { Icon } from "@/components/ui/Icon";
 import { formatPence, type Pence } from "@/lib/money";
@@ -30,8 +31,9 @@ export type ActivityCardProps = {
 };
 
 // Figma "Activity Card" (linked-itinerary): 112 px, sized by its content; the
-// itinerary list spaces cards 8 px apart. The date block turns lime when Ari
-// still owes her share (lime = needs action).
+// itinerary list spaces cards 8 px apart. The date block is lime for
+// activities happening today (both 24 Oct cards in the scenario); payment
+// state is shown by the Pay share / Paid button.
 export function ActivityCard({
   id,
   day,
@@ -50,7 +52,7 @@ export function ActivityCard({
   beacon = false,
   className,
 }: ActivityCardProps) {
-  const due = !paid && !shell;
+  const today = day === TODAY.day && month === TODAY.month;
   return (
     <article
       id={id ? `activity-${id}` : undefined}
@@ -60,7 +62,7 @@ export function ActivityCard({
         <div
           className={cn(
             "relative flex size-18 flex-col items-center justify-center rounded-sm p-2 text-center text-headline",
-            due ? "bg-lime text-gunmetal" : "bg-gunmetal text-lime",
+            today ? "bg-lime text-gunmetal" : "bg-gunmetal text-lime",
           )}
         >
           {isNew && <NewBadge className="absolute -left-1.5 -top-2.5" />}

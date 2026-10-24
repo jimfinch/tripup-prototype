@@ -70,6 +70,9 @@ export function TripView() {
     else s.notInPrototype();
   };
 
+  // The trip view shows the 4 most recent; "See all" is the full timeline.
+  const recent = s.activities.slice(-4);
+
   const sheet = s.sheet;
   return (
     <Screen
@@ -120,7 +123,7 @@ export function TripView() {
           id="itinerary"
           className="flex scroll-mt-16 flex-col gap-4 py-5"
         >
-          <SectionHeader title="Itinerary" href="#itinerary" />
+          <SectionHeader title="Itinerary" onLink={s.notInPrototype} />
           <div className="flex flex-col gap-2">
             <div className="flex gap-2">
               <Button
@@ -142,14 +145,14 @@ export function TripView() {
             </div>
             <div className="flex flex-col gap-2 pt-2">
               <p className="text-body-s text-ink-muted">
-                {s.activities.length} most recent
+                {recent.length} most recent
               </p>
-              {s.activities.map((a, i) => (
+              {recent.map((a, i) => (
                 <ActivityCard
                   key={a.id}
                   {...a}
                   isNew={a.id === BELCANTO.id && s.belcanto.isNew}
-                  connector={i < s.activities.length - 1}
+                  connector={i < recent.length - 1}
                   onPay={() => pay({ kind: "activity", id: a.id })}
                   onOpen={a.id === BELCANTO.id ? openBelcanto : undefined}
                   beacon={a.id === BELCANTO.id && beaconBelcanto}
@@ -184,7 +187,7 @@ export function TripView() {
               <Button
                 theme="light"
                 className="flex-1"
-                onClick={() => s.openSheet({ kind: "createPoll" })}
+                onClick={s.notInPrototype}
                 rightIcon={<Icon framed name="plus" size={20} />}
               >
                 New poll
