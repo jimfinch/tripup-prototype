@@ -1,5 +1,6 @@
 import { PayState } from "@/components/pay/PayState";
 import { NewBadge } from "@/components/ui/Badge";
+import { HintBeacon } from "@/components/ui/HintBeacon";
 import { Icon } from "@/components/ui/Icon";
 import { formatPence, type Pence } from "@/lib/money";
 import { cn } from "@/lib/cn";
@@ -23,6 +24,8 @@ export type ActivityCardProps = {
   onPay?: () => void;
   // Opens the activity; the whole card becomes the tap target.
   onOpen?: () => void;
+  // Tap hint: a beacon on the card (a ring would cut the card up).
+  beacon?: boolean;
   className?: string;
 };
 
@@ -44,6 +47,7 @@ export function ActivityCard({
   connector = false,
   onPay,
   onOpen,
+  beacon = false,
   className,
 }: ActivityCardProps) {
   const due = !paid && !shell;
@@ -72,6 +76,7 @@ export function ActivityCard({
           className,
         )}
       >
+        {beacon && <HintBeacon className="right-4 top-4" />}
         <div className="flex flex-1 flex-col gap-0.5">
           <h3 className="text-headline text-gunmetal">
             {onOpen ? (

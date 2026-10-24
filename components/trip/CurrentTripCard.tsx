@@ -3,9 +3,9 @@ import Link from "next/link";
 import { TripStat, pluralise } from "@/components/trip/TripStat";
 import { AvatarStack } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
+import { HintBeacon } from "@/components/ui/HintBeacon";
 import { Icon } from "@/components/ui/Icon";
 import { PEOPLE, type PersonId, type Poll } from "@/data/seed";
-import { cn } from "@/lib/cn";
 
 type CurrentTripCardProps = {
   href: string;
@@ -22,7 +22,8 @@ type CurrentTripCardProps = {
   pollsHref: string;
   onVote?: () => void;
   onOpen?: () => void;
-  linkClassName?: string;
+  // Tap hint: a beacon on the photo (a ring would cut the card up).
+  beacon?: boolean;
 };
 
 // Hi-fi Home "Trip Card" (type=current, state=poll-visible).
@@ -35,10 +36,7 @@ export function CurrentTripCard(props: CurrentTripCardProps) {
       <Link
         href={props.href}
         onClick={props.onOpen}
-        className={cn(
-          "flex flex-col gap-5 rounded-sm transition-opacity active:opacity-80",
-          props.linkClassName,
-        )}
+        className="flex flex-col gap-5 rounded-sm transition-opacity active:opacity-80"
       >
         <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-1.5">
@@ -76,6 +74,7 @@ export function CurrentTripCard(props: CurrentTripCardProps) {
           </div>
         </div>
         <div className="relative h-65 overflow-hidden rounded-sm">
+          {props.beacon && <HintBeacon className="right-4 top-4" />}
           <Image
             src={props.image}
             alt=""

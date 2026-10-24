@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { PHONE_LABEL, STEPS, type StepId } from "@/data/steps";
 import { useCurrentStep, useScenario } from "@/store/scenario";
+import { Toggle } from "@/components/ui/Toggle";
 import { cn } from "@/lib/cn";
 
 // Desktop-only guide beside the phone. Lets a PM follow (and jump around)
@@ -12,6 +13,8 @@ export function DemoPanel({ className }: { className?: string }) {
   const current = useCurrentStep();
   const goToStep = useScenario((s) => s.goToStep);
   const reset = useScenario((s) => s.reset);
+  const guides = useScenario((s) => s.guides);
+  const setGuides = useScenario((s) => s.setGuides);
 
   const jump = (id: StepId) => {
     goToStep(id);
@@ -87,6 +90,23 @@ export function DemoPanel({ className }: { className?: string }) {
       >
         Reset demo
       </button>
+
+      <div className="mt-8 flex items-center justify-between gap-4 border-t border-white/10 pt-6">
+        <div>
+          <p className="text-label text-white">Tap hints</p>
+          <p className="text-body-s text-white/50">
+            Highlight what to tap next
+          </p>
+        </div>
+        <Toggle label="Show tap hints" checked={guides} onChange={setGuides} />
+      </div>
+
+      <div className="mt-8 border-t border-white/10 pt-6">
+        <p className="text-caption-strong uppercase tracking-wide text-white/50">
+          UX/UI Design
+        </p>
+        <p className="mt-1 text-label text-white">James Finch</p>
+      </div>
     </aside>
   );
 }

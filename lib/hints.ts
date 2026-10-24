@@ -69,7 +69,12 @@ export function currentHint(s: HintState): HintId | null {
   }
 }
 
-// Returns the ring class when `id` is the next thing to tap.
+// True when tap hints are on and `id` is the next thing to tap.
+export function useHintActive(id: HintId) {
+  return useScenario((s) => s.guides && currentHint(s) === id);
+}
+
+// Ring class for buttons and other compact targets.
 export function useHint(id: HintId) {
-  return useScenario((s) => currentHint(s) === id) ? "hint-ring" : "";
+  return useHintActive(id) ? "hint-ring" : "";
 }

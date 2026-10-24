@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { BELCANTO, LISBON } from "@/data/seed";
-import { useHint } from "@/lib/hints";
+import { useHint, useHintActive } from "@/lib/hints";
 import { formatPence } from "@/lib/money";
 import {
   selectLivePolls,
@@ -43,7 +43,7 @@ export function TripView() {
   const hintInvite = useHint("invite");
   const hintNewPoll = useHint("new-poll");
   const hintSettle = useHint("settle");
-  const hintBelcanto = useHint("belcanto-card");
+  const beaconBelcanto = useHintActive("belcanto-card");
 
   // Step 07: bring the new Belcanto card into view once the sheet has closed.
   const { focus, clearFocus } = s;
@@ -152,7 +152,7 @@ export function TripView() {
                   connector={i < s.activities.length - 1}
                   onPay={() => pay({ kind: "activity", id: a.id })}
                   onOpen={a.id === BELCANTO.id ? openBelcanto : undefined}
-                  className={a.id === BELCANTO.id ? hintBelcanto : undefined}
+                  beacon={a.id === BELCANTO.id && beaconBelcanto}
                 />
               ))}
             </div>

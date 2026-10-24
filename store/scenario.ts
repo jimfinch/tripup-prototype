@@ -78,6 +78,9 @@ type Data = {
 
 type UI = {
   splash: boolean;
+  // In-phone tap hints (guided layer). Off by default so the product speaks for
+  // itself; reviewers can switch them on from the demo panel.
+  guides: boolean;
   sceneCard: string | null;
   toast: Toast | null;
 };
@@ -86,6 +89,7 @@ type Actions = {
   goToStep: (step: StepId) => void;
   reset: () => void;
   dismissSplash: () => void;
+  setGuides: (on: boolean) => void;
   dismissSceneCard: () => void;
   showToast: (message: string, tone?: ToastTone) => void;
   dismissToast: () => void;
@@ -381,6 +385,8 @@ export function stateAtStep(step: StepId): Data {
 // Store
 
 let toastId = 0;
+
+export const GUIDES_KEY = "tripup-guides";
 let timers: ReturnType<typeof setTimeout>[] = [];
 const later = (fn: () => void, ms: number) => timers.push(setTimeout(fn, ms));
 const clearTimers = () => {
@@ -406,6 +412,7 @@ export const useScenario = create<State>((set, get) => {
   return {
     ...INITIAL,
     splash: true,
+    guides: false,
     sceneCard: null,
     toast: null,
 
@@ -417,6 +424,14 @@ export const useScenario = create<State>((set, get) => {
     reset: () => {
       clearTimers();
       set({ ...INITIAL, splash: true, sceneCard: null, toast: null });
+    },
+    setGuides: (guides) => {
+      set({ guides });
+      try {
+        localStorage.setItem(GUIDES_KEY, guides ? "on" : "off");
+      } catch {
+        // Storage can be unavailable (private mode); the toggle still works.
+      }
     },
     dismissSplash: () => {
       const { phone, clock } = getStep(get().step);
