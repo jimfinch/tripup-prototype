@@ -7,11 +7,12 @@ import { LogoAnimation } from "@/components/shell/LogoAnimation";
 import { StatusBar } from "@/components/shell/StatusBar";
 import { useScenario } from "@/store/scenario";
 
-// Counted from when the logo animation is ready, so its intro always plays.
-const SPLASH_MS = 1500;
+// Counted from when the logo animation is ready, long enough for its full
+// intro + idle cycle (designer asked for 2.5 s; CLAUDE.md said ~1.5 s).
+const SPLASH_MS = 2500;
 
 // Working page "Loading screen", restyled in the hi-fi brand. Shown on first
-// load and after Reset, for ~1.5 s after the logo animation starts, or until
+// load and after Reset, for 2.5 s after the logo animation starts, or until
 // tapped.
 export function Splash() {
   const splash = useScenario((s) => s.splash);

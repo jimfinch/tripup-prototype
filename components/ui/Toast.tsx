@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import { Icon } from "@/components/ui/Icon";
+import { cn } from "@/lib/cn";
 import { useScenario } from "@/store/scenario";
 
 const TOAST_MS = 3000;
@@ -30,13 +31,25 @@ export function Toast() {
             key={toast.id}
             type="button"
             onClick={dismiss}
-            className="pointer-events-auto flex items-center gap-2.5 rounded-pill bg-gunmetal py-3 pl-4 pr-5 text-headline text-white shadow-toast"
+            className={cn(
+              "pointer-events-auto flex items-center gap-2.5 rounded-pill py-3 pl-4 pr-5 text-headline shadow-toast",
+              toast.tone === "lime"
+                ? "bg-lime text-gunmetal"
+                : "bg-gunmetal text-white",
+            )}
             initial={{ opacity: 0, y: 16, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
           >
-            <span className="flex size-6 items-center justify-center rounded-pill bg-white text-gunmetal">
+            <span
+              className={cn(
+                "flex size-6 items-center justify-center rounded-pill",
+                toast.tone === "lime"
+                  ? "bg-gunmetal text-lime"
+                  : "bg-white text-gunmetal",
+              )}
+            >
               <Icon framed name="check" size={16} />
             </span>
             {toast.message}

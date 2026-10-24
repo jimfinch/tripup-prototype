@@ -25,7 +25,9 @@ import { billShares } from "@/lib/bill";
 // the demo. Every step can be rebuilt from scratch with `stateAtStep`, so the
 // demo panel can jump anywhere and land in the right state.
 
-type Toast = { id: number; message: string };
+// "lime" is the celebratory variant (e.g. a guest accepting).
+export type ToastTone = "dark" | "lime";
+type Toast = { id: number; message: string; tone: ToastTone };
 
 export type PayScope =
   | { kind: "settle" }
@@ -85,7 +87,7 @@ type Actions = {
   reset: () => void;
   dismissSplash: () => void;
   dismissSceneCard: () => void;
-  showToast: (message: string) => void;
+  showToast: (message: string, tone?: ToastTone) => void;
   dismissToast: () => void;
   clearFocus: () => void;
 
@@ -426,7 +428,8 @@ export const useScenario = create<State>((set, get) => {
       });
     },
     dismissSceneCard: () => set({ sceneCard: null }),
-    showToast: (message) => set({ toast: { id: ++toastId, message } }),
+    showToast: (message, tone = "dark") =>
+      set({ toast: { id: ++toastId, message, tone } }),
     dismissToast: () => set({ toast: null }),
     clearFocus: () => set({ focus: null }),
 
@@ -456,7 +459,7 @@ export const useScenario = create<State>((set, get) => {
         const now = get();
         if (now.renInvite !== "invited") return;
         set({ ...withRen(now, "yes", now.renGuest), renInvite: "accepted" });
-        get().showToast("Ren accepted your invite");
+        get().showToast("Ren accepted your invite", "lime");
       }, 1600);
     },
 
