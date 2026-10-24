@@ -35,6 +35,8 @@ const TYPES: { label: ActivityType | "Other"; icon: IconName }[] = [
 const SCAN_MS = 900;
 
 // Step 08: the organiser's edit view for Belcanto (wireflow "08: Log dinner").
+// Order follows the wireflow: title, date, location, type, receipts (brought
+// up as the key action), split payments, update.
 // Ari created the poll, so she organises the activity and can log the bill.
 export function ActivityEditView() {
   const router = useRouter();
@@ -105,6 +107,13 @@ export function ActivityEditView() {
           </span>
         </div>
 
+        <TextField
+          label="Location"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          trailing={<Icon framed name="map-pin" className="text-gunmetal" />}
+        />
+
         <fieldset className="flex flex-col gap-3">
           <legend className="mb-3 text-title-m text-gunmetal">Type</legend>
           <div
@@ -137,12 +146,47 @@ export function ActivityEditView() {
           </div>
         </fieldset>
 
-        <TextField
-          label="Location"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          trailing={<Icon framed name="map-pin" className="text-gunmetal" />}
-        />
+        <section className="flex flex-col gap-3">
+          <div>
+            <h2 className="text-title-m text-gunmetal">Receipts</h2>
+            <p className="text-body-s text-ink-muted">
+              Scan receipt to itemise
+            </p>
+          </div>
+          <div className="grid grid-cols-4 gap-2">
+            {scanned &&
+              (
+                [
+                  ["Dinner", "receipt"],
+                  ["Drinks", "drinks"],
+                ] as const
+              ).map(([r, icon]) => (
+                <span
+                  key={r}
+                  className="flex h-22 flex-col items-center justify-center gap-2 rounded-md bg-off-white text-label text-gunmetal"
+                >
+                  <Icon framed name={icon} />
+                  {r}
+                </span>
+              ))}
+            <button
+              type="button"
+              onClick={scan}
+              disabled={scanning}
+              className={cn(
+                "flex h-22 flex-col items-center justify-center gap-2 rounded-md bg-off-white text-label text-gunmetal transition active:scale-press",
+                hintScan,
+              )}
+            >
+              <Icon
+                framed
+                name={scanning ? "receipt" : "plus"}
+                className={scanning ? "animate-pulse" : ""}
+              />
+              {scanning ? "Scanning…" : "Scan"}
+            </button>
+          </div>
+        </section>
 
         <section className="flex flex-col gap-4 rounded-md bg-lilac p-4">
           <h2 className="text-title-m text-gunmetal">Split payments</h2>
@@ -222,43 +266,6 @@ export function ActivityEditView() {
             >
               Invite
             </Button>
-          </div>
-        </section>
-
-        <section className="flex flex-col gap-3">
-          <div>
-            <h2 className="text-title-m text-gunmetal">Receipts</h2>
-            <p className="text-body-s text-ink-muted">
-              Scan receipt to itemise
-            </p>
-          </div>
-          <div className="grid grid-cols-4 gap-2">
-            {scanned &&
-              (["Dinner", "Drinks"] as const).map((r) => (
-                <span
-                  key={r}
-                  className="flex h-22 flex-col items-center justify-center gap-2 rounded-md bg-off-white text-label text-gunmetal"
-                >
-                  <Icon framed name="receipt" />
-                  {r}
-                </span>
-              ))}
-            <button
-              type="button"
-              onClick={scan}
-              disabled={scanning}
-              className={cn(
-                "flex h-22 flex-col items-center justify-center gap-2 rounded-md bg-off-white text-label text-gunmetal transition active:scale-press",
-                hintScan,
-              )}
-            >
-              <Icon
-                framed
-                name={scanning ? "receipt" : "plus"}
-                className={scanning ? "animate-pulse" : ""}
-              />
-              {scanning ? "Scanning…" : "Scan"}
-            </button>
           </div>
         </section>
 

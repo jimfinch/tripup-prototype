@@ -34,7 +34,7 @@ export function DemoPanel({ className }: { className?: string }) {
       <h1 className="mt-1 text-title-m">Last night in Lisbon</h1>
 
       <p className="mt-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3 py-1.5 text-label">
-        <span aria-hidden className="size-2 rounded-pill bg-violet" />
+        <span aria-hidden className="size-2 rounded-pill bg-lime" />
         {PHONE_LABEL[current.phone]}
         <span className="text-body-s text-white/60">· {current.clock}</span>
       </p>
@@ -58,7 +58,7 @@ export function DemoPanel({ className }: { className?: string }) {
                 <span
                   className={cn(
                     "w-6 text-label",
-                    active ? "text-violet" : "text-white/50",
+                    active ? "text-lime" : "text-white/50",
                   )}
                 >
                   {String(step.id).padStart(2, "0")}
