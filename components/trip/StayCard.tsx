@@ -35,7 +35,7 @@ export function StayCard({
           <span className="rounded-sm bg-gunmetal/10 px-4 py-2 text-headline">
             {from}
           </span>
-          <Icon name="arrow-right" className="size-5" />
+          <Icon framed name="arrow-right" size={20} />
           <span className="rounded-sm bg-gunmetal/10 px-4 py-2 text-headline">
             {to}
           </span>

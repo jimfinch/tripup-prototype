@@ -37,7 +37,7 @@ export function Toast() {
             transition={{ duration: 0.22, ease: "easeOut" }}
           >
             <span className="flex size-6 items-center justify-center rounded-pill bg-white text-gunmetal">
-              <Icon name="check" className="size-4" />
+              <Icon framed name="check" size={16} />
             </span>
             {toast.message}
           </motion.button>

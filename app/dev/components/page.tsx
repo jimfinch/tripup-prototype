@@ -152,8 +152,8 @@ export default function ComponentsPage() {
             <div key={theme} className="flex flex-wrap items-center gap-2">
               <Button
                 theme={theme}
-                leftIcon={<Icon name="plus" />}
-                rightIcon={<Icon name="arrow-right" className="size-5" />}
+                leftIcon={<Icon framed name="plus" />}
+                rightIcon={<Icon framed name="arrow-right" size={20} />}
               >
                 Pay
               </Button>
@@ -161,8 +161,8 @@ export default function ComponentsPage() {
                 <Button
                   theme={theme}
                   size="lg"
-                  leftIcon={<Icon name="plus" />}
-                  rightIcon={<Icon name="arrow-right" />}
+                  leftIcon={<Icon framed name="plus" />}
+                  rightIcon={<Icon framed name="arrow-right" />}
                 >
                   New
                 </Button>
@@ -174,7 +174,7 @@ export default function ComponentsPage() {
             <Button
               theme="light"
               disabled
-              rightIcon={<Icon name="plus" className="size-5" />}
+              rightIcon={<Icon framed name="plus" size={20} />}
             >
               Add group
             </Button>
@@ -200,7 +200,7 @@ export default function ComponentsPage() {
               theme="dark"
               fullWidth
               className="flex-1"
-              rightIcon={<Icon name="arrow-right" className="size-5" />}
+              rightIcon={<Icon framed name="arrow-right" size={20} />}
             >
               All polls
             </Button>
@@ -208,7 +208,7 @@ export default function ComponentsPage() {
               theme="primary"
               fullWidth
               className="flex-1"
-              rightIcon={<Icon name="poll" className="size-5" />}
+              rightIcon={<Icon framed name="poll" size={20} />}
             >
               Vote
             </Button>
@@ -318,7 +318,11 @@ export default function ComponentsPage() {
         <Section title="Icons">
           <div className="grid grid-cols-7 gap-3">
             {ICONS.map((name) => (
-              <span key={name} title={name} className="flex justify-center">
+              <span
+                key={name}
+                title={name}
+                className="flex h-6 items-center justify-center"
+              >
                 <Icon name={name} />
               </span>
             ))}

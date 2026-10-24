@@ -84,7 +84,7 @@ export function Button({
             XL_CIRCLE[theme],
           )}
         >
-          {rightIcon ?? <Icon name="arrow-right" />}
+          {rightIcon ?? <Icon framed name="arrow-right" />}
         </span>
       </>
     ) : (

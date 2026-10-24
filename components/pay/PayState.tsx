@@ -12,7 +12,7 @@ export function PayState({ paid, onPay }: PayStateProps) {
     return (
       <span className="inline-flex h-10 items-center gap-1.5 rounded-pill bg-white px-4.5 text-label text-gunmetal">
         Paid
-        <Icon name="check" className="size-5" />
+        <Icon framed name="check" size={20} />
       </span>
     );
   }
@@ -20,7 +20,7 @@ export function PayState({ paid, onPay }: PayStateProps) {
     <Button
       theme="light"
       onClick={onPay}
-      rightIcon={<Icon name="card" className="size-5" />}
+      rightIcon={<Icon framed name="card" size={20} />}
     >
       Pay share
     </Button>

@@ -17,7 +17,7 @@ export function InlineNotification({
   return (
     <div className="flex items-center gap-6 rounded-md bg-lilac py-3 pl-4 pr-5">
       <div className="flex flex-1 items-center gap-2">
-        <Icon name={icon} className="text-violet" />
+        <Icon framed name={icon} className="text-violet" />
         <p className="text-body-s text-gunmetal">
           {lines[0]}
           {lines[1] && (

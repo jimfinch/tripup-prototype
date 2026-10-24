@@ -28,7 +28,7 @@ export function SectionHeader({
           className="tap-target flex items-center gap-1.5 text-label text-gunmetal transition-opacity active:opacity-60"
         >
           {linkLabel}
-          <Icon name="arrow-right" className="size-5" />
+          <Icon framed name="arrow-right" size={20} />
         </Link>
       ) : (
         meta && <span className="text-body-s text-ink-muted">{meta}</span>
