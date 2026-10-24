@@ -94,7 +94,7 @@ export const STEPS: readonly Step[] = [
     phone: "ari",
     clock: "22:15",
     route: TRIP,
-    next: "Tap **Settle trip £881.10**, pick a payment method and settle",
+    next: "Tap **Settle trip £881.10**, then **Settle** with Apple Pay",
   },
   {
     id: 10,

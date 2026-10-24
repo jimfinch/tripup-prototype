@@ -30,7 +30,8 @@ const TITLE: Record<PayScope["kind"], string> = {
 export function PaySheet({ scope, open }: { scope: PayScope; open: boolean }) {
   const s = useScenario();
   const router = useRouter();
-  const [method, setMethod] = useState<Method | null>(null);
+  // Apple Pay is pre-selected so the demo is one tap; the others still work.
+  const [method, setMethod] = useState<Method | null>("apple");
   const [paying, setPaying] = useState(false);
 
   const total = selectPayTotal(s, scope);
@@ -59,7 +60,6 @@ export function PaySheet({ scope, open }: { scope: PayScope; open: boolean }) {
     setPaying(true);
     setTimeout(() => {
       setPaying(false);
-      setMethod(null);
       s.pay(scope);
       if (scope.kind === "settle") router.push(`/trips/${LISBON.id}/settled/`);
       else s.showToast(`Paid ${formatPence(total)}`);
