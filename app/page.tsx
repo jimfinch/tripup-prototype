@@ -63,8 +63,8 @@ export default function HomePage() {
               dates={LISBON.dates}
               image={LISBON.image}
               organiser={LISBON.organiser}
-              avatars={shown.slice(0, 6).map((m) => m.id)}
-              overflow={Math.max(0, shown.length - 6)}
+              avatars={LISBON.cardAvatars}
+              overflow={Math.max(0, shown.length - LISBON.cardAvatars.length)}
               livePolls={livePolls}
               paymentsDue={paymentsDue}
               poll={needsVote}

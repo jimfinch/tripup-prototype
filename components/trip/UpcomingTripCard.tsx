@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { AvatarStack } from "@/components/ui/Avatar";
 import { PEOPLE, type UpcomingTrip } from "@/data/seed";
+import { cn } from "@/lib/cn";
 
 // Hi-fi Home "Trip Card" (type=upcoming).
 export function UpcomingTripCard({ trip }: { trip: UpcomingTrip }) {
@@ -31,7 +32,14 @@ export function UpcomingTripCard({ trip }: { trip: UpcomingTrip }) {
         />
         <span className="text-body-s text-ink-muted">
           Organised by{" "}
-          <span className="font-semibold text-gunmetal">{organiser}</span>
+          <span
+            className={cn(
+              "text-gunmetal",
+              trip.organiser !== "ari" && "font-semibold",
+            )}
+          >
+            {organiser}
+          </span>
         </span>
       </span>
     </Link>

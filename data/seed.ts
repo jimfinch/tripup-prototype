@@ -69,6 +69,15 @@ export const LISBON = {
   dates: "17-24 Oct 2026",
   organiser: "jaimie" as PersonId,
   image: "/trips/lisbon.jpg",
+  // Faces on the Home trip card, as in the hi-fi frame.
+  cardAvatars: [
+    "ari",
+    "jaimie",
+    "charlie",
+    "ren",
+    "aylin",
+    "matteo",
+  ] as PersonId[],
 };
 
 // Ari's view of who's on the Lisbon trip before Ren is invited (§6).
@@ -82,7 +91,7 @@ export const LISBON_MEMBERS: TripMember[] = [
   { id: "aylin", status: "pending" },
 ];
 
-// Faces follow the hi-fi Home frame.
+// Faces, organisers and overflow follow the hi-fi Home frame and wireflow.
 const UPCOMING_FACES: PersonId[] = [
   "ari",
   "jaimie",
@@ -98,27 +107,27 @@ export const UPCOMING_TRIPS: UpcomingTrip[] = [
     name: "Milan",
     dates: "11 - 13 Dec 2026",
     image: "/trips/milan.jpg",
-    organiser: "jaimie",
+    organiser: "charlie",
     avatars: UPCOMING_FACES,
-    overflow: 2,
+    overflow: 0,
   },
   {
     id: "krakow",
     name: "Kraków",
     dates: "5 - 7 Feb 2027",
     image: "/trips/krakow.jpg",
-    organiser: "jaimie",
+    organiser: "ari",
     avatars: UPCOMING_FACES,
-    overflow: 2,
+    overflow: 3,
   },
   {
     id: "sardinia",
     name: "Sardinia",
     dates: "5 - 12 June 2027",
     image: "/trips/sardinia.jpg",
-    organiser: "jaimie",
+    organiser: "nic",
     avatars: UPCOMING_FACES,
-    overflow: 2,
+    overflow: 1,
   },
 ];
 
