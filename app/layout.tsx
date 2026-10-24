@@ -1,10 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
+const neueMontreal = localFont({
+  variable: "--font-sans",
+  src: [
+    {
+      path: "./fonts/PPNeueMontreal-Medium.otf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "./fonts/PPNeueMontreal-SemiBold.otf",
+      weight: "600",
+      style: "normal",
+    },
+  ],
 });
 
 export const metadata: Metadata = {
@@ -20,8 +31,10 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en-GB" className={inter.variable}>
-      <body className="font-sans antialiased">{children}</body>
+    <html lang="en-GB" className={neueMontreal.variable}>
+      <body className="font-sans font-medium text-gunmetal antialiased">
+        {children}
+      </body>
     </html>
   );
 }

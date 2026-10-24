@@ -2,4 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Design token CSS variables are added in Phase 2. */
+/* Brand tokens from Figma (space-separated RGB for Tailwind opacity modifiers). */
+:root {
+  --color-violet: 151 91 255; /* #975BFF Brand/Electric Violet */
+  --color-gunmetal: 35 48 56; /* #233038 Brand/Gunmetal */
+  --color-lilac: 237 235 255; /* #EDEBFF Brand/Lilac */
+  --color-lime: 212 242 92; /* #D4F25C Brand/Primary */
+  --color-teal: 7 80 86; /* #075056 Brand/Secondary */
+  --color-off-white: 243 244 247; /* #F3F4F7 Brand/Off white */
+  --color-white: 255 255 255; /* #FFFFFF Brand/White */
+  --color-avatar-ring: 251 250 255; /* #FBFAFF */
+
+  --device-width: 430px;
+  --device-height: 932px;
+}
