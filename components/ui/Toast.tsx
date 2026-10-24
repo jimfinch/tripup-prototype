@@ -1,0 +1,48 @@
+"use client";
+
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect } from "react";
+import { Icon } from "@/components/ui/Icon";
+import { useScenario } from "@/store/scenario";
+
+const TOAST_MS = 3000;
+
+// Confirmation pill (wireflow "Notification"), e.g. "'Belcanto' won - added to itinerary".
+export function Toast() {
+  const toast = useScenario((s) => s.toast);
+  const dismiss = useScenario((s) => s.dismissToast);
+
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(dismiss, TOAST_MS);
+    return () => clearTimeout(t);
+  }, [toast, dismiss]);
+
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      className="pointer-events-none absolute inset-x-0 bottom-toast-bottom z-40 flex justify-center px-4"
+    >
+      <AnimatePresence>
+        {toast && (
+          <motion.button
+            key={toast.id}
+            type="button"
+            onClick={dismiss}
+            className="pointer-events-auto flex items-center gap-2.5 rounded-pill bg-gunmetal py-3 pl-4 pr-5 text-headline text-white shadow-toast"
+            initial={{ opacity: 0, y: 16, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+          >
+            <span className="flex size-6 items-center justify-center rounded-pill bg-white text-gunmetal">
+              <Icon name="check" className="size-4" />
+            </span>
+            {toast.message}
+          </motion.button>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}

@@ -9,6 +9,12 @@ const config: Config = {
   content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
   theme: {
     extend: {
+      screens: {
+        // Viewport wider than the device: show the phone frame.
+        framed: "431px",
+        // Enough room for the demo panel beside the frame.
+        panel: "1100px",
+      },
       colors: {
         // Brand/*
         violet: rgb("violet"), // Brand/Electric Violet
@@ -26,6 +32,13 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        // iOS chrome (status bar uses SF Pro in Figma).
+        system: [
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "system-ui",
+          "sans-serif",
+        ],
       },
       fontSize: {
         // Figma text styles: [size, { lineHeight, letterSpacing, fontWeight }]
@@ -49,18 +62,34 @@ const config: Config = {
         caption: ["12px", { lineHeight: "16px", fontWeight: "500" }],
         "caption-strong": ["12px", { lineHeight: "16px", fontWeight: "600" }],
         micro: ["10px", { lineHeight: "12px", fontWeight: "600" }],
+        // iOS status bar clock (SF Pro Bold in Figma).
+        "status-time": ["18px", { lineHeight: "22px", fontWeight: "700" }],
       },
       spacing: {
         // Off-scale values used by the hi-fi (default scale covers the rest).
         4.5: "18px",
         "device-w": "430px",
         "device-h": "932px",
+        "status-bar": "var(--status-bar-h)",
+        "sheet-top": "82px",
+        "toast-bottom": "132px",
+        "tab-bar-bottom": "var(--tab-bar-bottom)",
+        // Device chrome (status bar, home indicator, tab buttons).
+        1.25: "5px",
+        5.5: "22px",
+        15: "60px",
+        "status-slot": "86px",
+        island: "122px",
+        indicator: "153px",
+        "indicator-h": "5.5px",
       },
       borderRadius: {
         xs: "2px",
         sm: "8px",
         md: "12px",
+        sheet: "24px",
         island: "32px",
+        device: "56px",
         indicator: "10px",
         pill: "100px",
       },
@@ -68,6 +97,10 @@ const config: Config = {
         avatar: "0 0 4px 0 rgb(0 0 0 / 0.15)",
         nav: "0 0 12px 0 rgb(var(--color-gunmetal) / 0.15)",
         "tab-bar": "0 0 12px 0 rgb(var(--color-gunmetal) / 0.1)",
+        sheet: "0 0 16px 0 rgb(0 0 0 / 0.15)",
+        toast: "0 8px 24px 0 rgb(0 0 0 / 0.18)",
+        device:
+          "0 0 0 10px rgb(var(--color-gunmetal)), 0 24px 64px 0 rgb(var(--color-gunmetal) / 0.25)",
       },
       backdropBlur: {
         glass: "6px",

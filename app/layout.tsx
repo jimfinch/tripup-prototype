@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
+import { DeviceShell } from "@/components/shell/DeviceShell";
 import "./globals.css";
 
 const neueMontreal = localFont({
@@ -33,7 +34,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en-GB" className={neueMontreal.variable}>
       <body className="font-sans font-medium text-gunmetal antialiased">
-        {children}
+        <DeviceShell>{children}</DeviceShell>
       </body>
     </html>
   );

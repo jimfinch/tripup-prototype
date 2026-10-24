@@ -13,6 +13,44 @@
   --color-white: 255 255 255; /* #FFFFFF Brand/White */
   --color-avatar-ring: 251 250 255; /* #FBFAFF */
 
-  --device-width: 430px;
-  --device-height: 932px;
+  /* On a real phone the OS draws its own status bar and home indicator,
+     so the fake ones are hidden and we pad by the safe areas instead. */
+  --status-bar-h: max(env(safe-area-inset-top, 0px), 12px);
+  --tab-bar-bottom: max(env(safe-area-inset-bottom, 0px), 16px);
+}
+
+@media (min-width: 431px) {
+  :root {
+    --status-bar-h: 64px;
+    --tab-bar-bottom: 30px;
+  }
+}
+
+@layer base {
+  html,
+  body {
+    @apply bg-off-white;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-violet ring-offset-2;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
