@@ -33,10 +33,12 @@ export function DemoPanel({ className }: { className?: string }) {
       </p>
       <h1 className="mt-1 text-title-m">Last night in Lisbon</h1>
 
-      <p className="mt-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3 py-1.5 text-label">
-        <span aria-hidden className="size-2 rounded-pill bg-lime" />
-        {PHONE_LABEL[current.phone]}
-        <span className="text-body-s text-white/60">· {current.clock}</span>
+      <p className="mt-4 flex w-full items-center justify-between rounded-pill bg-white/10 px-3 py-1.5 text-label">
+        <span className="flex items-center gap-2">
+          <span aria-hidden className="size-2 rounded-pill bg-lime" />
+          {PHONE_LABEL[current.phone]}
+        </span>
+        <span className="text-body-s text-white/60">{current.clock}</span>
       </p>
 
       <ol className="mt-6 flex flex-col gap-1">
