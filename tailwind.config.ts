@@ -72,6 +72,7 @@ const config: Config = {
         "device-w": "430px",
         "device-h": "932px",
         "status-bar": "var(--status-bar-h)",
+        "home-scrim": "calc(var(--status-bar-h) + 24px)",
         "sheet-top": "82px",
         "toast-bottom": "132px",
         "tab-bar-bottom": "var(--tab-bar-bottom)",
@@ -128,11 +129,14 @@ const config: Config = {
       },
       backgroundImage: {
         "home-top":
-          "linear-gradient(to bottom, rgb(var(--color-violet)) 0%, rgb(var(--color-violet) / 0) 100%)",
+          "linear-gradient(to bottom, rgb(var(--color-violet)) 0%, rgb(var(--color-violet)) 60%, rgb(var(--color-violet) / 0) 100%)",
         "home-bottom":
           "linear-gradient(to bottom, rgb(var(--color-violet) / 0) 0%, rgb(var(--color-violet) / 0.5) 100%)",
         "map-fade":
           "linear-gradient(to bottom, rgb(var(--color-white) / 0.75) 0%, rgb(var(--color-white) / 0) 50%)",
+        // Solid behind the status bar, fading out over the 24 px below it.
+        "home-scrim":
+          "linear-gradient(to bottom, rgb(var(--color-violet)) 0%, rgb(var(--color-violet)) 70%, rgb(var(--color-violet) / 0) 100%)",
         "status-scrim":
           "linear-gradient(to bottom, rgb(var(--color-white)) 0%, rgb(var(--color-white) / 0) 100%)",
       },

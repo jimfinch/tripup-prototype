@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { InlineNotification } from "@/components/ui/InlineNotification";
 import { LISBON, PENDING_INVITE, UPCOMING_TRIPS } from "@/data/seed";
+import { cn } from "@/lib/cn";
 import {
   selectLivePolls,
   selectPaymentsDue,
@@ -36,7 +37,19 @@ export default function HomePage() {
       tabBar
       className="bg-white"
       onScroll={(e) => setScrolled(e.currentTarget.scrollTop > 8)}
-      overlays={<MainNav active="trips" compact={scrolled} />}
+      overlays={
+        <>
+          {/* Keeps the status bar legible once content scrolls under it. */}
+          <div
+            aria-hidden
+            className={cn(
+              "pointer-events-none absolute inset-x-0 top-0 z-20 h-home-scrim bg-home-scrim transition-opacity duration-200",
+              scrolled ? "opacity-100" : "opacity-0",
+            )}
+          />
+          <MainNav active="trips" compact={scrolled} />
+        </>
+      }
     >
       <div className="relative">
         <div
