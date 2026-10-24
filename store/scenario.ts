@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { getStep, type StepId } from "@/data/steps";
+import { getStep, PHONE_LABEL, type StepId } from "@/data/steps";
 
 // One in-memory store for the whole scenario. A reload resets the demo.
 // Trip, poll and payment data are added in Phase 5.
@@ -29,12 +29,24 @@ const initialState = {
 
 let toastId = 0;
 
-export const useScenario = create<ScenarioState>((set) => ({
+// On a real phone the fake status bar is hidden (the OS draws its own), so the
+// story's phone and clock are announced with a scene card after the splash.
+const isPhoneViewport = () =>
+  typeof window !== "undefined" &&
+  !window.matchMedia("(min-width: 431px)").matches;
+
+export const useScenario = create<ScenarioState>((set, get) => ({
   ...initialState,
 
   goToStep: (step) => set({ step, sceneCard: getStep(step).sceneCard ?? null }),
   reset: () => set(initialState),
-  dismissSplash: () => set({ splash: false }),
+  dismissSplash: () => {
+    const { phone, clock } = getStep(get().step);
+    set({
+      splash: false,
+      sceneCard: isPhoneViewport() ? `${PHONE_LABEL[phone]} · ${clock}` : null,
+    });
+  },
   dismissSceneCard: () => set({ sceneCard: null }),
   showToast: (message) => set({ toast: { id: ++toastId, message } }),
   dismissToast: () => set({ toast: null }),
