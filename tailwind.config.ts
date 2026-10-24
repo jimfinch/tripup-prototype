@@ -141,12 +141,6 @@ const config: Config = {
           "linear-gradient(to bottom, rgb(var(--color-violet) / 0) 0%, rgb(var(--color-violet) / 0.5) 100%)",
         "map-fade":
           "linear-gradient(to bottom, rgb(var(--color-white) / 0.75) 0%, rgb(var(--color-white) / 0) 50%)",
-        // Status-bar fades, the height of the bar: 100% colour for the top half
-        // (behind the clock), stepping down to 0% at the bottom.
-        "status-scrim-white":
-          "linear-gradient(to bottom, rgb(var(--color-white)) 0%, rgb(var(--color-white)) 50%, rgb(var(--color-white) / 0) 100%)",
-        "status-scrim-violet":
-          "linear-gradient(to bottom, rgb(var(--color-violet)) 0%, rgb(var(--color-violet)) 50%, rgb(var(--color-violet) / 0) 100%)",
       },
     },
   },
