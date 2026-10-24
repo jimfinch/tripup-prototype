@@ -26,9 +26,9 @@ export type ActivityCardProps = {
   className?: string;
 };
 
-// Figma "Activity Card" (linked-itinerary). The card is 108 px; as in Figma the
-// details box keeps its natural 112 px and runs 4 px into the gap below. The
-// date block turns lime when Ari still owes her share (lime = needs action).
+// Figma "Activity Card" (linked-itinerary): 112 px, sized by its content; the
+// itinerary list spaces cards 8 px apart. The date block turns lime when Ari
+// still owes her share (lime = needs action).
 export function ActivityCard({
   id,
   day,
@@ -50,7 +50,7 @@ export function ActivityCard({
   return (
     <article
       id={id ? `activity-${id}` : undefined}
-      className="flex h-27 scroll-mt-24 items-start gap-2"
+      className="flex scroll-mt-24 items-start gap-2"
     >
       <div className="flex shrink-0 flex-col items-center gap-2 self-stretch">
         <div
