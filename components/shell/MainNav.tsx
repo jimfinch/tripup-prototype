@@ -43,7 +43,7 @@ export function MainNav({ active, compact = false }: MainNavProps) {
         transition={SPRING}
         aria-label="Trips and groups"
         className={cn(
-          "pointer-events-auto flex items-center rounded-pill bg-white/50 p-2 shadow-nav backdrop-blur-glass",
+          "pointer-events-auto flex items-center gap-1 rounded-pill bg-white/50 p-2 shadow-nav backdrop-blur-glass",
           compact ? "w-auto" : "w-full justify-between",
         )}
       >
