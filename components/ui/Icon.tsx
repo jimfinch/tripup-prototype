@@ -40,6 +40,8 @@ type IconProps = {
   // Keep the Figma icon frame (size × size) around the glyph, so buttons and
   // rows lay out exactly as in Figma.
   framed?: boolean;
+  // Explicit glyph width in px; height follows the glyph's proportions.
+  width?: number;
   className?: string;
 };
 
@@ -47,10 +49,11 @@ export function Icon({
   name,
   size = BOX,
   framed = false,
+  width,
   className,
 }: IconProps) {
   const [w, h] = ICONS[name];
-  const scale = size / BOX;
+  const scale = width ? width / w : size / BOX;
   const mask = `url(/icons/${name}.svg)`;
   const style: CSSProperties = {
     width: w * scale,

@@ -38,8 +38,7 @@ export function Check({
         className,
       )}
     >
-      {/* size-6 renders the check glyph at its Figma size: 20 × 15 */}
-      {state !== "empty" && <Icon name="check" />}
+      {state !== "empty" && <Icon name="check" width={16} />}
     </span>
   );
 }
