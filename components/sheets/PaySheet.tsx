@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
-import { Check } from "@/components/ui/Check";
 import { Icon } from "@/components/ui/Icon";
 import { Sheet } from "@/components/ui/Sheet";
 import { BELCANTO, LISBON, SETTLE } from "@/data/seed";
@@ -243,7 +242,6 @@ function MethodButton({
       )}
     >
       {children}
-      {selected && <Check state="selected" className="absolute right-1.5" />}
     </button>
   );
 }
