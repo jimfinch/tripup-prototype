@@ -51,7 +51,7 @@ export function DemoPanel({ className }: { className?: string }) {
                 onClick={() => jump(step.id)}
                 aria-current={active ? "step" : undefined}
                 className={cn(
-                  "flex min-h-11 w-full items-center gap-3 rounded-md px-3 text-left transition-colors duration-150",
+                  "flex min-h-11 w-full items-start gap-3 rounded-md px-3 py-3 text-left transition-colors duration-150",
                   active
                     ? "bg-white/10"
                     : "hover:bg-white/5 active:bg-white/10",
@@ -65,21 +65,23 @@ export function DemoPanel({ className }: { className?: string }) {
                 >
                   {String(step.id).padStart(2, "0")}
                 </span>
-                <span
-                  className={cn(
-                    "text-body-s",
-                    active ? "text-label" : "text-white/60",
+                <span className="flex flex-1 flex-col gap-1">
+                  <span
+                    className={cn(
+                      "text-body-s",
+                      active ? "text-label" : "text-white/60",
+                    )}
+                  >
+                    {step.title}
+                  </span>
+                  {active && (
+                    <span className="text-body-s text-white/80">
+                      <span className="text-white/50">Next: </span>
+                      <Emphasis text={step.next} />
+                    </span>
                   )}
-                >
-                  {step.title}
                 </span>
               </button>
-              {active && (
-                <p className="px-3 pb-2 pl-12 pt-1 text-body-s text-white/80">
-                  <span className="text-white/50">Next: </span>
-                  <Emphasis text={step.next} />
-                </p>
-              )}
             </li>
           );
         })}
