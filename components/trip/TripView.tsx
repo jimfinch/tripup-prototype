@@ -1,6 +1,7 @@
 "use client";
 
 import { Screen } from "@/components/shell/Screen";
+import { StatusScrim } from "@/components/shell/StatusScrim";
 import { ActivityCard } from "@/components/trip/ActivityCard";
 import { StayCard } from "@/components/trip/StayCard";
 import { TripHeaderCard } from "@/components/trip/TripHeaderCard";
@@ -32,16 +33,7 @@ export function TripView() {
   const recent = activities.slice(-4);
 
   return (
-    <Screen
-      tabBar
-      className="bg-white"
-      overlays={
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 z-20 h-status-bar bg-status-scrim"
-        />
-      }
-    >
+    <Screen tabBar className="bg-white" overlays={<StatusScrim />}>
       <TripMap backHref="/" />
       <div className="relative flex flex-col gap-2 px-4 pb-33">
         <TripHeaderCard

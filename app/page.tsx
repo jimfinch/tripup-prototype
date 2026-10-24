@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { MainNav } from "@/components/shell/MainNav";
+import { StatusScrim } from "@/components/shell/StatusScrim";
 import { Screen } from "@/components/shell/Screen";
 import { CurrentTripCard } from "@/components/trip/CurrentTripCard";
 import { UpcomingTripCard } from "@/components/trip/UpcomingTripCard";
@@ -9,7 +10,6 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { InlineNotification } from "@/components/ui/InlineNotification";
 import { LISBON, PENDING_INVITE, UPCOMING_TRIPS } from "@/data/seed";
-import { cn } from "@/lib/cn";
 import {
   selectLivePolls,
   selectPaymentsDue,
@@ -39,14 +39,7 @@ export default function HomePage() {
       onScroll={(e) => setScrolled(e.currentTarget.scrollTop > 8)}
       overlays={
         <>
-          {/* Keeps the status bar legible once content scrolls under it. */}
-          <div
-            aria-hidden
-            className={cn(
-              "pointer-events-none absolute inset-x-0 top-0 z-20 h-home-scrim bg-home-scrim transition-opacity duration-200",
-              scrolled ? "opacity-100" : "opacity-0",
-            )}
-          />
+          <StatusScrim tone="violet" visible={scrolled} />
           <MainNav active="trips" compact={scrolled} />
         </>
       }
