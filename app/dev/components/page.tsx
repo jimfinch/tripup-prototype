@@ -105,7 +105,7 @@ export default function ComponentsPage() {
 
   return (
     <Screen tabBar className="bg-white">
-      <div className="flex flex-col gap-8 px-4 pb-8 pt-status-bar">
+      <div className="flex flex-col gap-8 px-4 pb-39 pt-status-bar">
         <header className="pt-6">
           <h1 className="text-title-l">Components</h1>
           <p className="mt-1 text-body-s text-ink-muted">

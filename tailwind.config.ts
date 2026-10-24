@@ -41,19 +41,20 @@ const config: Config = {
         ],
       },
       fontSize: {
-        // Figma text styles: [size, { lineHeight, letterSpacing, fontWeight }]
+        // Figma text styles: [size, { lineHeight, letterSpacing, fontWeight }].
+        // Figma letter spacing is a percentage of size (Title L −0.6% = −0.192px).
         display: ["40px", { lineHeight: "44px", fontWeight: "600" }],
         "title-l": [
           "32px",
-          { lineHeight: "36px", letterSpacing: "-0.6px", fontWeight: "600" },
+          { lineHeight: "36px", letterSpacing: "-0.192px", fontWeight: "600" },
         ],
         "title-m": [
           "22px",
-          { lineHeight: "28px", letterSpacing: "-0.3px", fontWeight: "600" },
+          { lineHeight: "28px", letterSpacing: "-0.066px", fontWeight: "600" },
         ],
         "title-s": [
           "18px",
-          { lineHeight: "24px", letterSpacing: "-0.2px", fontWeight: "600" },
+          { lineHeight: "24px", letterSpacing: "-0.036px", fontWeight: "600" },
         ],
         headline: ["16px", { lineHeight: "22px", fontWeight: "600" }],
         body: ["16px", { lineHeight: "24px", fontWeight: "500" }],
@@ -75,11 +76,23 @@ const config: Config = {
         "toast-bottom": "132px",
         "tab-bar-bottom": "var(--tab-bar-bottom)",
         // Device chrome (status bar, home indicator, tab buttons).
+        0.75: "3px",
         1.25: "5px",
+        2.75: "11px",
         5.5: "22px",
         7.5: "30px",
         13: "52px",
         27: "108px",
+        29: "116px",
+        33: "132px",
+        35: "140px",
+        38: "152px",
+        65: "260px",
+        "home-glow": "670px",
+        // Home content starts below the floating Main Nav (64 + 8).
+        "below-nav": "calc(var(--status-bar-h) + 72px)",
+        39: "156px",
+        "map-h": "500px",
         15: "60px",
         18: "72px",
         knob: "39px",
@@ -119,7 +132,9 @@ const config: Config = {
         "home-bottom":
           "linear-gradient(to bottom, rgb(var(--color-violet) / 0) 0%, rgb(var(--color-violet) / 0.5) 100%)",
         "map-fade":
-          "linear-gradient(to bottom, rgb(var(--color-white) / 0.75) 0%, rgb(var(--color-white) / 0) 100%)",
+          "linear-gradient(to bottom, rgb(var(--color-white) / 0.75) 0%, rgb(var(--color-white) / 0) 50%)",
+        "status-scrim":
+          "linear-gradient(to bottom, rgb(var(--color-white)) 0%, rgb(var(--color-white) / 0) 100%)",
       },
     },
   },

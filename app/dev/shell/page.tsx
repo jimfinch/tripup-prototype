@@ -47,7 +47,7 @@ export default function ShellPreviewPage() {
         </Sheet>
       }
     >
-      <div className="px-4 pt-status-bar">
+      <div className="px-4 pb-39 pt-status-bar">
         <h1 className="pt-6 text-title-l">Shell preview</h1>
         <p className="mt-2 text-body-s text-ink-muted">
           Phase 2 review: overlays and chrome.

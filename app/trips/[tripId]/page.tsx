@@ -1,26 +1,22 @@
-import Link from "next/link";
-import { Screen } from "@/components/shell/Screen";
+import { ComingSoon } from "@/components/shell/ComingSoon";
+import { TripView } from "@/components/trip/TripView";
+import { UPCOMING_TRIPS } from "@/data/seed";
+
+const OTHER_PAGES: Record<string, string> = {
+  dubrovnik: "Dubrovnik",
+  past: "Past trips",
+  new: "New trip",
+  ...Object.fromEntries(UPCOMING_TRIPS.map((t) => [t.id, t.name])),
+};
 
 export function generateStaticParams() {
-  return [{ tripId: "lisbon" }];
+  return ["lisbon", ...Object.keys(OTHER_PAGES)].map((tripId) => ({ tripId }));
 }
 
-// Placeholder until the hi-fi Trip view is built (Phase 4).
-export default function TripPage() {
-  return (
-    <Screen tabBar className="bg-white">
-      <div className="px-4 pt-status-bar">
-        <p className="pt-16 text-title-l text-gunmetal">Lisbon</p>
-        <p className="mt-2 text-body-s text-ink-muted">
-          Hi-fi Trip view arrives in Phase 4.
-        </p>
-        <Link
-          href="/"
-          className="mt-6 inline-flex h-10 items-center rounded-pill border border-gunmetal px-4.5 text-label active:bg-gunmetal active:text-white"
-        >
-          Back to Home
-        </Link>
-      </div>
-    </Screen>
-  );
+export default async function TripPage({
+  params,
+}: PageProps<"/trips/[tripId]">) {
+  const { tripId } = await params;
+  if (tripId === "lisbon") return <TripView />;
+  return <ComingSoon title={OTHER_PAGES[tripId] ?? "Trip"} />;
 }

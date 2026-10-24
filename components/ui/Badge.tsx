@@ -14,7 +14,8 @@ export function NewBadge({ className }: { className?: string }) {
   );
 }
 
-// Figma "Count": number bubble inside the Polls / Itinerary / Stays buttons.
+// Figma "Count": number bubble inside the Polls / Itinerary / Stays buttons
+// (sits in the button's 20 px icon slot).
 export function CountBadge({
   value,
   className,
@@ -25,7 +26,7 @@ export function CountBadge({
   return (
     <span
       className={cn(
-        "inline-flex size-6 items-center justify-center",
+        "inline-flex size-5 items-center justify-center",
         className,
       )}
     >

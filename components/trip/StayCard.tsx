@@ -52,7 +52,7 @@ export function StayCard({
         </div>
         <div className="flex flex-col items-end justify-between">
           <p className="text-headline">{formatPence(share)}</p>
-          <PayState paid={paid} onPay={onPay} />
+          <PayState paid={paid} onPay={onPay} theme="light" />
         </div>
       </div>
     </article>

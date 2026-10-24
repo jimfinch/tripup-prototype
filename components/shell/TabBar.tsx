@@ -4,6 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { CSSProperties, ReactNode } from "react";
+import {
+  selectLivePolls,
+  selectPaymentsDue,
+  useScenario,
+} from "@/store/scenario";
 
 // Figma "App Menu". The Polls and Payments icons are exported with their
 // violet notification dot; the dot is clipped off when there is nothing to show.
@@ -66,8 +71,12 @@ type TabBarProps = {
   paymentsDot?: boolean;
 };
 
-export function TabBar(props: TabBarProps) {
+export function TabBar() {
   const pathname = usePathname();
+  const props: TabBarProps = {
+    pollsDot: useScenario((s) => selectLivePolls(s).length > 0),
+    paymentsDot: useScenario((s) => selectPaymentsDue(s) > 0),
+  };
 
   return (
     <nav
