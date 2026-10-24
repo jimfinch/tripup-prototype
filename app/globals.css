@@ -13,6 +13,10 @@
   --color-white: 255 255 255; /* #FFFFFF Brand/White */
   --color-avatar-ring: 251 250 255; /* #FBFAFF */
 
+  /* Prototype chrome around the phone (not part of the app design). */
+  --color-backdrop: 18 24 28; /* #12181C */
+  --color-bezel: 6 9 11; /* #06090B */
+
   /* On a real phone the OS draws its own status bar and home indicator,
      so the fake ones are hidden and we pad by the safe areas instead. */
   --status-bar-h: max(env(safe-area-inset-top, 0px), 12px);
@@ -23,6 +27,14 @@
   :root {
     --status-bar-h: 64px;
     --tab-bar-bottom: 30px;
+  }
+}
+
+/* Desktop: the phone sits on a dark backdrop. On a phone the app is full-bleed. */
+@media (min-width: 431px) {
+  html,
+  body {
+    background-color: rgb(var(--color-backdrop));
   }
 }
 

@@ -24,19 +24,16 @@ export function DemoPanel({ className }: { className?: string }) {
   };
 
   return (
-    <aside
-      aria-label="Demo guide"
-      className={cn("w-72 text-gunmetal", className)}
-    >
-      <p className="text-caption-strong uppercase tracking-wide text-ink-muted">
+    <aside aria-label="Demo guide" className={cn("w-72 text-white", className)}>
+      <p className="text-caption-strong uppercase tracking-wide text-white/60">
         TripUp prototype
       </p>
       <h1 className="mt-1 text-title-m">Last night in Lisbon</h1>
 
-      <p className="mt-4 inline-flex items-center gap-2 rounded-pill bg-white px-3 py-1.5 text-label shadow-tab-bar">
+      <p className="mt-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3 py-1.5 text-label">
         <span aria-hidden className="size-2 rounded-pill bg-violet" />
         {PHONE_LABEL[current.phone]}
-        <span className="text-body-s text-ink-muted">· {current.clock}</span>
+        <span className="text-body-s text-white/60">· {current.clock}</span>
       </p>
 
       <ol className="mt-6 flex flex-col gap-1">
@@ -51,14 +48,14 @@ export function DemoPanel({ className }: { className?: string }) {
                 className={cn(
                   "flex min-h-11 w-full items-center gap-3 rounded-md px-3 text-left transition-colors duration-150",
                   active
-                    ? "bg-white shadow-tab-bar"
-                    : "hover:bg-white/60 active:bg-white",
+                    ? "bg-white/10"
+                    : "hover:bg-white/5 active:bg-white/10",
                 )}
               >
                 <span
                   className={cn(
                     "w-6 text-label",
-                    active ? "text-violet" : "text-ink-muted",
+                    active ? "text-violet" : "text-white/50",
                   )}
                 >
                   {String(step.id).padStart(2, "0")}
@@ -66,15 +63,15 @@ export function DemoPanel({ className }: { className?: string }) {
                 <span
                   className={cn(
                     "text-body-s",
-                    active ? "text-label" : "text-ink-muted",
+                    active ? "text-label" : "text-white/60",
                   )}
                 >
                   {step.title}
                 </span>
               </button>
               {active && (
-                <p className="px-3 pb-2 pl-12 pt-1 text-body-s text-gunmetal">
-                  <span className="text-ink-muted">Next: </span>
+                <p className="px-3 pb-2 pl-12 pt-1 text-body-s text-white/80">
+                  <span className="text-white/50">Next: </span>
                   <Emphasis text={step.next} />
                 </p>
               )}
@@ -86,7 +83,7 @@ export function DemoPanel({ className }: { className?: string }) {
       <button
         type="button"
         onClick={onReset}
-        className="mt-6 flex h-10 items-center rounded-pill border border-gunmetal px-4.5 text-label transition-colors duration-150 hover:bg-white active:bg-gunmetal active:text-white"
+        className="mt-6 flex h-10 items-center rounded-pill border border-white/30 px-4.5 text-label text-white transition-colors duration-150 hover:bg-white/10 active:bg-white active:text-gunmetal"
       >
         Reset demo
       </button>

@@ -24,6 +24,9 @@ const config: Config = {
         teal: rgb("teal"), // Brand/Secondary
         "off-white": rgb("off-white"), // Brand/Off white
         white: rgb("white"), // Brand/White
+        // Prototype chrome around the phone (desktop only).
+        backdrop: rgb("backdrop"),
+        bezel: rgb("bezel"),
         // Not a Figma variable; used as the avatar ring on the hi-fi screens.
         "avatar-ring": rgb("avatar-ring"),
         // Secondary text on light surfaces. Figma uses gunmetal/50; raised to
@@ -123,7 +126,7 @@ const config: Config = {
         sheet: "0 0 16px 0 rgb(0 0 0 / 0.15)",
         toast: "0 8px 24px 0 rgb(0 0 0 / 0.18)",
         device:
-          "0 0 0 10px rgb(var(--color-gunmetal)), 0 24px 64px 0 rgb(var(--color-gunmetal) / 0.25)",
+          "0 0 0 10px rgb(var(--color-bezel)), 0 0 0 11px rgb(var(--color-white) / 0.12), 0 32px 80px 0 rgb(0 0 0 / 0.6)",
       },
       scale: {
         press: "0.97",
