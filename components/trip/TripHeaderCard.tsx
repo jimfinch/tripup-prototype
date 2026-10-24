@@ -1,6 +1,7 @@
 import { TripStat, pluralise } from "@/components/trip/TripStat";
 import { CountBadge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
 import { PEOPLE, type PersonId } from "@/data/seed";
 import { formatPence } from "@/lib/money";
 
@@ -11,13 +12,16 @@ type TripHeaderCardProps = {
   paymentsDue: number;
   counts: { polls: number; itinerary: number; stays: number };
   settleTotal: number;
+  settled?: boolean;
   onSettle?: () => void;
+  onPolls?: () => void;
+  settleClassName?: string;
 };
 
 // Hi-fi Trip view "Trip Card" (type=trip-header).
 export function TripHeaderCard(props: TripHeaderCardProps) {
   const links = [
-    { label: "Polls", count: props.counts.polls, href: "#polls" },
+    { label: "Polls", count: props.counts.polls, href: undefined },
     { label: "Itinerary", count: props.counts.itinerary, href: "#itinerary" },
     { label: "Stays", count: props.counts.stays, href: "#stays" },
   ];
@@ -43,21 +47,48 @@ export function TripHeaderCard(props: TripHeaderCardProps) {
         </div>
       </div>
       <div className="flex gap-2">
-        {links.map((l) => (
-          <Button
-            key={l.label}
-            theme="dark"
-            href={l.href}
-            className="flex-1"
-            rightIcon={<CountBadge value={l.count} />}
-          >
-            {l.label}
-          </Button>
-        ))}
+        {links.map((l) =>
+          l.href ? (
+            <Button
+              key={l.label}
+              theme="dark"
+              href={l.href}
+              className="flex-1"
+              rightIcon={<CountBadge value={l.count} />}
+            >
+              {l.label}
+            </Button>
+          ) : (
+            <Button
+              key={l.label}
+              theme="dark"
+              onClick={props.onPolls}
+              className="flex-1"
+              rightIcon={<CountBadge value={l.count} />}
+            >
+              {l.label}
+            </Button>
+          ),
+        )}
       </div>
-      <Button theme="primary" size="xl" onClick={props.onSettle}>
-        Settle trip {formatPence(props.settleTotal)}
-      </Button>
+      {props.settled ? (
+        // Everything is paid: the Settle button becomes a settled state.
+        <p className="flex h-16 items-center gap-4 rounded-pill bg-white py-1.5 pl-6 pr-1.5 text-title-s text-gunmetal">
+          <span className="flex-1">All squared up</span>
+          <span className="flex h-full w-13 items-center justify-center rounded-pill bg-gunmetal text-lime">
+            <Icon name="check" width={18} />
+          </span>
+        </p>
+      ) : (
+        <Button
+          theme="primary"
+          size="xl"
+          onClick={props.onSettle}
+          className={props.settleClassName}
+        >
+          Settle trip {formatPence(props.settleTotal)}
+        </Button>
+      )}
     </section>
   );
 }

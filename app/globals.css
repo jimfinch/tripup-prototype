@@ -61,6 +61,23 @@
   }
 }
 
+/* Guided layer: soft pulsing violet ring on the next thing to tap. */
+@keyframes hint-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgb(var(--color-violet) / 0.55);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 12px rgb(var(--color-violet) / 0);
+  }
+}
+
+.hint-ring {
+  outline: 2px solid rgb(var(--color-violet));
+  outline-offset: 3px;
+  animation: hint-pulse 1.8s ease-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

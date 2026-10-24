@@ -155,6 +155,8 @@ export type Activity = {
   coming: number;
   share: number;
   paid: boolean;
+  // Added by a poll and not yet filled in by its organiser.
+  shell?: boolean;
 };
 
 export const ACTIVITIES: Activity[] = [
@@ -233,7 +235,12 @@ export const STAY: Stay = {
 // ---------------------------------------------------------------------------
 // Polls
 
-export type PollOption = { id: string; label: string; votes: number };
+export type PollOption = {
+  id: string;
+  label: string;
+  votes: number;
+  voters: PersonId[];
+};
 
 export type Poll = {
   id: string;
@@ -245,6 +252,7 @@ export type Poll = {
   closesInMinutes: number | null;
   ariVote: string | null;
   status: "live" | "closed";
+  winner?: string;
 };
 
 export const FADO_POLL: Poll = {
@@ -252,11 +260,120 @@ export const FADO_POLL: Poll = {
   tripId: "lisbon",
   question: "Fado in Alfama after dinner?",
   options: [
-    { id: "yes", label: "Yes", votes: 5 },
-    { id: "no", label: "No", votes: 0 },
+    {
+      id: "yes",
+      label: "Yes",
+      votes: 5,
+      voters: ["charlie", "jaimie", "matteo", "nic", "tim"],
+    },
+    { id: "no", label: "No", votes: 0, voters: [] },
   ],
   sentTo: 6,
   closesInMinutes: null,
   ariVote: null,
   status: "live",
+};
+
+// ---------------------------------------------------------------------------
+// The dinner poll Ari creates at step 04 (form pre-filled for the demo).
+
+export const DINNER_POLL_DRAFT = {
+  question: "Where should we eat tonight?",
+  date: "Today",
+  time: "18:30",
+  options: [
+    "Belcanto",
+    "O Velho Eurico (Traditional)",
+    "Cervejaria Ramiro (Seafood)",
+  ],
+  sendToGuests: true,
+  closeAutomatically: true,
+  closeIn: "2 hrs" as const,
+  multipleAnswers: false,
+};
+
+export const CLOSE_IN_OPTIONS = ["30 min", "1 hr", "2 hrs", "Custom"] as const;
+export type CloseIn = (typeof CLOSE_IN_OPTIONS)[number];
+
+// Votes arriving live at step 06, ~600 ms apart (option index per vote). The
+// lead changes hands: Ramiro leads, then ties, then Belcanto pulls ahead to
+// Belcanto 4 · Eurico 0 · Ramiro 2.
+export const LIVE_VOTES: { option: number; voter: PersonId }[] = [
+  { option: 2, voter: "charlie" },
+  { option: 0, voter: "jaimie" },
+  { option: 2, voter: "ren" },
+  { option: 0, voter: "matteo" },
+  { option: 0, voter: "tim" },
+  { option: 0, voter: "nic" },
+];
+
+// ---------------------------------------------------------------------------
+// Belcanto, added by the poll at step 07 and logged at step 08.
+
+export const BELCANTO = {
+  id: "belcanto",
+  title: "Belcanto",
+  day: 24,
+  month: "Oct",
+  date: "24 Oct 2026",
+  time: "18:30",
+  type: "Dinner" as ActivityType,
+  address: "Rua Serpa Pinto 10A, 1200-445 Lisboa, Portugal",
+};
+
+// Order of the share list on the bill (wireflow 08).
+export const BELCANTO_ATTENDEES: PersonId[] = [
+  "ari",
+  "charlie",
+  "jaimie",
+  "matteo",
+  "nic",
+  "ren",
+  "tim",
+];
+
+export type BillStatus = "bill" | "paid" | "owes";
+
+// Bill = Ari paid the bill; Paid = already paid Ari back; Owes = still owes Ari.
+export const BELCANTO_STATUS: Record<string, BillStatus> = {
+  ari: "bill",
+  charlie: "owes",
+  jaimie: "paid",
+  matteo: "paid",
+  nic: "owes",
+  ren: "owes",
+  tim: "paid",
+};
+
+export type BillItem = {
+  id: string;
+  label: string;
+  amount: number;
+  excluded: PersonId[];
+};
+
+export const BELCANTO_ITEMS: BillItem[] = [
+  { id: "food", label: "Food & soft drinks", amount: 41209, excluded: [] },
+  { id: "wine", label: "Wine: 3 bottles", amount: 11640, excluded: [] },
+];
+
+// ---------------------------------------------------------------------------
+// Settling (§6). The consolidated transfer goes to Jaimie.
+
+export const SETTLE = {
+  payee: "jaimie" as PersonId,
+  transfersInsteadOf: 5,
+  consolidatedNote:
+    "Charlie, Ren and Nic will pay Jaimie what they owe you for Belcanto, so everyone settles in one go.",
+  card: "7492",
+};
+
+export const SETTLED_SUMMARY = {
+  transfers: "5 instead of 23",
+  done: "3 of 5 transfers done",
+  others: [
+    { label: "Nic paid Jaimie", amount: 110887 },
+    { label: "Ren paid Jaimie", amount: 5887 },
+  ],
+  more: "+ 2 more",
 };

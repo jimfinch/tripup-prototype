@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { InlineNotification } from "@/components/ui/InlineNotification";
 import { LISBON, PENDING_INVITE, UPCOMING_TRIPS } from "@/data/seed";
+import { useHint } from "@/lib/hints";
 import {
   selectLivePolls,
   selectPaymentsDue,
@@ -27,6 +28,8 @@ export default function HomePage() {
   const livePolls = useScenario((s) => selectLivePolls(s).length);
   const paymentsDue = useScenario((s) => selectPaymentsDue(s));
 
+  const openTrip = useScenario((s) => s.openTrip);
+  const hintLisbon = useHint("lisbon-card");
   const needsVote = polls.find(
     (p) => p.status === "live" && p.ariVote === null,
   );
@@ -75,6 +78,8 @@ export default function HomePage() {
               paymentsDue={paymentsDue}
               poll={needsVote}
               pollsHref="/polls/"
+              onOpen={openTrip}
+              linkClassName={hintLisbon}
               onVote={() => router.push("/polls/")}
             />
           </section>

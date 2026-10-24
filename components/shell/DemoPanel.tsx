@@ -72,6 +72,12 @@ export function DemoPanel({ className }: { className?: string }) {
                   {step.title}
                 </span>
               </button>
+              {active && (
+                <p className="px-3 pb-2 pl-12 pt-1 text-body-s text-gunmetal">
+                  <span className="text-ink-muted">Next: </span>
+                  <Emphasis text={step.next} />
+                </p>
+              )}
             </li>
           );
         })}
@@ -85,5 +91,22 @@ export function DemoPanel({ className }: { className?: string }) {
         Reset demo
       </button>
     </aside>
+  );
+}
+
+// Renders "**bold**" segments from the step's "next" hint.
+function Emphasis({ text }: { text: string }) {
+  return (
+    <>
+      {text.split("**").map((part, i) =>
+        i % 2 ? (
+          <strong key={i} className="font-semibold">
+            {part}
+          </strong>
+        ) : (
+          part
+        ),
+      )}
+    </>
   );
 }

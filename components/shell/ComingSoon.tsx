@@ -1,3 +1,4 @@
+import { BackToStory } from "@/components/shell/BackToStory";
 import { Screen } from "@/components/shell/Screen";
 
 // Search, Payments and Profile are outside the designed scope (CLAUDE.md §5).
@@ -10,9 +11,11 @@ export function ComingSoon({ title }: { title: string }) {
         </p>
         <h1 className="mt-2 text-title-l text-gunmetal">{title}</h1>
         <p className="text-body-s text-ink-muted">
-          This part of TripUp isn’t in the prototype yet. Use Home to follow the
-          Lisbon trip.
+          This part of TripUp isn’t in the prototype yet.
         </p>
+        <div className="mt-4">
+          <BackToStory />
+        </div>
       </div>
     </Screen>
   );

@@ -13,6 +13,7 @@ type PollOptionRowProps = {
   selected: boolean;
   onSelect?: () => void;
   disabled?: boolean;
+  className?: string;
 };
 
 // Vote option with a live results bar (wireflow 06, styled with hi-fi tokens).
@@ -25,6 +26,7 @@ export function PollOptionRow({
   selected,
   onSelect,
   disabled,
+  className,
 }: PollOptionRowProps) {
   const pct = totalVotes > 0 ? (votes / totalVotes) * 100 : 0;
   return (
@@ -36,6 +38,7 @@ export function PollOptionRow({
       className={cn(
         "relative flex h-12 w-full items-center justify-between overflow-hidden rounded-sm border p-2 text-left transition duration-150 active:scale-press disabled:active:scale-100",
         selected ? "border-gunmetal" : "border-gunmetal/15",
+        className,
       )}
     >
       <motion.span

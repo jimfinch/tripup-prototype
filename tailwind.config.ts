@@ -82,6 +82,9 @@ const config: Config = {
         5.5: "22px",
         7.5: "30px",
         13: "52px",
+        22: "88px",
+        25: "100px",
+        60: "240px",
         27: "108px",
         29: "116px",
         33: "132px",
@@ -106,6 +109,8 @@ const config: Config = {
         sm: "8px",
         md: "12px",
         sheet: "24px",
+        // iOS notification banner.
+        banner: "22px",
         island: "32px",
         device: "56px",
         indicator: "10px",

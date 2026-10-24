@@ -8,6 +8,8 @@ import {
   type PanInfo,
 } from "framer-motion";
 import { useEffect, useId, useRef, type ReactNode } from "react";
+import { useHint, type HintId } from "@/lib/hints";
+import { cn } from "@/lib/cn";
 
 // Bottom sheet, positioned inside the phone frame. Closes on ✕, backdrop tap,
 // Escape, or dragging the header down.
@@ -17,13 +19,25 @@ type SheetProps = {
   onClose: () => void;
   title: string;
   children: ReactNode;
+  // Guided-layer hint for the ✕ button (e.g. after Ren accepts).
+  closeHint?: HintId;
+  // Pinned under the scroll area (e.g. a primary action).
+  footer?: ReactNode;
 };
 
 const SHEET_EASE = [0.32, 0.72, 0, 1] as const;
 const DISMISS_OFFSET = 120;
 const DISMISS_VELOCITY = 500;
 
-export function Sheet({ open, onClose, title, children }: SheetProps) {
+export function Sheet({
+  open,
+  onClose,
+  title,
+  children,
+  closeHint,
+  footer,
+}: SheetProps) {
+  const closeHintClass = useHint(closeHint ?? "close-sheet");
   const titleId = useId();
   const dragControls = useDragControls();
   const panelRef = useRef<HTMLDivElement>(null);
@@ -88,6 +102,7 @@ export function Sheet({ open, onClose, title, children }: SheetProps) {
                   <Image
                     src="/icons/close-button.svg"
                     alt=""
+                    className={cn("rounded-pill", closeHint && closeHintClass)}
                     width={30}
                     height={30}
                   />
@@ -96,6 +111,7 @@ export function Sheet({ open, onClose, title, children }: SheetProps) {
               <div className="no-scrollbar flex-1 overflow-y-auto overscroll-contain px-5 pb-10">
                 {children}
               </div>
+              {footer && <div className="px-5 pb-8 pt-3">{footer}</div>}
             </motion.div>
           </div>
         </div>

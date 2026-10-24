@@ -23,10 +23,13 @@ const ICONS = {
   "pending-user": [18.85, 19.5],
   "people-add": [18, 18],
   pencil: [16, 16],
+  pizza: [18, 18],
   plus: [24, 24],
   poll: [17, 20],
   receipt: [18, 15],
   search: [18, 18],
+  share: [16.5, 19.5],
+  copy: [18, 18],
   trash: [17, 18],
 } as const;
 

@@ -5,6 +5,7 @@ import { AvatarStack } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { PEOPLE, type PersonId, type Poll } from "@/data/seed";
+import { cn } from "@/lib/cn";
 
 type CurrentTripCardProps = {
   href: string;
@@ -20,6 +21,8 @@ type CurrentTripCardProps = {
   poll?: Poll;
   pollsHref: string;
   onVote?: () => void;
+  onOpen?: () => void;
+  linkClassName?: string;
 };
 
 // Hi-fi Home "Trip Card" (type=current, state=poll-visible).
@@ -31,7 +34,11 @@ export function CurrentTripCard(props: CurrentTripCardProps) {
     <article className="flex flex-col gap-5 rounded-md bg-gunmetal p-4">
       <Link
         href={props.href}
-        className="flex flex-col gap-5 rounded-sm transition-opacity active:opacity-80"
+        onClick={props.onOpen}
+        className={cn(
+          "flex flex-col gap-5 rounded-sm transition-opacity active:opacity-80",
+          props.linkClassName,
+        )}
       >
         <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-1.5">
