@@ -129,7 +129,7 @@ const config: Config = {
       },
       backgroundImage: {
         "home-top":
-          "linear-gradient(to bottom, rgb(var(--color-violet)) 0%, rgb(var(--color-violet)) 60%, rgb(var(--color-violet) / 0) 100%)",
+          "linear-gradient(to bottom, rgb(var(--color-violet)) 0%, rgb(var(--color-violet) / 0) 100%)",
         "home-bottom":
           "linear-gradient(to bottom, rgb(var(--color-violet) / 0) 0%, rgb(var(--color-violet) / 0.5) 100%)",
         "map-fade":
