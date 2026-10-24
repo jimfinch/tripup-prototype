@@ -1,17 +1,35 @@
 import type { CSSProperties } from "react";
 import { cn } from "@/lib/cn";
 
-// Single-colour Figma icons, recoloured with a CSS mask so the exported SVGs
-// stay untouched. `glyph` is the SVG's own size inside its Figma symbol box.
+// Single-colour Figma icons (Sample System › Icons), recoloured with a CSS mask
+// so the exported SVGs stay untouched. Each SVG is the glyph only; `glyph` is
+// its size inside the 24 × 24 Figma symbol, so any rendered size keeps the
+// symbol's proportions and padding.
 const ICONS = {
-  search: { box: 22, glyph: [22, 22] },
-  home: { box: 22, glyph: [22, 22] },
-  poll: { box: 24, glyph: [17, 20] },
-  card: { box: 24, glyph: [18, 14] },
-  plus: { box: 24, glyph: [24, 24] },
-  close: { box: 24, glyph: [15, 15] },
-  check: { box: 16, glyph: [16, 16] },
+  "arrow-right": [18, 15],
+  "arrow-up-left": [13.5, 13.5],
+  airplane: [20, 20],
+  card: [18, 14],
+  caret: [9, 16.5],
+  check: [20, 15],
+  close: [15, 15],
+  "credit-card": [20, 14],
+  dinner: [17, 18],
+  drinks: [18, 18],
+  kebab: [15, 2.25],
+  lock: [18, 20],
+  "map-pin": [15, 20],
+  "pending-user": [18.85, 19.5],
+  "people-add": [18, 18],
+  pencil: [16, 16],
+  plus: [24, 24],
+  poll: [17, 20],
+  receipt: [18, 15],
+  search: [18, 18],
+  trash: [17, 18],
 } as const;
+
+const BOX = 24;
 
 export type IconName = keyof typeof ICONS;
 
@@ -21,9 +39,9 @@ type IconProps = {
 };
 
 export function Icon({ name, className }: IconProps) {
-  const { box, glyph } = ICONS[name];
+  const [w, h] = ICONS[name];
   const mask = `url(/icons/${name}.svg)`;
-  const size = `${(glyph[0] / box) * 100}% ${(glyph[1] / box) * 100}%`;
+  const size = `${(w / BOX) * 100}% ${(h / BOX) * 100}%`;
   const style: CSSProperties = {
     maskImage: mask,
     WebkitMaskImage: mask,
@@ -38,7 +56,7 @@ export function Icon({ name, className }: IconProps) {
   return (
     <span
       aria-hidden
-      className={cn("inline-block shrink-0 bg-current", className)}
+      className={cn("inline-block size-6 shrink-0 bg-current", className)}
       style={style}
     />
   );

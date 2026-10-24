@@ -38,6 +38,21 @@
 }
 
 @layer utilities {
+  /* Grows the hit area to at least 44 × 44 without changing the visual size,
+     so 40 px Figma buttons stay pixel-exact. */
+  .tap-target {
+    position: relative;
+  }
+  .tap-target::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
+
   .no-scrollbar {
     scrollbar-width: none;
   }

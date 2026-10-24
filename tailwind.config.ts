@@ -77,7 +77,12 @@ const config: Config = {
         // Device chrome (status bar, home indicator, tab buttons).
         1.25: "5px",
         5.5: "22px",
+        7.5: "30px",
+        13: "52px",
+        27: "108px",
         15: "60px",
+        18: "72px",
+        knob: "39px",
         "status-slot": "86px",
         island: "122px",
         indicator: "153px",
@@ -101,6 +106,9 @@ const config: Config = {
         toast: "0 8px 24px 0 rgb(0 0 0 / 0.18)",
         device:
           "0 0 0 10px rgb(var(--color-gunmetal)), 0 24px 64px 0 rgb(var(--color-gunmetal) / 0.25)",
+      },
+      scale: {
+        press: "0.97",
       },
       backdropBlur: {
         glass: "6px",

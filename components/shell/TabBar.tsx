@@ -33,7 +33,7 @@ const TABS: Tab[] = [
   {
     href: "/search/",
     label: "Search",
-    icon: () => <Image src="/icons/search.svg" alt="" fill />,
+    icon: () => <Image src="/icons/tab-search.svg" alt="" fill />,
   },
   {
     href: "/polls/",
@@ -45,7 +45,7 @@ const TABS: Tab[] = [
   {
     href: "/",
     label: "Home",
-    icon: () => <Image src="/icons/home.svg" alt="" fill />,
+    icon: () => <Image src="/icons/tab-home.svg" alt="" fill />,
   },
   {
     href: "/payments/",
@@ -57,7 +57,7 @@ const TABS: Tab[] = [
   {
     href: "/profile/",
     label: "Profile",
-    icon: () => <Image src="/icons/profile.svg" alt="" fill />,
+    icon: () => <Image src="/icons/tab-profile.svg" alt="" fill />,
   },
 ];
 
