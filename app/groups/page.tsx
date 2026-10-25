@@ -1,6 +1,5 @@
-// Replaced by the Groups list in Phase 6.
-import { ComingSoon } from "@/components/shell/ComingSoon";
+import { GroupsView } from "@/components/group/GroupsView";
 
 export default function GroupsPage() {
-  return <ComingSoon title="Groups" />;
+  return <GroupsView />;
 }

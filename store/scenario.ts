@@ -79,6 +79,8 @@ type Data = {
 
 type UI = {
   splash: boolean;
+  // Intrepid travellers' image, once picked in the photo picker.
+  groupImage: string | null;
   // In-phone tap hints (guided layer). Off by default so the product speaks for
   // itself; reviewers can switch them on from the demo panel.
   guides: boolean;
@@ -91,6 +93,7 @@ type Actions = {
   reset: () => void;
   dismissSplash: () => void;
   setGuides: (on: boolean) => void;
+  setGroupImage: (src: string) => void;
   dismissSceneCard: () => void;
   showToast: (message: string, tone?: ToastTone) => void;
   dismissToast: () => void;
@@ -434,6 +437,7 @@ export const useScenario = create<State>((set, get) => {
     ...INITIAL,
     splash: true,
     guides: false,
+    groupImage: null,
     sceneCard: null,
     toast: null,
 
@@ -447,6 +451,7 @@ export const useScenario = create<State>((set, get) => {
       clearTimers();
       set({ ...INITIAL, splash: true, sceneCard: null, toast: null });
     },
+    setGroupImage: (groupImage) => set({ groupImage }),
     setGuides: (guides) => {
       set({ guides });
       try {

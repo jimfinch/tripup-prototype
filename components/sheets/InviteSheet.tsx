@@ -1,13 +1,13 @@
 "use client";
 
 import { AttendeeRow } from "@/components/group/AttendeeRow";
+import { InvitedChip } from "@/components/group/InvitedChip";
 import { Sheet } from "@/components/ui/Sheet";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Toggle } from "@/components/ui/Toggle";
 import { LISBON, PEOPLE, type PersonId } from "@/data/seed";
 import { useHint } from "@/lib/hints";
-import { cn } from "@/lib/cn";
 import { useScenario } from "@/store/scenario";
 
 const CONTACTS: PersonId[] = ["jon", "tristan", "maria"];
@@ -203,19 +203,5 @@ export function InviteSheet({ open }: { open: boolean }) {
         </section>
       </div>
     </Sheet>
-  );
-}
-
-function InvitedChip({ className }: { className?: string }) {
-  return (
-    <span
-      className={cn(
-        "inline-flex h-10 items-center gap-1.5 rounded-pill bg-gunmetal pl-4.5 pr-4 text-label text-white",
-        className,
-      )}
-    >
-      Invited
-      <Icon framed name="check" size={20} />
-    </span>
   );
 }

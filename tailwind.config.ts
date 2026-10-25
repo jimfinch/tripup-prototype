@@ -108,6 +108,8 @@ const config: Config = {
         indicator: "153px",
         "indicator-h": "5.5px",
       },
+      // Photo-picker selection circle (iOS Attach Sheet).
+      borderWidth: { 1.5: "1.5px" },
       borderRadius: {
         xs: "2px",
         sm: "8px",

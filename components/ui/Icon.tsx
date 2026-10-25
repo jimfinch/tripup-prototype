@@ -17,6 +17,7 @@ const ICONS = {
   close: [15, 15],
   "credit-card": [20, 14],
   dinner: [17, 18],
+  image: [19.5, 16.5],
   drinks: [18, 18],
   kebab: [15, 2.25],
   lock: [18, 20],

@@ -468,3 +468,110 @@ export const SETTLED_SUMMARY = {
   ],
   more: "+ 2 more",
 };
+
+// ---------------------------------------------------------------------------
+// Groups (added value, §6 · Working "Home view - Group tab" / "Manage group")
+
+export type GroupTrip = {
+  name: string;
+  dates: string;
+  organiser: PersonId;
+  faces: PersonId[];
+};
+
+export type Group = {
+  id: string;
+  name: string;
+  createdBy: PersonId;
+  faces: PersonId[];
+  overflow: number;
+  tripsTogether: number;
+  mine: boolean;
+};
+
+const GROUP_FACES: PersonId[] = [
+  "ari",
+  "jaimie",
+  "charlie",
+  "ren",
+  "aylin",
+  "matteo",
+];
+
+export const GROUPS: Group[] = [
+  {
+    id: "intrepid",
+    name: "Intrepid travellers",
+    createdBy: "ari",
+    faces: ["ari", "adam", "jaimie", "even", "nic"],
+    overflow: 0,
+    tripsTogether: 6,
+    mine: true,
+  },
+  {
+    id: "family",
+    name: "Family",
+    createdBy: "ari",
+    faces: GROUP_FACES,
+    overflow: 5,
+    tripsTogether: 7,
+    mine: true,
+  },
+  {
+    id: "beach",
+    name: "Beach brigade",
+    createdBy: "jon",
+    faces: GROUP_FACES,
+    overflow: 2,
+    tripsTogether: 2,
+    mine: false,
+  },
+  {
+    id: "hens",
+    name: "Hen dos",
+    createdBy: "ren",
+    faces: GROUP_FACES,
+    overflow: 10,
+    tripsTogether: 2,
+    mine: false,
+  },
+];
+
+// Intrepid travellers: who's joined (6 invited · 5 joined) and trips together.
+export const INTREPID_MEMBERS: TripMember[] = [
+  { id: "ari", status: "yes" },
+  { id: "aylin", status: "pending" },
+  { id: "adam", status: "yes" },
+  { id: "jaimie", status: "yes" },
+  { id: "even", status: "yes" },
+  { id: "nic", status: "yes" },
+];
+
+export const INTREPID_TRIPS: GroupTrip[] = [
+  {
+    name: "Vietnam",
+    dates: "2 - 16 Aug 2025",
+    organiser: "jaimie",
+    faces: ["ari", "adam", "jaimie", "even", "nic"],
+  },
+  {
+    name: "Peru",
+    dates: "4 - 25 May 2024",
+    organiser: "jaimie",
+    faces: ["ari", "adam", "jaimie", "even", "nic"],
+  },
+  {
+    name: "Cuba",
+    dates: "4 - 18 Feb 2023",
+    organiser: "jaimie",
+    faces: ["ari", "jaimie", "even", "nic"],
+  },
+];
+
+// Photos offered by the mock photo picker when adding a group image.
+export const RECENT_PHOTOS = [
+  "/trips/lisbon.jpg",
+  "/trips/milan.jpg",
+  "/trips/krakow.jpg",
+  "/trips/sardinia.jpg",
+];
