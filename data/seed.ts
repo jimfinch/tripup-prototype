@@ -441,11 +441,36 @@ export type BillItem = {
   label: string;
   amount: number;
   excluded: PersonId[];
+  // What's printed on the receipt (invented). Adds up to `amount`.
+  lines: { label: string; amount: number }[];
 };
 
 export const BELCANTO_ITEMS: BillItem[] = [
-  { id: "food", label: "Food & soft drinks", amount: 41209, excluded: [] },
-  { id: "wine", label: "Wine: 3 bottles", amount: 11640, excluded: [] },
+  {
+    id: "food",
+    label: "Food & soft drinks",
+    amount: 41209,
+    excluded: [],
+    lines: [
+      { label: "Bread & olive oil ×7", amount: 2450 },
+      { label: "Carabineiro prawns ×2", amount: 5800 },
+      { label: "Suckling pig ×3", amount: 9600 },
+      { label: "Cod with chickpeas ×2", amount: 6200 },
+      { label: "Lamb shoulder ×2", amount: 7100 },
+      { label: "Pastel de nata ×7", amount: 3150 },
+      { label: "Soft drinks & water", amount: 6909 },
+    ],
+  },
+  {
+    id: "wine",
+    label: "Wine: 3 bottles",
+    amount: 11640,
+    excluded: [],
+    lines: [
+      { label: "Alvarinho white ×1", amount: 3420 },
+      { label: "Douro red ×2", amount: 8220 },
+    ],
+  },
 ];
 
 // Bills for the activities Ari joined but didn't organise (read-only view).
@@ -471,12 +496,32 @@ export const ACTIVITY_BILLS: Record<string, ActivityBill> = {
       { label: "Drinks", icon: "drinks" },
     ],
     items: [
-      { id: "food", label: "Food & soft drinks", amount: 34125, excluded: [] },
+      {
+        id: "food",
+        label: "Food & soft drinks",
+        amount: 34125,
+        excluded: [],
+        lines: [
+          { label: "Couvert ×5", amount: 1250 },
+          { label: "Petiscos board ×1", amount: 3800 },
+          { label: "Pica-pau ×2", amount: 2900 },
+          { label: "Polvo à lagareiro ×2", amount: 5800 },
+          { label: "Bacalhau à Brás ×2", amount: 4200 },
+          { label: "Arroz de pato ×1", amount: 2150 },
+          { label: "Secretos de porco ×2", amount: 4400 },
+          { label: "Desserts ×5", amount: 3450 },
+          { label: "Soft drinks & water", amount: 6175 },
+        ],
+      },
       {
         id: "wine",
         label: "Wine: 2 bottles",
         amount: 9696,
         excluded: ["matteo"],
+        lines: [
+          { label: "Vinho Verde ×1", amount: 2850 },
+          { label: "Alentejo red ×1", amount: 6846 },
+        ],
       },
     ],
   },
@@ -489,8 +534,31 @@ export const ACTIVITY_BILLS: Record<string, ActivityBill> = {
       { label: "Drinks", icon: "drinks" },
     ],
     items: [
-      { id: "food", label: "Food & soft drinks", amount: 29100, excluded: [] },
-      { id: "beer", label: "Beers", amount: 5750, excluded: ["charlie"] },
+      {
+        id: "food",
+        label: "Food & soft drinks",
+        amount: 29100,
+        excluded: [],
+        lines: [
+          { label: "Couvert ×6", amount: 1500 },
+          { label: "Grilled sardines ×3", amount: 5400 },
+          { label: "Bacalhau com natas ×2", amount: 4400 },
+          { label: "Pork & clams ×2", amount: 4800 },
+          { label: "Octopus rice ×1", amount: 3200 },
+          { label: "Desserts ×6", amount: 4200 },
+          { label: "Soft drinks & water", amount: 5600 },
+        ],
+      },
+      {
+        id: "beer",
+        label: "Beers",
+        amount: 5750,
+        excluded: ["charlie"],
+        lines: [
+          { label: "Super Bock ×10", amount: 3500 },
+          { label: "Sagres Preta ×5", amount: 2250 },
+        ],
+      },
     ],
   },
   ramiro: {
@@ -502,8 +570,33 @@ export const ACTIVITY_BILLS: Record<string, ActivityBill> = {
       { label: "Drinks", icon: "drinks" },
     ],
     items: [
-      { id: "food", label: "Seafood & sides", amount: 52050, excluded: [] },
-      { id: "wine", label: "Wine: 3 bottles", amount: 11875, excluded: ["tim"] },
+      {
+        id: "food",
+        label: "Seafood & sides",
+        amount: 52050,
+        excluded: [],
+        lines: [
+          { label: "Tiger prawns 1kg", amount: 9600 },
+          { label: "Clams Bulhão Pato ×2", amount: 4400 },
+          { label: "Garlic prawns ×3", amount: 6150 },
+          { label: "Spider crab ×1", amount: 6800 },
+          { label: "Goose barnacles 500g", amount: 8400 },
+          { label: "Lobster ×1", amount: 7500 },
+          { label: "Prego steak rolls ×6", amount: 4200 },
+          { label: "Toast & butter ×6", amount: 1800 },
+          { label: "Soft drinks & water", amount: 3200 },
+        ],
+      },
+      {
+        id: "wine",
+        label: "Wine: 3 bottles",
+        amount: 11875,
+        excluded: ["tim"],
+        lines: [
+          { label: "Alvarinho ×2", amount: 7900 },
+          { label: "Vinho Verde ×1", amount: 3975 },
+        ],
+      },
     ],
   },
   pigmeu: {
@@ -515,8 +608,28 @@ export const ACTIVITY_BILLS: Record<string, ActivityBill> = {
       { label: "Snacks", icon: "receipt" },
     ],
     items: [
-      { id: "drinks", label: "Cocktails: 10", amount: 10995, excluded: [] },
-      { id: "snacks", label: "Snacks", amount: 3600, excluded: ["jaimie"] },
+      {
+        id: "drinks",
+        label: "Cocktails: 10",
+        amount: 10995,
+        excluded: [],
+        lines: [
+          { label: "Gin & tonic ×4", amount: 4400 },
+          { label: "Aperol spritz ×3", amount: 3297 },
+          { label: "Port tonic ×3", amount: 3298 },
+        ],
+      },
+      {
+        id: "snacks",
+        label: "Snacks",
+        amount: 3600,
+        excluded: ["jaimie"],
+        lines: [
+          { label: "Prego bites", amount: 1450 },
+          { label: "Cheese board", amount: 1350 },
+          { label: "Olives & almonds", amount: 800 },
+        ],
+      },
     ],
   },
 };

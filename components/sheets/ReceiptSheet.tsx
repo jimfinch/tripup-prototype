@@ -41,10 +41,14 @@ export function ReceiptSheet({ receipt, onClose }: ReceiptSheetProps) {
                   {receipt.date} · {receipt.time}
                 </p>
               </div>
-              <p className="flex justify-between border-y border-dashed border-gunmetal/20 py-4 text-body">
-                <span>{receipt.item.label}</span>
-                <span>{formatPence(receipt.item.amount)}</span>
-              </p>
+              <ul className="flex flex-col gap-2 border-y border-dashed border-gunmetal/20 py-4 text-body-s">
+                {receipt.item.lines.map((line) => (
+                  <li key={line.label} className="flex justify-between gap-4">
+                    <span>{line.label}</span>
+                    <span>{formatPence(line.amount)}</span>
+                  </li>
+                ))}
+              </ul>
               <p className="flex justify-between text-headline">
                 <span>Total</span>
                 <span>{formatPence(receipt.item.amount)}</span>
