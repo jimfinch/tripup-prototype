@@ -18,7 +18,7 @@ export function GroupCard({ group, image, href, onOpen }: GroupCardProps) {
   const body = (
     <>
       <GroupImage src={image} />
-      <span className="flex flex-1 flex-col justify-center gap-2">
+      <span className="flex flex-1 flex-col justify-center gap-1">
         <span className="text-title-m text-gunmetal">{group.name}</span>
         <AvatarStack
           ids={group.faces}
