@@ -9,6 +9,7 @@ import { cn } from "@/lib/cn";
 const ICONS = {
   "arrow-right": [18, 15],
   "arrow-up-left": [13.5, 13.5],
+  "arrows-in": [24, 24],
   airplane: [20, 20],
   card: [18, 14],
   caret: [9, 16.5],

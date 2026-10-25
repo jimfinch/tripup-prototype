@@ -94,6 +94,7 @@ const config: Config = {
         35: "140px",
         38: "152px",
         65: "260px",
+        75: "300px",
         "home-glow": "670px",
         // Home content starts below the floating Main Nav (64 + 8).
         "below-nav": "calc(var(--status-bar-h) + 72px)",

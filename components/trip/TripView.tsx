@@ -1,7 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { Screen } from "@/components/shell/Screen";
 import { StatusScrim } from "@/components/shell/StatusScrim";
 import { CreatePollSheet } from "@/components/sheets/CreatePollSheet";
@@ -19,6 +20,7 @@ import { Icon } from "@/components/ui/Icon";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { BELCANTO, LISBON } from "@/data/seed";
 import { useHint, useHintActive } from "@/lib/hints";
+import { cn } from "@/lib/cn";
 import { formatPence } from "@/lib/money";
 import {
   selectLivePolls,
@@ -58,6 +60,15 @@ export function TripView() {
     return () => clearTimeout(t);
   }, [focus, clearFocus]);
 
+  // Map: expanding scrolls to the top first, then zooms (see TripMap).
+  const [mapOpen, setMapOpen] = useState(false);
+  const mainRef = useRef<HTMLElement | null>(null);
+  const expandMap = () => {
+    mainRef.current = document.querySelector("main");
+    mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+    setMapOpen(true);
+  };
+
   const openBelcanto = () => {
     s.openBelcanto();
     router.push(`/trips/${LISBON.id}/activities/${BELCANTO.id}/`);
@@ -73,7 +84,7 @@ export function TripView() {
   return (
     <Screen
       tabBar
-      className="bg-white"
+      className={cn("bg-white", mapOpen && "overflow-hidden")}
       scrollKey={phone}
       overlays={
         <>
@@ -89,8 +100,21 @@ export function TripView() {
         </>
       }
     >
-      <TripMap backHref="/" />
-      <div className="relative flex flex-col gap-2 px-4 pb-33">
+      <TripMap
+        backHref="/"
+        expanded={mapOpen}
+        onExpand={expandMap}
+        onCollapse={() => setMapOpen(false)}
+        onPin={(id) => router.push(`/trips/${LISBON.id}/activities/${id}/`)}
+      />
+      {/* Slides out of view while the map is full screen. */}
+      <motion.div
+        className="relative flex flex-col gap-2 px-4 pb-33"
+        initial={false}
+        animate={{ y: mapOpen ? 640 : 0, opacity: mapOpen ? 0 : 1 }}
+        transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+        aria-hidden={mapOpen}
+      >
         <TripHeaderCard
           name={LISBON.name}
           dates={LISBON.dates}
@@ -150,7 +174,12 @@ export function TripView() {
                   isNew={a.id === BELCANTO.id && s.belcanto.isNew}
                   connector={i < recent.length - 1}
                   onPay={() => pay({ kind: "activity", id: a.id })}
-                  onOpen={a.id === BELCANTO.id ? openBelcanto : undefined}
+                  onOpen={
+                    a.id === BELCANTO.id
+                      ? openBelcanto
+                      : () =>
+                          router.push(`/trips/${LISBON.id}/activities/${a.id}/`)
+                  }
                   beacon={a.id === BELCANTO.id && beaconBelcanto}
                 />
               ))}
@@ -202,7 +231,7 @@ export function TripView() {
             )}
           </div>
         </section>
-      </div>
+      </motion.div>
     </Screen>
   );
 }
