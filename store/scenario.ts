@@ -93,6 +93,9 @@ type UI = {
   splash: boolean;
   // Intrepid travellers' image, once picked in the photo picker.
   groupImage: string | null;
+  // A pin was tapped on the full-screen map, so going back to the trip view
+  // reopens the map there.
+  returnToMap: boolean;
   // In-phone tap hints (guided layer). Off by default so the product speaks for
   // itself; reviewers can switch them on from the demo panel.
   guides: boolean;
@@ -109,6 +112,7 @@ type Actions = {
   setGuides: (on: boolean) => void;
   setShowSteps: (on: boolean) => void;
   setGroupImage: (src: string) => void;
+  setReturnToMap: (returnToMap: boolean) => void;
   dismissSceneCard: () => void;
   showToast: (message: string) => void;
   dismissToast: () => void;
@@ -491,19 +495,32 @@ export const useScenario = create<State>((set, get) => {
     guides: false,
     showSteps: true,
     groupImage: null,
+    returnToMap: false,
     sceneCard: null,
     toast: null,
 
     goToStep: (step) => {
       clearTimers();
-      set({ ...stateAtStep(step), sceneCard: sceneCardFor(step), toast: null });
+      set({
+        ...stateAtStep(step),
+        sceneCard: sceneCardFor(step),
+        toast: null,
+        returnToMap: false,
+      });
       if (step === 7) get().showToast("‘Belcanto’ won - added to itinerary");
     },
     reset: () => {
       clearTimers();
-      set({ ...INITIAL, splash: true, sceneCard: null, toast: null });
+      set({
+        ...INITIAL,
+        splash: true,
+        sceneCard: null,
+        toast: null,
+        returnToMap: false,
+      });
     },
     setGroupImage: (groupImage) => set({ groupImage }),
+    setReturnToMap: (returnToMap) => set({ returnToMap }),
     setGuides: (guides) => {
       set({ guides });
       remember(GUIDES_KEY, guides);

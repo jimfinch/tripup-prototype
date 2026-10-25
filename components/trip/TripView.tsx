@@ -60,8 +60,12 @@ export function TripView() {
     return () => clearTimeout(t);
   }, [focus, clearFocus]);
 
-  // Map: expanding scrolls to the top first, then zooms (see TripMap).
-  const [mapOpen, setMapOpen] = useState(false);
+  // Map: expanding scrolls to the top first, then zooms (see TripMap). Coming
+  // back from a pin opened on the full-screen map lands on the map again.
+  const [mapOpen, setMapOpen] = useState(
+    () => useScenario.getState().returnToMap,
+  );
+  useEffect(() => useScenario.getState().setReturnToMap(false), []);
   const mainRef = useRef<HTMLElement | null>(null);
   const expandMap = () => {
     mainRef.current = document.querySelector("main");
@@ -106,7 +110,10 @@ export function TripView() {
         expanded={mapOpen}
         onExpand={expandMap}
         onCollapse={() => setMapOpen(false)}
-        onPin={(id) => router.push(`/trips/${LISBON.id}/activities/${id}/`)}
+        onPin={(id) => {
+          s.setReturnToMap(true);
+          router.push(`/trips/${LISBON.id}/activities/${id}/`);
+        }}
       />
       {/* Slides out of view while the map is full screen. */}
       <motion.div
