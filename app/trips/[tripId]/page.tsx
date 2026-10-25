@@ -1,4 +1,5 @@
 import { ComingSoon } from "@/components/shell/ComingSoon";
+import { PastTripsView } from "@/components/trip/PastTripsView";
 import { TripView } from "@/components/trip/TripView";
 import { UPCOMING_TRIPS } from "@/data/seed";
 
@@ -18,5 +19,6 @@ export default async function TripPage({
 }: PageProps<"/trips/[tripId]">) {
   const { tripId } = await params;
   if (tripId === "lisbon") return <TripView />;
+  if (tripId === "past") return <PastTripsView />;
   return <ComingSoon title={OTHER_PAGES[tripId] ?? "Trip"} />;
 }
