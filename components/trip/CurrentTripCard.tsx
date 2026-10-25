@@ -26,69 +26,72 @@ type CurrentTripCardProps = {
   beacon?: boolean;
 };
 
-// Hi-fi Home "Trip Card" (type=current, state=poll-visible).
+// Hi-fi Home "Trip Card" (type=current), followed by its own card
+// (state=poll) when a poll needs Ari's vote, so the vote CTA stands apart.
 export function CurrentTripCard(props: CurrentTripCardProps) {
   const { poll } = props;
   const voted = poll ? poll.options.reduce((n, o) => n + o.votes, 0) : 0;
 
   return (
-    <article className="flex flex-col gap-5 rounded-md bg-gunmetal p-4">
-      <Link
-        href={props.href}
-        onClick={props.onOpen}
-        className="flex flex-col gap-5 rounded-sm transition-opacity active:opacity-80"
-      >
-        <div className="flex flex-col gap-3">
-          <div className="flex flex-col gap-1.5">
-            <h2 className="text-title-l text-white">{props.name}</h2>
-            <p className="text-headline text-white/60">{props.dates}</p>
-          </div>
-          <div className="flex items-end gap-2">
-            <div className="flex flex-col gap-3">
-              <AvatarStack
-                ids={props.avatars}
-                overflow={props.overflow}
-                tone="dark"
-              />
-              <p className="text-body-s text-white/60">
-                Organised by{" "}
-                <span className="text-white">
-                  {PEOPLE[props.organiser].firstName}
-                </span>
-              </p>
+    <>
+      <article className="rounded-md bg-gunmetal p-4">
+        <Link
+          href={props.href}
+          onClick={props.onOpen}
+          className="flex flex-col gap-5 rounded-sm transition-opacity active:opacity-80"
+        >
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-1.5">
+              <h2 className="text-title-l text-white">{props.name}</h2>
+              <p className="text-headline text-white/60">{props.dates}</p>
             </div>
-            <div className="flex flex-1 flex-col items-end justify-end gap-2.5">
-              <TripStat
-                label={pluralise(props.livePolls, "live poll", "live polls")}
-                icon="poll"
-              />
-              <TripStat
-                label={pluralise(
-                  props.paymentsDue,
-                  "payment due",
-                  "payments due",
-                )}
-                icon="card"
-              />
+            <div className="flex items-end gap-2">
+              <div className="flex flex-col gap-3">
+                <AvatarStack
+                  ids={props.avatars}
+                  overflow={props.overflow}
+                  tone="dark"
+                />
+                <p className="text-body-s text-white/60">
+                  Organised by{" "}
+                  <span className="text-white">
+                    {PEOPLE[props.organiser].firstName}
+                  </span>
+                </p>
+              </div>
+              <div className="flex flex-1 flex-col items-end justify-end gap-2.5">
+                <TripStat
+                  label={pluralise(props.livePolls, "live poll", "live polls")}
+                  icon="poll"
+                />
+                <TripStat
+                  label={pluralise(
+                    props.paymentsDue,
+                    "payment due",
+                    "payments due",
+                  )}
+                  icon="card"
+                />
+              </div>
             </div>
           </div>
-        </div>
-        <div className="relative h-65 overflow-hidden rounded-sm">
-          {props.beacon && <HintBeacon className="right-4 top-4" />}
-          <Image
-            src={props.image}
-            alt=""
-            fill
-            priority
-            sizes="366px"
-            className="object-cover"
-            style={{ objectPosition: "50% 70.6%" }}
-          />
-        </div>
-      </Link>
+          <div className="relative h-65 overflow-hidden rounded-sm">
+            {props.beacon && <HintBeacon className="right-4 top-4" />}
+            <Image
+              src={props.image}
+              alt=""
+              fill
+              priority
+              sizes="366px"
+              className="object-cover"
+              style={{ objectPosition: "50% 70.6%" }}
+            />
+          </div>
+        </Link>
+      </article>
 
       {poll && (
-        <div className="flex flex-col gap-3 pt-2">
+        <article className="flex flex-col gap-3 rounded-md bg-gunmetal p-4 pt-6">
           <div className="flex items-center gap-1.5">
             <span aria-hidden className="flex flex-col gap-0.5">
               <span className="h-0.75 w-2 rounded-xs bg-white/50" />
@@ -126,8 +129,8 @@ export function CurrentTripCard(props: CurrentTripCardProps) {
               Vote
             </Button>
           </div>
-        </div>
+        </article>
       )}
-    </article>
+    </>
   );
 }

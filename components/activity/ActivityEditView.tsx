@@ -196,15 +196,19 @@ export function ActivityEditView() {
             label="Split equally"
             checked={false}
             onChange={s.notInPrototype}
+            className="border-b border-gunmetal/15 pb-2"
           />
-          <p className="text-body-s text-ink-muted">
-            Items on the bill.
-            <br />
-            Tap a person to exclude them from the item.
-          </p>
 
           {scanned ? (
-            <>
+            <div className="flex flex-col gap-2">
+              <p className="flex items-center gap-2 text-body-s text-ink-muted">
+                <Icon framed name="hand-tap" className="text-gunmetal" />
+                <span>
+                  Tap a person to{" "}
+                  <span className="text-label text-gunmetal">exclude</span> them
+                  from the item.
+                </span>
+              </p>
               {items.map((item) => (
                 <BillItemCard
                   key={item.id}
@@ -221,7 +225,7 @@ export function ActivityEditView() {
                   Add item
                 </Button>
               </div>
-            </>
+            </div>
           ) : (
             <p className="rounded-sm bg-white p-4 text-center text-body-s text-ink-muted">
               No items yet. Scan the receipt to itemise the bill, or enter each

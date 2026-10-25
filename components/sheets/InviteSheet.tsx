@@ -156,14 +156,6 @@ export function InviteSheet({ open }: { open: boolean }) {
               )}
             </li>
           </ul>
-          <Button
-            theme="light"
-            size="xl"
-            onClick={s.notInPrototype}
-            rightIcon={<Icon name="plus" />}
-          >
-            Add a new contact
-          </Button>
         </section>
 
         <section className="flex flex-col gap-2">
