@@ -2,8 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BillItemCard } from "@/components/activity/BillItemCard";
 import { BillStatusPill } from "@/components/activity/BillStatusPill";
 import { ReceiptTile } from "@/components/activity/ReceiptTile";
@@ -42,11 +41,14 @@ const SCAN_MS = 900;
 
 // Step 08: the organiser's edit view for Belcanto (wireflow "08: Log dinner").
 // Order follows the wireflow: title, date, location, type, receipts (brought
-// up as the key action), split payments, update.
+// up as the key action), split payments. There's no update button: changes
+// save as they're made, and leaving the screen logs the bill (wireflow updated).
 // Ari created the poll, so she organises the activity and can log the bill.
 export function ActivityEditView() {
-  const router = useRouter();
   const s = useScenario();
+  // The bill as it was on arrival, to tell whether anything has been saved.
+  const [arrived] = useState(() => useScenario.getState().belcanto);
+  const saved = s.belcanto !== arrived;
   const shares = selectBillShares(s);
   const [title, setTitle] = useState(BELCANTO.title);
   const [type, setType] = useState<string>(BELCANTO.type);
@@ -54,7 +56,7 @@ export function ActivityEditView() {
   const [scanning, setScanning] = useState(false);
   const [receipt, setReceipt] = useState<ReceiptView | null>(null);
   const hintScan = useHint("scan");
-  const hintUpdate = useHint("update-activity");
+  const hintLeave = useHint("leave-activity");
 
   const { scanned, items } = s.belcanto;
   const owed = BELCANTO_ATTENDEES.filter(
@@ -71,10 +73,15 @@ export function ActivityEditView() {
     }, SCAN_MS);
   };
 
-  const update = () => {
-    s.updateActivity();
-    router.push("/trips/lisbon/");
-  };
+  // Leaving the screen (back, a tab, a pin) shares the saved changes. A
+  // demo-panel jump rebuilds the store at another step first, so it's skipped.
+  useEffect(() => {
+    const { belcanto, step } = useScenario.getState();
+    return () => {
+      const now = useScenario.getState();
+      if (now.step === step && now.belcanto !== belcanto) now.saveActivity();
+    };
+  }, []);
 
   return (
     <Screen
@@ -92,10 +99,20 @@ export function ActivityEditView() {
           <Link
             href="/trips/lisbon/"
             aria-label="Back to Lisbon trip"
-            className="tap-target rounded-pill transition active:scale-press"
+            className={cn(
+              "tap-target rounded-pill transition active:scale-press",
+              hintLeave,
+            )}
           >
             <Image src="/icons/back-button.svg" alt="" width={40} height={40} />
           </Link>
+          <p
+            aria-live="polite"
+            className="flex items-center gap-1 text-caption text-ink-muted"
+          >
+            {saved && <Icon name="check" size={16} />}
+            {saved ? "Saved" : "Changes save as you go"}
+          </p>
           <button
             type="button"
             aria-label="Activity options"
@@ -304,10 +321,6 @@ export function ActivityEditView() {
             </Button>
           </div>
         </section>
-
-        <Button theme="light" size="xl" className={hintUpdate} onClick={update}>
-          Update activity
-        </Button>
       </div>
     </Screen>
   );

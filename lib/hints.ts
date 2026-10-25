@@ -19,7 +19,7 @@ export type HintId =
   | "scan"
   | "exclude-nic"
   | "exclude-ren"
-  | "update-activity"
+  | "leave-activity"
   | "settle"
   | "pay-method"
   | "settle-confirm"
@@ -60,7 +60,7 @@ export function currentHint(s: HintState): HintId | null {
       const wine = s.belcanto.items.find((i) => i.id === "wine");
       if (!wine?.excluded.includes("nic")) return "exclude-nic";
       if (!wine?.excluded.includes("ren")) return "exclude-ren";
-      return "update-activity";
+      return "leave-activity";
     }
     case 9:
       return s.sheet?.kind === "pay" ? null : "settle";

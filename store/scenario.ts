@@ -10,6 +10,7 @@ import {
   FADO_POLL,
   LISBON_MEMBERS,
   LIVE_VOTES,
+  PEOPLE,
   STAY,
   type Activity,
   type BillItem,
@@ -133,7 +134,9 @@ type Actions = {
   scanReceipt: () => void;
   toggleExclude: (itemId: string, person: PersonId) => void;
   setShare: (person: PersonId, amount: Pence) => void;
-  updateActivity: () => void;
+  // Changes save as they're made; this logs the bill and tells the group
+  // once Ari leaves the screen.
+  saveActivity: () => void;
 
   pay: (scope: PayScope) => void;
 };
@@ -356,6 +359,14 @@ const applyExclude = (d: Data, itemId: string, person: PersonId): Data => ({
     ),
   },
 });
+
+// "Charlie, Nic & Ren": the people whose debt the bill changes.
+const OWES_NAMES = BELCANTO_ATTENDEES.filter(
+  (p) => BELCANTO_STATUS[p] === "owes",
+)
+  .map((p) => PEOPLE[p].firstName)
+  .join(", ")
+  .replace(/, ([^,]*)$/, " & $1");
 
 const applyUpdateActivity = (d: Data): Data => {
   const shares = belcantoShares(d.belcanto);
@@ -593,9 +604,11 @@ export const useScenario = create<State>((set, get) => {
           overrides: { ...s.belcanto.overrides, [person]: amount },
         },
       })),
-    updateActivity: () => {
+    saveActivity: () => {
+      if (!get().belcanto.scanned) return;
       set(applyUpdateActivity(get()));
       advance(9);
+      get().showToast(`‘${BELCANTO.title}’ updated - ${OWES_NAMES} notified`);
     },
 
     pay: (scope) => {
