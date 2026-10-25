@@ -236,25 +236,34 @@ const applyLiveVote = (d: Data): Data => {
   };
 };
 
+// WhatsApp-style: tapping another option moves Ari's vote there, tapping her
+// own choice again takes it back. Only open polls take votes.
 const applyVote = (d: Data, pollId: string, optionId: string): Data => ({
   ...d,
-  polls: d.polls.map((p) =>
-    p.id !== pollId || p.ariVote
-      ? p
-      : {
-          ...p,
-          ariVote: optionId,
-          options: p.options.map((o) =>
-            o.id === optionId
-              ? {
-                  ...o,
-                  votes: o.votes + 1,
-                  voters: [...o.voters, "ari" as PersonId],
-                }
-              : o,
-          ),
-        },
-  ),
+  polls: d.polls.map((p) => {
+    if (p.id !== pollId || p.status === "closed") return p;
+    const previous = p.ariVote;
+    const next = previous === optionId ? null : optionId;
+    return {
+      ...p,
+      ariVote: next,
+      options: p.options.map((o) => {
+        if (o.id === previous)
+          return {
+            ...o,
+            votes: o.votes - 1,
+            voters: o.voters.filter((v) => v !== "ari"),
+          };
+        if (o.id === next)
+          return {
+            ...o,
+            votes: o.votes + 1,
+            voters: [...o.voters, "ari" as PersonId],
+          };
+        return o;
+      }),
+    };
+  }),
 });
 
 export const totalVotes = (p: Poll) =>
@@ -562,21 +571,10 @@ export const useScenario = create<State>((set, get) => {
       // Back on Ari's phone: the votes come in live on the vote sheet.
       advance(6, { sheet: { kind: "vote", pollId: "dinner" }, liveVotes: 0 });
     },
-    addLiveVote: () => {
-      set(applyLiveVote(get()));
-      const poll = get().polls.find((p) => p.id === "dinner");
-      if (poll && poll.status === "live" && totalVotes(poll) >= poll.sentTo) {
-        later(() => get().closePoll("dinner"), 700);
-      }
-    },
-    vote: (pollId, optionId) => {
-      set(applyVote(get(), pollId, optionId));
-      const poll = get().polls.find((p) => p.id === pollId);
-      // A poll closes as soon as everyone it was sent to has voted.
-      if (poll && poll.status === "live" && totalVotes(poll) >= poll.sentTo) {
-        later(() => get().closePoll(pollId), 700);
-      }
-    },
+    addLiveVote: () => set(applyLiveVote(get())),
+    // A poll stays open once everyone has voted, so votes can still change;
+    // it closes at its deadline or when its creator closes it.
+    vote: (pollId, optionId) => set(applyVote(get(), pollId, optionId)),
     closePoll: (pollId) => {
       set(applyClosePoll(get(), pollId));
       if (pollId === "dinner") {

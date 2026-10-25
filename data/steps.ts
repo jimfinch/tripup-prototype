@@ -68,7 +68,7 @@ export const STEPS: readonly Step[] = [
     phone: "ari",
     clock: "17:52",
     route: TRIP,
-    next: "Watch the votes come in, then vote **Belcanto**",
+    next: "Watch the votes come in, vote **Belcanto**, then **Close poll**",
     sceneCard: "Back on Ari’s phone · 17:52",
   },
   {

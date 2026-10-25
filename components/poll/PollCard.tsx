@@ -3,8 +3,11 @@
 import { useState } from "react";
 import { PollOptionRow } from "@/components/poll/PollOptionRow";
 import { AvatarStack } from "@/components/ui/Avatar";
+import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
 import { POLL_TRIPS, type Poll } from "@/data/seed";
 import { cn } from "@/lib/cn";
+import { useHint } from "@/lib/hints";
 import {
   formatCloses,
   leadingOption,
@@ -36,6 +39,7 @@ export function PollCard({
   const closePoll = useScenario((s) => s.closePoll);
   const notInPrototype = useScenario((s) => s.notInPrototype);
   const [showVoters, setShowVoters] = useState(false);
+  const hintClose = useHint("close-poll");
 
   const total = totalVotes(poll);
   const closed = poll.status === "closed";
@@ -45,6 +49,9 @@ export function PollCard({
   // The poll's creator (or the trip organiser) can close it; Ari created the dinner poll.
   const canClose = !closed && poll.creator === "ari";
   const everyone = total >= poll.sentTo;
+  // Everyone's in but the poll stays open (votes can still change): nudge
+  // the creator to close it rather than closing it for them.
+  const nudge = canClose && everyone;
 
   return (
     <article
@@ -95,7 +102,7 @@ export function PollCard({
                   }
                   selected={closed ? isWinner : poll.ariVote === o.id}
                   dimmed={closed && !isWinner}
-                  disabled={closed || !!poll.ariVote}
+                  disabled={closed}
                   onSelect={() => vote(poll.id, o.id)}
                   className={optionClassName?.(o.label)}
                 />
@@ -108,8 +115,27 @@ export function PollCard({
         </div>
       )}
 
+      {nudge && (
+        <div className="flex flex-col gap-3 rounded-sm bg-white p-3">
+          <p className="text-body-s text-ink-muted">
+            <span className="text-label text-gunmetal">
+              All {poll.sentTo} voted
+            </span>
+            {uniqueLeader && ` · ${leader?.label} leads`}
+          </p>
+          <Button
+            theme="primary"
+            onClick={() => closePoll(poll.id)}
+            className={hintClose}
+            rightIcon={<Icon framed name="check" size={20} />}
+          >
+            Close poll
+          </Button>
+        </div>
+      )}
+
       <footer className="flex justify-between">
-        {canClose ? (
+        {canClose && !nudge ? (
           <button
             type="button"
             onClick={() => closePoll(poll.id)}

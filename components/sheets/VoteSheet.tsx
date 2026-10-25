@@ -12,8 +12,8 @@ const VOTE_INTERVAL_MS = 600;
 const FIRST_VOTE_DELAY_MS = 1400;
 
 // Vote now sheet (wireflow 06), built on the shared PollCard. On step 06 the
-// other votes animate in live and the lead changes hands; Ari's vote is the
-// last, which closes the poll.
+// other votes animate in live and the lead changes hands. Ari's vote is the
+// last; she can still change it, then closes the poll as its creator.
 export function VoteSheet({ pollId, open }: { pollId: string; open: boolean }) {
   const poll = useScenario((s) => s.polls.find((p) => p.id === pollId));
   const step = useScenario((s) => s.step);

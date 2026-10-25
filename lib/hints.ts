@@ -14,6 +14,7 @@ export type HintId =
   | "create-poll"
   | "notification"
   | "vote-belcanto"
+  | "close-poll"
   | "belcanto-card"
   | "scan"
   | "exclude-nic"
@@ -49,9 +50,8 @@ export function currentHint(s: HintState): HintId | null {
     case 6: {
       const dinner = s.polls.find((p) => p.id === "dinner");
       const allIn = s.liveVotes >= 6;
-      return s.sheet?.kind === "vote" && allIn && !dinner?.ariVote
-        ? "vote-belcanto"
-        : null;
+      if (s.sheet?.kind !== "vote" || !allIn) return null;
+      return dinner?.ariVote ? "close-poll" : "vote-belcanto";
     }
     case 7:
       return "belcanto-card";
