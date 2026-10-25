@@ -91,7 +91,7 @@ export function CurrentTripCard(props: CurrentTripCardProps) {
       </article>
 
       {poll && (
-        <article className="flex flex-col gap-3 rounded-md bg-gunmetal p-4 pt-6">
+        <article className="flex flex-col gap-3 rounded-md bg-gunmetal p-4">
           <div className="flex items-center gap-1.5">
             <span aria-hidden className="flex flex-col gap-0.5">
               <span className="h-0.75 w-2 rounded-xs bg-white/50" />
