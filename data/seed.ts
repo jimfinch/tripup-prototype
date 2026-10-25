@@ -487,6 +487,8 @@ export type Group = {
   overflow: number;
   tripsTogether: number;
   mine: boolean;
+  // Intrepid travellers starts without one, to show Add group image.
+  image?: string;
 };
 
 const GROUP_FACES: PersonId[] = [
@@ -516,6 +518,7 @@ export const GROUPS: Group[] = [
     overflow: 5,
     tripsTogether: 7,
     mine: true,
+    image: "/groups/family.jpg",
   },
   {
     id: "beach",
@@ -525,6 +528,7 @@ export const GROUPS: Group[] = [
     overflow: 2,
     tripsTogether: 2,
     mine: false,
+    image: "/groups/beach.jpg",
   },
   {
     id: "hens",
@@ -534,6 +538,7 @@ export const GROUPS: Group[] = [
     overflow: 10,
     tripsTogether: 2,
     mine: false,
+    image: "/groups/hens.jpg",
   },
 ];
 
@@ -568,10 +573,12 @@ export const INTREPID_TRIPS: GroupTrip[] = [
   },
 ];
 
-// Photos offered by the mock photo picker when adding a group image.
+// Photos offered by the mock photo picker when adding a group image. The
+// designer's Intrepid travellers photo comes first; four photos fill the two
+// rows beside the camera tile.
 export const RECENT_PHOTOS = [
+  "/groups/intrepid.jpg",
   "/trips/lisbon.jpg",
   "/trips/milan.jpg",
   "/trips/krakow.jpg",
-  "/trips/sardinia.jpg",
 ];

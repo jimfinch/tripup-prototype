@@ -20,7 +20,7 @@ export function GroupsView() {
     <GroupCard
       key={g.id}
       group={g}
-      image={g.id === "intrepid" ? groupImage : null}
+      image={g.id === "intrepid" ? groupImage : g.image}
       href={g.id === "intrepid" ? `/groups/${g.id}/` : undefined}
       onOpen={notInPrototype}
     />
