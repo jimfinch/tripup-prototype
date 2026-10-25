@@ -448,6 +448,79 @@ export const BELCANTO_ITEMS: BillItem[] = [
   { id: "wine", label: "Wine: 3 bottles", amount: 11640, excluded: [] },
 ];
 
+// Bills for the activities Ari joined but didn't organise (read-only view).
+// Not in the brief: invented so a participant can check their share against
+// the receipts. Each one reconciles with Ari's share on the itinerary card.
+export type ActivityBill = {
+  // Who paid the bill on the night ("Bill").
+  payer: PersonId;
+  attendees: PersonId[];
+  // Still owe the payer; everyone else has paid them back.
+  owes: PersonId[];
+  receipts: { label: string; icon: "receipt" | "drinks" }[];
+  items: BillItem[];
+};
+
+export const ACTIVITY_BILLS: Record<string, ActivityBill> = {
+  tasca: {
+    payer: "jaimie",
+    attendees: ["ari", "charlie", "jaimie", "matteo", "nic"],
+    owes: [],
+    receipts: [
+      { label: "Dinner", icon: "receipt" },
+      { label: "Drinks", icon: "drinks" },
+    ],
+    items: [
+      { id: "food", label: "Food & soft drinks", amount: 34125, excluded: [] },
+      {
+        id: "wine",
+        label: "Wine: 2 bottles",
+        amount: 9696,
+        excluded: ["matteo"],
+      },
+    ],
+  },
+  eurico: {
+    payer: "charlie",
+    attendees: ["ari", "charlie", "jaimie", "matteo", "nic", "tim"],
+    owes: [],
+    receipts: [
+      { label: "Lunch", icon: "receipt" },
+      { label: "Drinks", icon: "drinks" },
+    ],
+    items: [
+      { id: "food", label: "Food & soft drinks", amount: 29100, excluded: [] },
+      { id: "beer", label: "Beers", amount: 5750, excluded: ["charlie"] },
+    ],
+  },
+  ramiro: {
+    payer: "matteo",
+    attendees: ["ari", "charlie", "jaimie", "matteo", "nic", "tim"],
+    owes: [],
+    receipts: [
+      { label: "Dinner", icon: "receipt" },
+      { label: "Drinks", icon: "drinks" },
+    ],
+    items: [
+      { id: "food", label: "Seafood & sides", amount: 52050, excluded: [] },
+      { id: "wine", label: "Wine: 3 bottles", amount: 11875, excluded: ["tim"] },
+    ],
+  },
+  pigmeu: {
+    payer: "charlie",
+    attendees: ["ari", "charlie", "jaimie", "nic", "tim"],
+    owes: ["nic"],
+    receipts: [
+      { label: "Drinks", icon: "drinks" },
+      { label: "Snacks", icon: "receipt" },
+    ],
+    items: [
+      { id: "drinks", label: "Cocktails: 10", amount: 10995, excluded: [] },
+      { id: "snacks", label: "Snacks", amount: 3600, excluded: ["jaimie"] },
+    ],
+  },
+};
+
 // ---------------------------------------------------------------------------
 // Settling (§6). The consolidated transfer goes to Jaimie.
 

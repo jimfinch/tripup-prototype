@@ -14,19 +14,23 @@ import { formatPence } from "@/lib/money";
 
 type BillItemCardProps = {
   item: BillItem;
-  onToggle: (person: PersonId) => void;
+  attendees?: PersonId[];
+  // Organiser only; without it the card is read-only (no avatars).
+  onToggle?: (person: PersonId) => void;
 };
 
 // One line of the bill. Tapping an avatar excludes that person from the item
 // (dimmed); the split label recalculates live.
-export function BillItemCard({ item, onToggle }: BillItemCardProps) {
-  const payers = itemPayers(item, BELCANTO_ATTENDEES);
+export function BillItemCard({
+  item,
+  attendees = BELCANTO_ATTENDEES,
+  onToggle,
+}: BillItemCardProps) {
+  const payers = itemPayers(item, attendees);
   const each = payers.length ? Math.round(item.amount / payers.length) : 0;
   // Listed guests-first, as in the wireflow ("Ren & Nic excluded").
   const excluded = [...item.excluded]
-    .sort(
-      (a, b) => BELCANTO_ATTENDEES.indexOf(b) - BELCANTO_ATTENDEES.indexOf(a),
-    )
+    .sort((a, b) => attendees.indexOf(b) - attendees.indexOf(a))
     .map((p) => PEOPLE[p].firstName);
   const hintNic = useHint("exclude-nic");
   const hintRen = useHint("exclude-ren");
@@ -49,26 +53,28 @@ export function BillItemCard({ item, onToggle }: BillItemCardProps) {
         Split {payers.length} ways - {formatPence(each)} each
         {excluded.length > 0 && ` - ${excluded.join(" & ")} excluded`}
       </p>
-      <div className="flex flex-wrap gap-2">
-        {BELCANTO_ATTENDEES.map((p) => {
-          const out = item.excluded.includes(p);
-          return (
-            <button
-              key={p}
-              type="button"
-              onClick={() => onToggle(p)}
-              aria-pressed={!out}
-              aria-label={`${PEOPLE[p].firstName}: ${out ? "excluded" : "included"} in ${item.label}`}
-              className={cn(
-                "tap-target rounded-pill transition active:scale-press",
-                hintFor(p),
-              )}
-            >
-              <Avatar id={p} dimmed={out} />
-            </button>
-          );
-        })}
-      </div>
+      {onToggle && (
+        <div className="flex flex-wrap gap-2">
+          {attendees.map((p) => {
+            const out = item.excluded.includes(p);
+            return (
+              <button
+                key={p}
+                type="button"
+                onClick={() => onToggle(p)}
+                aria-pressed={!out}
+                aria-label={`${PEOPLE[p].firstName}: ${out ? "excluded" : "included"} in ${item.label}`}
+                className={cn(
+                  "tap-target rounded-pill transition active:scale-press",
+                  hintFor(p),
+                )}
+              >
+                <Avatar id={p} dimmed={out} />
+              </button>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

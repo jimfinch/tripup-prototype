@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { BillItemCard } from "@/components/activity/BillItemCard";
+import { BillStatusPill } from "@/components/activity/BillStatusPill";
 import { AmountField } from "@/components/form/AmountField";
 import { TextField } from "@/components/form/TextField";
 import { ToggleRow } from "@/components/form/ToggleRow";
@@ -19,7 +20,6 @@ import {
   BELCANTO_STATUS,
   PEOPLE,
   type ActivityType,
-  type BillStatus,
 } from "@/data/seed";
 import { useHint } from "@/lib/hints";
 import { cn } from "@/lib/cn";
@@ -245,7 +245,7 @@ export function ActivityEditView() {
                   sublabel={p === "ren" ? "Guest" : undefined}
                   trailing={
                     <span className="flex items-center gap-1">
-                      <StatusPill status={BELCANTO_STATUS[p]} />
+                      <BillStatusPill status={BELCANTO_STATUS[p]} />
                       <AmountField
                         label={`${name}’s share`}
                         amount={shares.get(p) ?? 0}
@@ -286,28 +286,5 @@ export function ActivityEditView() {
         </Button>
       </div>
     </Screen>
-  );
-}
-
-const STATUS_LABEL: Record<BillStatus, string> = {
-  bill: "Bill",
-  paid: "Paid",
-  owes: "Owes",
-};
-
-// Bill = Ari paid the bill · Paid = paid Ari back · Owes = still owes Ari.
-function StatusPill({ status }: { status: BillStatus }) {
-  return (
-    <span
-      className={cn(
-        "inline-flex h-10 items-center gap-1.5 rounded-pill px-4 text-label",
-        status === "owes"
-          ? "bg-gunmetal/10 text-gunmetal"
-          : "bg-white text-gunmetal",
-      )}
-    >
-      {STATUS_LABEL[status]}
-      {status === "bill" && <Icon framed name="receipt" size={16} />}
-    </span>
   );
 }
