@@ -3,12 +3,12 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import { Icon } from "@/components/ui/Icon";
-import { cn } from "@/lib/cn";
 import { useScenario } from "@/store/scenario";
 
 const TOAST_MS = 3000;
 
 // Confirmation pill (wireflow "Notification"), e.g. "'Belcanto' won - added to itinerary".
+// Always lime with a gunmetal check.
 export function Toast() {
   const toast = useScenario((s) => s.toast);
   const dismiss = useScenario((s) => s.dismissToast);
@@ -31,25 +31,13 @@ export function Toast() {
             key={toast.id}
             type="button"
             onClick={dismiss}
-            className={cn(
-              "pointer-events-auto flex items-center gap-2.5 rounded-pill py-3 pl-4 pr-5 text-headline shadow-toast",
-              toast.tone === "lime"
-                ? "bg-lime text-gunmetal"
-                : "bg-gunmetal text-white",
-            )}
+            className="pointer-events-auto flex items-center gap-2.5 rounded-pill bg-lime py-3 pl-4 pr-5 text-headline text-gunmetal shadow-toast"
             initial={{ opacity: 0, y: 16, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
           >
-            <span
-              className={cn(
-                "flex size-6 items-center justify-center rounded-pill",
-                toast.tone === "lime"
-                  ? "bg-gunmetal text-lime"
-                  : "bg-white text-gunmetal",
-              )}
-            >
+            <span className="flex size-6 items-center justify-center rounded-pill bg-gunmetal text-lime">
               <Icon framed name="check" size={16} />
             </span>
             {toast.message}

@@ -28,8 +28,7 @@ import type { Pence } from "@/lib/money";
 // demo panel can jump anywhere and land in the right state.
 
 // "lime" is the celebratory variant (e.g. a guest accepting).
-export type ToastTone = "dark" | "lime";
-type Toast = { id: number; message: string; tone: ToastTone };
+type Toast = { id: number; message: string };
 
 export type PayScope =
   | { kind: "settle" }
@@ -110,7 +109,7 @@ type Actions = {
   setShowSteps: (on: boolean) => void;
   setGroupImage: (src: string) => void;
   dismissSceneCard: () => void;
-  showToast: (message: string, tone?: ToastTone) => void;
+  showToast: (message: string) => void;
   dismissToast: () => void;
   clearFocus: () => void;
 
@@ -478,8 +477,7 @@ export const useScenario = create<State>((set, get) => {
     goToStep: (step) => {
       clearTimers();
       set({ ...stateAtStep(step), sceneCard: sceneCardFor(step), toast: null });
-      if (step === 7)
-        get().showToast("‘Belcanto’ won - added to itinerary", "lime");
+      if (step === 7) get().showToast("‘Belcanto’ won - added to itinerary");
     },
     reset: () => {
       clearTimers();
@@ -504,8 +502,7 @@ export const useScenario = create<State>((set, get) => {
       });
     },
     dismissSceneCard: () => set({ sceneCard: null }),
-    showToast: (message, tone = "dark") =>
-      set({ toast: { id: ++toastId, message, tone } }),
+    showToast: (message) => set({ toast: { id: ++toastId, message } }),
     dismissToast: () => set({ toast: null }),
     clearFocus: () => set({ focus: null }),
 
@@ -546,7 +543,7 @@ export const useScenario = create<State>((set, get) => {
         const now = get();
         if (now.renInvite !== "invited") return;
         set({ ...withRen(now, "yes", now.renGuest), renInvite: "accepted" });
-        get().showToast("Ren accepted your invite", "lime");
+        get().showToast("Ren accepted your invite");
       }, 1600);
     },
 
@@ -584,7 +581,7 @@ export const useScenario = create<State>((set, get) => {
       set(applyClosePoll(get(), pollId));
       if (pollId === "dinner") {
         advance(7);
-        get().showToast("‘Belcanto’ won - added to itinerary", "lime");
+        get().showToast("‘Belcanto’ won - added to itinerary");
       }
     },
 
