@@ -18,50 +18,58 @@ export function SettledView() {
 
   return (
     <Screen tabBar className="bg-white" overlays={<StatusScrim />}>
-      <div className="flex flex-col items-center gap-4 px-4 pb-33 pt-status-bar">
-        <h1 className="flex items-center gap-3 pt-8 text-title-l text-gunmetal">
-          <span className="flex size-9 items-center justify-center rounded-pill bg-gunmetal text-lime">
-            <Icon name="check" width={18} />
-          </span>
-          You’ve settled, Ari!
-        </h1>
-        <Image
-          src="/illustrations/traveller.png"
-          alt="A traveller walking with her suitcase"
-          width={280}
-          height={280}
-          priority
-        />
-        <p className="max-w-60 text-center text-body text-ink-muted">
-          We’ll let you know when everyone’s squared up.
-        </p>
-
-        <div className="flex w-full flex-col gap-2 rounded-md bg-lilac p-4 text-gunmetal">
-          <p className="flex justify-between text-body-s">
-            Transfers
-            <span className="text-headline">{SETTLED_SUMMARY.transfers}</span>
-          </p>
-          <p className="flex justify-between text-body-s">
-            Your trip total
-            <span className="text-headline">{formatPence(tripTotal)}</span>
+      <div className="flex flex-col items-center gap-5 px-4 pb-33 pt-status-bar">
+        <div className="flex w-full flex-col items-center gap-2 pt-12">
+          <h1 className="flex items-center gap-3 text-title-l text-gunmetal">
+            <span className="flex size-8 items-center justify-center rounded-pill bg-gunmetal text-lime">
+              <Icon name="check" width={18} />
+            </span>
+            You’ve settled, Ari!
+          </h1>
+          <Image
+            src="/illustrations/settled-traveller.png"
+            alt="A traveller walking with her suitcase"
+            width={220}
+            height={330}
+            priority
+          />
+          <p className="max-w-60 text-center text-body text-ink-muted">
+            We’ll let you know when everyone’s squared up.
           </p>
         </div>
 
-        <div className="flex w-full flex-col gap-2 rounded-md border border-gunmetal/15 p-4 text-gunmetal">
-          <p className="text-caption text-ink-muted">{SETTLED_SUMMARY.done}</p>
-          <p className="flex justify-between text-body-s">
-            You paid Jaimie
-            <span className="text-headline">
-              {formatPence(lastPayment ?? 0)}
-            </span>
-          </p>
-          {SETTLED_SUMMARY.others.map((t) => (
-            <p key={t.label} className="flex justify-between text-body-s">
-              {t.label}
-              <span className="text-headline">{formatPence(t.amount)}</span>
+        <div className="flex w-full flex-col gap-2">
+          <div className="flex w-full flex-col gap-2 rounded-md bg-lilac p-4 text-gunmetal">
+            <p className="flex justify-between text-body-s">
+              Transfers
+              <span className="text-headline">{SETTLED_SUMMARY.transfers}</span>
             </p>
-          ))}
-          <p className="text-caption text-ink-muted">{SETTLED_SUMMARY.more}</p>
+            <p className="flex justify-between text-body-s">
+              Your trip total
+              <span className="text-headline">{formatPence(tripTotal)}</span>
+            </p>
+          </div>
+
+          <div className="flex w-full flex-col gap-2 rounded-md border border-gunmetal/15 p-4 text-gunmetal">
+            <p className="text-caption text-ink-muted">
+              {SETTLED_SUMMARY.done}
+            </p>
+            <p className="flex justify-between text-body-s">
+              You paid Jaimie
+              <span className="text-headline">
+                {formatPence(lastPayment ?? 0)}
+              </span>
+            </p>
+            {SETTLED_SUMMARY.others.map((t) => (
+              <p key={t.label} className="flex justify-between text-body-s">
+                {t.label}
+                <span className="text-headline">{formatPence(t.amount)}</span>
+              </p>
+            ))}
+            <p className="text-caption text-ink-muted">
+              {SETTLED_SUMMARY.more}
+            </p>
+          </div>
         </div>
 
         <Button
