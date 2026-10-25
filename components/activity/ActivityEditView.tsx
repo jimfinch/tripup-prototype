@@ -85,7 +85,7 @@ export function ActivityEditView() {
             type="button"
             aria-label="Activity options"
             onClick={s.notInPrototype}
-            className="flex size-10 items-center justify-center rounded-pill text-gunmetal transition active:scale-press"
+            className="tap-target flex size-10 items-center justify-center rounded-pill text-gunmetal transition active:scale-press"
           >
             <Icon framed name="kebab" />
           </button>

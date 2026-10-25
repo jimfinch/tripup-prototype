@@ -1,7 +1,7 @@
 "use client";
 
 import { useReducedMotion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/cn";
 import {
@@ -14,6 +14,9 @@ import {
 // Serve the Rive engine (lite build, matches @rive-app/canvas-lite 2.45.1)
 // from our own site instead of the CDN Rive defaults to.
 RuntimeLoader.setWasmUrl("/rive/rive-lite.wasm");
+
+// True only in the browser (false while rendering the static HTML).
+const noopSubscribe = () => () => {};
 
 // If the animation hasn't loaded by then, show the static palm instead.
 const FALLBACK_MS = 1200;
@@ -36,12 +39,22 @@ export function LogoAnimation({
   // palm on lime.
   tone?: "dark" | "light";
 }) {
-  const reduceMotion = useReducedMotion();
+  // The motion preference is only known in the browser, so the first render
+  // (and the static HTML) shows the empty tile; deciding before mount made
+  // the markup differ from the server's (React hydration error #418).
+  const prefersReduced = useReducedMotion();
+  const mounted = useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false,
+  );
+  const reduceMotion = mounted && !!prefersReduced;
+  const animate = mounted && !reduceMotion;
   const [ready, setReady] = useState(false);
   const [timedOut, setTimedOut] = useState(false);
   const fallback = reduceMotion || timedOut;
   const { RiveComponent } = useRive(
-    reduceMotion
+    !animate
       ? null
       : {
           src: SRC[tone],
@@ -56,6 +69,7 @@ export function LogoAnimation({
   );
 
   useEffect(() => {
+    if (!mounted) return;
     if (reduceMotion) {
       onReady();
       return;
@@ -65,7 +79,7 @@ export function LogoAnimation({
       onReady();
     }, FALLBACK_MS);
     return () => clearTimeout(t);
-  }, [reduceMotion, onReady]);
+  }, [mounted, reduceMotion, onReady]);
 
   return (
     <span
@@ -77,7 +91,7 @@ export function LogoAnimation({
       )}
     >
       {fallback && !ready && <Icon name="tripup" width={72} />}
-      {!reduceMotion && (
+      {animate && (
         <RiveComponent
           aria-hidden
           className={ready ? "absolute size-18" : "absolute size-18 opacity-0"}
