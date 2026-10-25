@@ -64,11 +64,7 @@ export function TripView() {
   };
   const pay = (scope: Extract<Sheet, { kind: "pay" }>["scope"]) =>
     s.openSheet({ kind: "pay", scope });
-  const openPolls = () => {
-    const needsVote = livePolls.find((p) => !p.ariVote);
-    if (needsVote) s.openSheet({ kind: "vote", pollId: needsVote.id });
-    else s.notInPrototype();
-  };
+  const openPolls = () => router.push(`/trips/${LISBON.id}/polls/`);
 
   // The trip view shows the 4 most recent; "See all" is the full timeline.
   const recent = s.activities.slice(-4);

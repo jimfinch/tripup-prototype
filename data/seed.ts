@@ -13,20 +13,23 @@ export type PersonId =
   | "steff"
   | "jon"
   | "tristan"
-  | "maria";
+  | "maria"
+  | "adam"
+  | "even";
 
 export type Person = {
   id: PersonId;
   name: string;
   firstName: string;
-  avatar: string;
+  // No photo in the Figma file: shown as initials.
+  avatar: string | null;
 };
 
-const person = (id: PersonId, name: string): Person => ({
+const person = (id: PersonId, name: string, photo = true): Person => ({
   id,
   name,
   firstName: name.split(" ")[0],
-  avatar: `/avatars/${id}.jpg`,
+  avatar: photo ? `/avatars/${id}.jpg` : null,
 });
 
 export const PEOPLE: Record<PersonId, Person> = {
@@ -42,6 +45,9 @@ export const PEOPLE: Record<PersonId, Person> = {
   jon: person("jon", "Jon Cohen"),
   tristan: person("tristan", "Tristan Thomas"),
   maria: person("maria", "Maria Cortez"),
+  // Intrepid travellers group members (Working page "Manage group").
+  adam: person("adam", "Adam Bright", false),
+  even: person("even", "Even Olson", false),
 };
 
 // ---------------------------------------------------------------------------
@@ -256,6 +262,21 @@ export type Poll = {
   ariVote: string | null;
   status: "live" | "closed";
   winner?: string;
+  // Sent to everyone coming: sentTo follows the trip's coming count.
+  audience?: "coming";
+  // Who created it; the creator (or trip organiser) can close it.
+  creator?: PersonId;
+  multipleChoice?: boolean;
+  // Where the winner went, once closed.
+  addedTo?: "Itinerary" | "Stays";
+  closedOn?: string;
+};
+
+export type PollTrip = { id: string; label: string };
+
+export const POLL_TRIPS: Record<string, PollTrip> = {
+  lisbon: { id: "lisbon", label: "Lisbon trip, 17-24 Oct 2026" },
+  vietnam: { id: "vietnam", label: "Vietnam trip, 2-16 Aug 2025" },
 };
 
 export const FADO_POLL: Poll = {
@@ -272,10 +293,77 @@ export const FADO_POLL: Poll = {
     { id: "no", label: "No", votes: 0, voters: [] },
   ],
   sentTo: 6,
+  audience: "coming",
   closesInMinutes: null,
   ariVote: null,
   status: "live",
 };
+
+const yesNo = (yes: number): PollOption[] => [
+  { id: "yes", label: "Yes", votes: yes, voters: [] },
+  { id: "no", label: "No", votes: 0, voters: [] },
+];
+
+// Closed polls (§6, Working "Trips closed polls" / "Closed polls view").
+export const CLOSED_POLLS: Poll[] = [
+  {
+    id: "seafood",
+    tripId: "lisbon",
+    question: "Seafood night on the 22nd?",
+    options: yesNo(6),
+    sentTo: 6,
+    closesInMinutes: null,
+    ariVote: "yes",
+    status: "closed",
+    winner: "Yes",
+    addedTo: "Itinerary",
+    closedOn: "22 Oct 2026",
+  },
+  {
+    id: "stay",
+    tripId: "lisbon",
+    question: "Where should we stay?",
+    options: [
+      { id: "pessoa", label: "Antiga Casa Pessoa", votes: 6, voters: [] },
+      { id: "gloria", label: "Glória’s Terrace", votes: 0, voters: [] },
+      { id: "castle", label: "Castle-View Penthouse", votes: 2, voters: [] },
+    ],
+    sentTo: 6,
+    multipleChoice: true,
+    closesInMinutes: null,
+    ariVote: "pessoa",
+    status: "closed",
+    winner: "Antiga Casa Pessoa",
+    addedTo: "Stays",
+    closedOn: "2 Jan 2026",
+  },
+  {
+    id: "hoian-eat",
+    tripId: "vietnam",
+    question: "Where to eat on Thursday night?",
+    options: [],
+    sentTo: 6,
+    closesInMinutes: null,
+    ariVote: null,
+    status: "closed",
+    winner: "Hoi An Riverside",
+    addedTo: "Itinerary",
+    closedOn: "14 Aug 2025",
+  },
+  {
+    id: "hoian-stay",
+    tripId: "vietnam",
+    question: "Where should we stay in Hoi An?",
+    options: [],
+    sentTo: 6,
+    closesInMinutes: null,
+    ariVote: null,
+    status: "closed",
+    winner: "Dechiu",
+    addedTo: "Stays",
+    closedOn: "14 Aug 2025",
+  },
+];
 
 // ---------------------------------------------------------------------------
 // The dinner poll Ari creates at step 04 (form pre-filled for the demo).

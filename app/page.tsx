@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { MainNav } from "@/components/shell/MainNav";
+import { VoteSheet } from "@/components/sheets/VoteSheet";
 import { StatusScrim } from "@/components/shell/StatusScrim";
 import { Screen } from "@/components/shell/Screen";
 import { CurrentTripCard } from "@/components/trip/CurrentTripCard";
@@ -29,6 +30,8 @@ export default function HomePage() {
   const paymentsDue = useScenario((s) => selectPaymentsDue(s));
 
   const openTrip = useScenario((s) => s.openTrip);
+  const openSheet = useScenario((s) => s.openSheet);
+  const sheet = useScenario((s) => s.sheet);
   const beaconLisbon = useHintActive("lisbon-card");
   const needsVote = polls.find(
     (p) => p.status === "live" && p.ariVote === null,
@@ -46,6 +49,10 @@ export default function HomePage() {
         <>
           <StatusScrim tone="none" visible={scrolled} />
           <MainNav active="trips" compact={scrolled} />
+          <VoteSheet
+            open={sheet?.kind === "vote"}
+            pollId={sheet?.kind === "vote" ? sheet.pollId : "fado"}
+          />
         </>
       }
     >
@@ -82,7 +89,9 @@ export default function HomePage() {
               pollsHref="/polls/"
               onOpen={openTrip}
               beacon={beaconLisbon}
-              onVote={() => router.push("/polls/")}
+              onVote={() =>
+                needsVote && openSheet({ kind: "vote", pollId: needsVote.id })
+              }
             />
           </section>
 

@@ -6,6 +6,7 @@ import {
   BELCANTO_ITEMS,
   BELCANTO_STATUS,
   DINNER_POLL_DRAFT,
+  CLOSED_POLLS,
   FADO_POLL,
   LISBON_MEMBERS,
   LIVE_VOTES,
@@ -129,7 +130,7 @@ const INITIAL: Data = {
   members: LISBON_MEMBERS,
   renInvite: "none",
   renGuest: false,
-  polls: [FADO_POLL],
+  polls: [FADO_POLL, ...CLOSED_POLLS],
   liveVotes: 0,
   activities: ACTIVITIES,
   stay: STAY,
@@ -146,18 +147,29 @@ const INITIAL: Data = {
   focus: null,
 };
 
-const withRen = (
-  d: Data,
-  status: TripMember["status"],
-  guest: boolean,
-): Data => ({
-  ...d,
-  members: [
-    ...d.members.filter((m) => m.id !== "ren"),
-    { id: "ren", status, guest },
-  ],
-  renGuest: guest,
-});
+// Polls sent to "everyone coming" follow the coming count (e.g. Fado: 5 of 6,
+// then 5 of 7 once Ren is in).
+const syncAudience = (d: Data): Data => {
+  const coming = d.members.filter((m) => m.status === "yes").length;
+  return {
+    ...d,
+    polls: d.polls.map((p) =>
+      p.audience === "coming" && p.status === "live"
+        ? { ...p, sentTo: coming }
+        : p,
+    ),
+  };
+};
+
+const withRen = (d: Data, status: TripMember["status"], guest: boolean): Data =>
+  syncAudience({
+    ...d,
+    members: [
+      ...d.members.filter((m) => m.id !== "ren"),
+      { id: "ren", status, guest },
+    ],
+    renGuest: guest,
+  });
 
 const makeDinnerPoll = (d: Data, draft: PollDraft): Poll => ({
   id: "dinner",
@@ -176,6 +188,7 @@ const makeDinnerPoll = (d: Data, draft: PollDraft): Poll => ({
   closesInMinutes: 120,
   ariVote: null,
   status: "live",
+  creator: "ari",
 });
 
 const applyLiveVote = (d: Data): Data => {
@@ -251,7 +264,15 @@ const applyClosePoll = (d: Data, pollId: string): Data => {
     ...d,
     sheet: null,
     polls: d.polls.map((p) =>
-      p.id === pollId ? { ...p, status: "closed", winner: winner.label } : p,
+      p.id === pollId
+        ? {
+            ...p,
+            status: "closed",
+            winner: winner.label,
+            addedTo: pollId === "dinner" ? "Itinerary" : p.addedTo,
+            closedOn: p.closedOn ?? "24 Oct 2026",
+          }
+        : p,
     ),
   };
   // The dinner poll adds its winner to the itinerary as an activity shell.

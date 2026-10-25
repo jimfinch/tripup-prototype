@@ -20,13 +20,27 @@ export function Avatar({ id, dimmed, className }: AvatarProps) {
         className,
       )}
     >
-      <Image
-        src={person.avatar}
-        alt={person.name}
-        fill
-        sizes="32px"
-        className="object-cover"
-      />
+      {person.avatar ? (
+        <Image
+          src={person.avatar}
+          alt={person.name}
+          fill
+          sizes="32px"
+          className="object-cover"
+        />
+      ) : (
+        // No photo in the file: initials on lilac.
+        <span
+          role="img"
+          aria-label={person.name}
+          className="flex size-full items-center justify-center bg-lilac text-micro text-gunmetal"
+        >
+          {person.name
+            .split(" ")
+            .map((w) => w[0])
+            .join("")}
+        </span>
+      )}
     </span>
   );
 }

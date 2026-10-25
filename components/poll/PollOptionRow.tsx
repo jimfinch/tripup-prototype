@@ -13,6 +13,8 @@ type PollOptionRowProps = {
   selected: boolean;
   onSelect?: () => void;
   disabled?: boolean;
+  // Closed polls: options that didn't win are dimmed.
+  dimmed?: boolean;
   className?: string;
 };
 
@@ -26,6 +28,7 @@ export function PollOptionRow({
   selected,
   onSelect,
   disabled,
+  dimmed = false,
   className,
 }: PollOptionRowProps) {
   const pct = totalVotes > 0 ? (votes / totalVotes) * 100 : 0;
@@ -38,6 +41,7 @@ export function PollOptionRow({
       className={cn(
         "relative flex h-12 w-full items-center justify-between overflow-hidden rounded-sm border p-2 text-left transition duration-150 active:scale-press disabled:active:scale-100",
         selected ? "border-gunmetal" : "border-gunmetal/15",
+        dimmed && "opacity-40",
         className,
       )}
     >

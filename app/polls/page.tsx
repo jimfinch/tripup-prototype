@@ -1,6 +1,5 @@
-// Replaced by the All polls view in Phase 6.
-import { ComingSoon } from "@/components/shell/ComingSoon";
+import { AllPollsView } from "@/components/poll/AllPollsView";
 
 export default function PollsPage() {
-  return <ComingSoon title="Polls" />;
+  return <AllPollsView />;
 }
