@@ -47,7 +47,7 @@ type TripMapProps = {
 
 // Hi-fi Trip view map header. Tapping it zooms the map slowly to full screen
 // (Working "Trip view - Map expanded"); pins open their activities; the
-// minimise button reverses the animation.
+// minimise button (or back) reverses the animation.
 export function TripMap({
   backHref,
   expanded,
@@ -135,13 +135,21 @@ export function TripMap({
       })}
 
       <div className="pointer-events-none absolute inset-x-0 top-0 flex items-center justify-between px-4 pt-status-bar">
-        <Link
-          href={backHref}
-          aria-label="Back"
-          className="tap-target pointer-events-auto rounded-pill transition active:scale-press"
-        >
-          <Image src="/icons/back-button.svg" alt="" width={40} height={40} />
-        </Link>
+        {/* Back steps out one level: full-screen map → trip view → Home. */}
+        {expanded ? (
+          <button
+            type="button"
+            onClick={onCollapse}
+            aria-label="Back to trip"
+            className={BACK}
+          >
+            <Image src="/icons/back-button.svg" alt="" width={40} height={40} />
+          </button>
+        ) : (
+          <Link href={backHref} aria-label="Back" className={BACK}>
+            <Image src="/icons/back-button.svg" alt="" width={40} height={40} />
+          </Link>
+        )}
         {expanded ? (
           <button
             type="button"
@@ -163,3 +171,6 @@ export function TripMap({
     </motion.div>
   );
 }
+
+const BACK =
+  "tap-target pointer-events-auto rounded-pill transition active:scale-press";
