@@ -38,38 +38,51 @@ export function GroupsView() {
         </>
       }
     >
-      <div className="flex flex-col gap-5 px-4 pb-39 pt-below-nav">
-        <Button
-          theme="light"
-          size="xl"
-          onClick={notInPrototype}
-          rightIcon={<Icon name="plus" />}
-        >
-          Add new group
-        </Button>
+      {/* Same violet glow as Home › Trips, so the toggle doesn't change the
+          backdrop. */}
+      <div className="relative">
+        <div
+          aria-hidden
+          className="absolute inset-x-0 top-0 h-home-glow bg-home-top"
+        />
+        <div
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-38 bg-home-bottom"
+        />
 
-        <section className="flex flex-col gap-5">
-          <h2 className="text-title-m text-gunmetal">Your groups</h2>
-          <div className="flex flex-col gap-2">
-            {GROUPS.filter((g) => g.mine).map(card)}
-          </div>
-        </section>
-
-        <section className="flex flex-col gap-5">
-          <h2 className="text-title-m text-gunmetal">Other groups</h2>
-          <div className="flex flex-col gap-2">
-            {GROUPS.filter((g) => !g.mine).map(card)}
-          </div>
-        </section>
-
-        <div className="flex justify-end">
+        <div className="relative flex flex-col gap-5 px-4 pb-39 pt-below-nav">
           <Button
-            theme="secondary"
+            theme="light"
+            size="xl"
             onClick={notInPrototype}
-            rightIcon={<Icon framed name="arrow-right" size={20} />}
+            rightIcon={<Icon name="plus" />}
           >
-            Archive
+            Add new group
           </Button>
+
+          <section className="flex flex-col gap-5">
+            <h2 className="text-title-m text-gunmetal">Your groups</h2>
+            <div className="flex flex-col gap-2">
+              {GROUPS.filter((g) => g.mine).map(card)}
+            </div>
+          </section>
+
+          <section className="flex flex-col gap-5">
+            <h2 className="text-title-m text-gunmetal">Other groups</h2>
+            <div className="flex flex-col gap-2">
+              {GROUPS.filter((g) => !g.mine).map(card)}
+            </div>
+          </section>
+
+          <div className="flex justify-end">
+            <Button
+              theme="secondary"
+              onClick={notInPrototype}
+              rightIcon={<Icon framed name="arrow-right" size={20} />}
+            >
+              Archive
+            </Button>
+          </div>
         </div>
       </div>
     </Screen>
