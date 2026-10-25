@@ -32,6 +32,10 @@ export default function HomePage() {
   const openTrip = useScenario((s) => s.openTrip);
   const openSheet = useScenario((s) => s.openSheet);
   const sheet = useScenario((s) => s.sheet);
+  // Once Ari has settled, Lisbon is behind her: Home leads with the next trip
+  // (Working "Home view - Ari").
+  const settled = useScenario((s) => s.settled);
+  const [nextTrip, ...laterTrips] = UPCOMING_TRIPS;
   const beaconLisbon = useHintActive("lisbon-card");
   const needsVote = polls.find(
     (p) => p.status === "live" && p.ariVote === null,
@@ -73,32 +77,50 @@ export default function HomePage() {
             onAction={() => router.push(`/trips/${PENDING_INVITE.tripId}/`)}
           />
 
-          <section className="flex flex-col gap-2">
-            <h2 className="text-headline text-gunmetal">Current trip</h2>
-            <CurrentTripCard
-              href={`/trips/${LISBON.id}/`}
-              name={LISBON.name}
-              dates={LISBON.dates}
-              image={LISBON.image}
-              organiser={LISBON.organiser}
-              avatars={LISBON.cardAvatars}
-              overflow={Math.max(0, coming.length - LISBON.cardAvatars.length)}
-              livePolls={livePolls}
-              paymentsDue={paymentsDue}
-              poll={needsVote}
-              pollsHref="/polls/"
-              onOpen={openTrip}
-              beacon={beaconLisbon}
-              onVote={() =>
-                needsVote && openSheet({ kind: "vote", pollId: needsVote.id })
-              }
-            />
-          </section>
+          {settled ? (
+            <section className="flex flex-col gap-2">
+              <h2 className="text-headline text-gunmetal">Next trip</h2>
+              <CurrentTripCard
+                href={`/trips/${nextTrip.id}/`}
+                name={nextTrip.name}
+                dates={nextTrip.dates}
+                image={nextTrip.image}
+                organiser={nextTrip.organiser}
+                avatars={nextTrip.avatars}
+                overflow={nextTrip.overflow}
+              />
+            </section>
+          ) : (
+            <section className="flex flex-col gap-2">
+              <h2 className="text-headline text-gunmetal">Current trip</h2>
+              <CurrentTripCard
+                href={`/trips/${LISBON.id}/`}
+                name={LISBON.name}
+                dates={LISBON.dates}
+                image={LISBON.image}
+                imagePosition="50% 70.6%"
+                organiser={LISBON.organiser}
+                avatars={LISBON.cardAvatars}
+                overflow={Math.max(
+                  0,
+                  coming.length - LISBON.cardAvatars.length,
+                )}
+                livePolls={livePolls}
+                paymentsDue={paymentsDue}
+                poll={needsVote}
+                onOpen={openTrip}
+                beacon={beaconLisbon}
+                onVote={() =>
+                  needsVote && openSheet({ kind: "vote", pollId: needsVote.id })
+                }
+              />
+            </section>
+          )}
 
           <section className="flex flex-col gap-2">
             <h2 className="text-headline text-gunmetal">Upcoming trips</h2>
             <div className="flex flex-col gap-2">
-              {UPCOMING_TRIPS.map((trip) => (
+              {(settled ? laterTrips : UPCOMING_TRIPS).map((trip) => (
                 <UpcomingTripCard key={trip.id} trip={trip} />
               ))}
               <div className="flex justify-end">

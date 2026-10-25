@@ -15,11 +15,14 @@ type CurrentTripCardProps = {
   organiser: PersonId;
   avatars: PersonId[];
   overflow: number;
-  livePolls: number;
-  paymentsDue: number;
+  // Crop of the photo, as a CSS object-position (Lisbon's is set in Figma).
+  imagePosition?: string;
+  // Omitted for a trip that hasn't started (Home after the trip: "Next trip").
+  livePolls?: number;
+  paymentsDue?: number;
   // The poll that needs Ari's vote, if any.
   poll?: Poll;
-  pollsHref: string;
+  pollsHref?: string;
   onVote?: () => void;
   onOpen?: () => void;
   // Tap hint: a beacon on the photo (a ring would cut the card up).
@@ -59,20 +62,27 @@ export function CurrentTripCard(props: CurrentTripCardProps) {
                   </span>
                 </p>
               </div>
-              <div className="flex flex-1 flex-col items-end justify-end gap-2.5">
-                <TripStat
-                  label={pluralise(props.livePolls, "live poll", "live polls")}
-                  icon="poll"
-                />
-                <TripStat
-                  label={pluralise(
-                    props.paymentsDue,
-                    "payment due",
-                    "payments due",
-                  )}
-                  icon="card"
-                />
-              </div>
+              {props.livePolls !== undefined &&
+                props.paymentsDue !== undefined && (
+                  <div className="flex flex-1 flex-col items-end justify-end gap-2.5">
+                    <TripStat
+                      label={pluralise(
+                        props.livePolls,
+                        "live poll",
+                        "live polls",
+                      )}
+                      icon="poll"
+                    />
+                    <TripStat
+                      label={pluralise(
+                        props.paymentsDue,
+                        "payment due",
+                        "payments due",
+                      )}
+                      icon="card"
+                    />
+                  </div>
+                )}
             </div>
           </div>
           <div className="relative h-65 overflow-hidden rounded-sm">
@@ -84,7 +94,7 @@ export function CurrentTripCard(props: CurrentTripCardProps) {
               priority
               sizes="366px"
               className="object-cover"
-              style={{ objectPosition: "50% 70.6%" }}
+              style={{ objectPosition: props.imagePosition ?? "50% 50%" }}
             />
           </div>
         </Link>
@@ -114,7 +124,7 @@ export function CurrentTripCard(props: CurrentTripCardProps) {
           <div className="flex gap-3">
             <Button
               theme="dark"
-              href={props.pollsHref}
+              href={props.pollsHref ?? "/polls/"}
               className="flex-1"
               rightIcon={<Icon framed name="arrow-right" size={20} />}
             >
