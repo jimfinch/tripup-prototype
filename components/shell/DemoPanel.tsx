@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { PHONE_LABEL, STEPS, type StepId } from "@/data/steps";
 import { useCurrentStep, useScenario } from "@/store/scenario";
+import { Icon } from "@/components/ui/Icon";
 import { Toggle } from "@/components/ui/Toggle";
 import { cn } from "@/lib/cn";
 
@@ -94,9 +95,10 @@ export function DemoPanel({ className }: { className?: string }) {
       <button
         type="button"
         onClick={onReset}
-        className="mt-6 flex h-10 items-center rounded-pill border border-white/30 px-4.5 text-label text-white transition-colors duration-150 hover:bg-white/10 active:bg-white active:text-gunmetal"
+        className="mt-6 flex h-10 items-center gap-1.5 rounded-pill border border-white/30 pl-4.5 pr-4 text-label text-white transition-colors duration-150 hover:bg-white/10 active:bg-white active:text-gunmetal"
       >
         Reset demo
+        <Icon framed name="refresh" size={20} />
       </button>
 
       <div className="mt-8 flex items-center justify-between gap-4 border-t border-white/10 pt-6">

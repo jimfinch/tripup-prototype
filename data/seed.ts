@@ -477,6 +477,9 @@ export type GroupTrip = {
   dates: string;
   organiser: PersonId;
   faces: PersonId[];
+  image: string;
+  // Square crop as a CSS object-position, matching the designer's Figma crop.
+  imagePosition?: string;
 };
 
 export type Group = {
@@ -489,6 +492,8 @@ export type Group = {
   mine: boolean;
   // Intrepid travellers starts without one, to show Add group image.
   image?: string;
+  // Square crop as a CSS object-position, matching the designer's Figma crop.
+  imagePosition?: string;
 };
 
 const GROUP_FACES: PersonId[] = [
@@ -519,6 +524,7 @@ export const GROUPS: Group[] = [
     tripsTogether: 7,
     mine: true,
     image: "/groups/family.jpg",
+    imagePosition: "28% 50%",
   },
   {
     id: "beach",
@@ -558,18 +564,22 @@ export const INTREPID_TRIPS: GroupTrip[] = [
     dates: "2 - 16 Aug 2025",
     organiser: "jaimie",
     faces: ["ari", "adam", "jaimie", "even", "nic"],
+    image: "/past/vietnam.jpg",
   },
   {
     name: "Peru",
     dates: "4 - 25 May 2024",
     organiser: "jaimie",
     faces: ["ari", "adam", "jaimie", "even", "nic"],
+    image: "/past/peru.jpg",
   },
   {
     name: "Cuba",
     dates: "4 - 18 Feb 2023",
     organiser: "jaimie",
     faces: ["ari", "jaimie", "even", "nic"],
+    image: "/past/cuba.jpg",
+    imagePosition: "50% 84%",
   },
 ];
 

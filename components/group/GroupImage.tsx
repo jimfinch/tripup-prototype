@@ -6,9 +6,12 @@ import { cn } from "@/lib/cn";
 // so until a photo is picked this is an on-brand tile with the image glyph.
 export function GroupImage({
   src,
+  position,
   className,
 }: {
   src?: string | null;
+  // CSS object-position for the square crop (defaults to the centre).
+  position?: string;
   className?: string;
 }) {
   return (
@@ -19,7 +22,14 @@ export function GroupImage({
       )}
     >
       {src ? (
-        <Image src={src} alt="" fill sizes="116px" className="object-cover" />
+        <Image
+          src={src}
+          alt=""
+          fill
+          sizes="116px"
+          className="object-cover"
+          style={position ? { objectPosition: position } : undefined}
+        />
       ) : (
         <Icon name="image" />
       )}

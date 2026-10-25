@@ -17,7 +17,7 @@ export function GroupCard({ group, image, href, onOpen }: GroupCardProps) {
     group.createdBy === "ari" ? "you" : PEOPLE[group.createdBy].firstName;
   const body = (
     <>
-      <GroupImage src={image} />
+      <GroupImage src={image} position={group.imagePosition} />
       <span className="flex flex-1 flex-col justify-center gap-1">
         <span className="text-title-m text-gunmetal">{group.name}</span>
         <AvatarStack

@@ -30,6 +30,7 @@ const ICONS = {
   plus: [24, 24],
   poll: [17, 20],
   receipt: [18, 15],
+  refresh: [24, 24],
   search: [18, 18],
   share: [16.5, 19.5],
   copy: [18, 18],

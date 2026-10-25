@@ -212,7 +212,7 @@ export function ManageGroupView() {
                 onClick={s.notInPrototype}
                 className="flex items-center gap-3 rounded-md bg-lilac p-4 text-left transition-opacity active:opacity-80"
               >
-                <GroupImage />
+                <GroupImage src={t.image} position={t.imagePosition} />
                 <span className="flex flex-1 flex-col justify-center gap-0.5">
                   <span className="text-title-m text-gunmetal">{t.name}</span>
                   <span className="text-headline text-ink-muted">
