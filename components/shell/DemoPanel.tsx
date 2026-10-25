@@ -15,6 +15,8 @@ export function DemoPanel({ className }: { className?: string }) {
   const reset = useScenario((s) => s.reset);
   const guides = useScenario((s) => s.guides);
   const setGuides = useScenario((s) => s.setGuides);
+  const showSteps = useScenario((s) => s.showSteps);
+  const setShowSteps = useScenario((s) => s.setShowSteps);
 
   const jump = (id: StepId) => {
     goToStep(id);
@@ -41,51 +43,53 @@ export function DemoPanel({ className }: { className?: string }) {
         <span className="text-body-s text-white/60">{current.clock}</span>
       </p>
 
-      <ol className="mt-6 flex flex-col gap-1">
-        {STEPS.map((step) => {
-          const active = step.id === current.id;
-          return (
-            <li key={step.id}>
-              <button
-                type="button"
-                onClick={() => jump(step.id)}
-                aria-current={active ? "step" : undefined}
-                className={cn(
-                  "flex min-h-11 w-full items-start gap-3 rounded-md px-3 py-3 text-left transition-colors duration-150",
-                  active
-                    ? "bg-white/10"
-                    : "hover:bg-white/5 active:bg-white/10",
-                )}
-              >
-                <span
+      {showSteps && (
+        <ol className="mt-6 flex flex-col gap-1">
+          {STEPS.map((step) => {
+            const active = step.id === current.id;
+            return (
+              <li key={step.id}>
+                <button
+                  type="button"
+                  onClick={() => jump(step.id)}
+                  aria-current={active ? "step" : undefined}
                   className={cn(
-                    "w-6 text-label",
-                    active ? "text-lime" : "text-white/50",
+                    "flex min-h-11 w-full items-start gap-3 rounded-md px-3 py-3 text-left transition-colors duration-150",
+                    active
+                      ? "bg-white/10"
+                      : "hover:bg-white/5 active:bg-white/10",
                   )}
                 >
-                  {String(step.id).padStart(2, "0")}
-                </span>
-                <span className="flex flex-1 flex-col gap-1">
                   <span
                     className={cn(
-                      "text-body-s",
-                      active ? "text-label" : "text-white/60",
+                      "w-6 text-label",
+                      active ? "text-lime" : "text-white/50",
                     )}
                   >
-                    {step.title}
+                    {String(step.id).padStart(2, "0")}
                   </span>
-                  {active && (
-                    <span className="text-body-s text-white/80">
-                      <span className="text-white/50">Next: </span>
-                      <Emphasis text={step.next} />
+                  <span className="flex flex-1 flex-col gap-1">
+                    <span
+                      className={cn(
+                        "text-body-s",
+                        active ? "text-label" : "text-white/60",
+                      )}
+                    >
+                      {step.title}
                     </span>
-                  )}
-                </span>
-              </button>
-            </li>
-          );
-        })}
-      </ol>
+                    {active && (
+                      <span className="text-body-s text-white/80">
+                        <span className="text-white/50">Next: </span>
+                        <Emphasis text={step.next} />
+                      </span>
+                    )}
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ol>
+      )}
 
       <button
         type="button"
@@ -103,6 +107,18 @@ export function DemoPanel({ className }: { className?: string }) {
           </p>
         </div>
         <Toggle label="Show tap hints" checked={guides} onChange={setGuides} />
+      </div>
+
+      <div className="mt-6 flex items-center justify-between gap-4">
+        <div>
+          <p className="text-label text-white">Steps</p>
+          <p className="text-body-s text-white/50">Show the scenario steps</p>
+        </div>
+        <Toggle
+          label="Show scenario steps"
+          checked={showSteps}
+          onChange={setShowSteps}
+        />
       </div>
 
       <div className="mt-8 border-t border-white/10 pt-6">

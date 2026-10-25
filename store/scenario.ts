@@ -96,6 +96,8 @@ type UI = {
   // In-phone tap hints (guided layer). Off by default so the product speaks for
   // itself; reviewers can switch them on from the demo panel.
   guides: boolean;
+  // Demo panel's 01-10 step list; reviewers can hide it to explore freely.
+  showSteps: boolean;
   sceneCard: string | null;
   toast: Toast | null;
 };
@@ -105,6 +107,7 @@ type Actions = {
   reset: () => void;
   dismissSplash: () => void;
   setGuides: (on: boolean) => void;
+  setShowSteps: (on: boolean) => void;
   setGroupImage: (src: string) => void;
   dismissSceneCard: () => void;
   showToast: (message: string, tone?: ToastTone) => void;
@@ -431,6 +434,16 @@ export function stateAtStep(step: StepId): Data {
 let toastId = 0;
 
 export const GUIDES_KEY = "tripup-guides";
+export const STEPS_KEY = "tripup-steps";
+
+// Remembers a demo-panel preference per browser.
+const remember = (key: string, on: boolean) => {
+  try {
+    localStorage.setItem(key, on ? "on" : "off");
+  } catch {
+    // Storage can be unavailable (private mode); the toggle still works.
+  }
+};
 let timers: ReturnType<typeof setTimeout>[] = [];
 const later = (fn: () => void, ms: number) => timers.push(setTimeout(fn, ms));
 const clearTimers = () => {
@@ -457,6 +470,7 @@ export const useScenario = create<State>((set, get) => {
     ...INITIAL,
     splash: true,
     guides: false,
+    showSteps: true,
     groupImage: null,
     sceneCard: null,
     toast: null,
@@ -474,11 +488,11 @@ export const useScenario = create<State>((set, get) => {
     setGroupImage: (groupImage) => set({ groupImage }),
     setGuides: (guides) => {
       set({ guides });
-      try {
-        localStorage.setItem(GUIDES_KEY, guides ? "on" : "off");
-      } catch {
-        // Storage can be unavailable (private mode); the toggle still works.
-      }
+      remember(GUIDES_KEY, guides);
+    },
+    setShowSteps: (showSteps) => {
+      set({ showSteps });
+      remember(STEPS_KEY, showSteps);
     },
     dismissSplash: () => {
       const { phone, clock } = getStep(get().step);

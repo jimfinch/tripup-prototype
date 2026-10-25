@@ -2,7 +2,7 @@
 
 import { MotionConfig } from "framer-motion";
 import { useEffect, type ReactNode } from "react";
-import { GUIDES_KEY, useScenario } from "@/store/scenario";
+import { GUIDES_KEY, STEPS_KEY, useScenario } from "@/store/scenario";
 import { cn } from "@/lib/cn";
 import { DemoPanel } from "@/components/shell/DemoPanel";
 import { HomeIndicator } from "@/components/shell/HomeIndicator";
@@ -15,16 +15,18 @@ import { Toast } from "@/components/ui/Toast";
 // left. Phone (≤ 430 px): full-bleed, no frame, no panel. Never scaled.
 export function DeviceShell({ children }: { children: ReactNode }) {
   const setGuides = useScenario((s) => s.setGuides);
+  const setShowSteps = useScenario((s) => s.setShowSteps);
   const splash = useScenario((s) => s.splash);
 
-  // Restore the reviewer's tap-hints choice (per browser).
+  // Restore the reviewer's demo-panel choices (per browser).
   useEffect(() => {
     try {
       if (localStorage.getItem(GUIDES_KEY) === "on") setGuides(true);
+      if (localStorage.getItem(STEPS_KEY) === "off") setShowSteps(false);
     } catch {
       // Storage unavailable: hints stay off.
     }
-  }, [setGuides]);
+  }, [setGuides, setShowSteps]);
 
   return (
     <MotionConfig reducedMotion="user">
