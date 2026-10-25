@@ -13,7 +13,7 @@ import { VoteSheet } from "@/components/sheets/VoteSheet";
 import { ActivityCard } from "@/components/trip/ActivityCard";
 import { StayCard } from "@/components/trip/StayCard";
 import { TripHeaderCard } from "@/components/trip/TripHeaderCard";
-import { TripMap } from "@/components/trip/TripMap";
+import { GROW, TripMap } from "@/components/trip/TripMap";
 import { TrippersCard } from "@/components/trip/TrippersCard";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -112,7 +112,7 @@ export function TripView() {
         className="relative flex flex-col gap-2 px-4 pb-33"
         initial={false}
         animate={{ y: mapOpen ? 640 : 0, opacity: mapOpen ? 0 : 1 }}
-        transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+        transition={GROW}
         aria-hidden={mapOpen}
       >
         <TripHeaderCard

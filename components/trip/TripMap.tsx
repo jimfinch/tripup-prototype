@@ -25,11 +25,12 @@ const PINS = [
 ] as const;
 
 const COLLAPSED_H = 500;
-// Expanded: the map zooms slowly around Lisbon's centre and shifts down, so
+// Expanded: the map zooms around Lisbon's centre and shifts down, so
 // the city (not the river) fills the screen with the pins mid-screen.
 const ZOOM = { scale: 1.4, originX: 215, originY: 120, shiftY: 180 };
-const GROW = { duration: 0.6, ease: [0.32, 0.72, 0, 1] } as const;
-const ZOOM_EASE = { duration: 1.2, ease: [0.25, 0.1, 0.25, 1] } as const;
+// Sharp iOS-style ease-out: fast start, short settle.
+export const GROW = { duration: 0.3, ease: [0.32, 0.72, 0, 1] } as const;
+const ZOOM_EASE = { duration: 0.35, ease: [0.32, 0.72, 0, 1] } as const;
 
 const zoomed = (x: number, y: number) => ({
   x: ZOOM.originX + (x - ZOOM.originX) * ZOOM.scale,
