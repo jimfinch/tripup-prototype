@@ -36,8 +36,9 @@ const TABS: Tab[] = [
     href: "/",
     label: "Home",
     icon: "home",
-    // Trips and groups are reached from Home.
-    section: (p) => p.startsWith("/trips/") || p.startsWith("/groups/"),
+    // Home's Groups toggle. Detail screens (a trip, an activity, a group)
+    // show no active tab, as on the Figma Trip view.
+    section: (p) => p === "/groups/",
   },
   { href: "/payments/", label: "Payments", icon: "payments" },
   { href: "/profile/", label: "Profile", icon: "profile" },
