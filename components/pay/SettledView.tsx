@@ -29,8 +29,8 @@ export function SettledView() {
           <Image
             src="/illustrations/settled-traveller.png"
             alt="A traveller walking with her suitcase"
-            width={220}
-            height={330}
+            width={180}
+            height={270}
             priority
           />
           <p className="max-w-60 text-center text-body text-ink-muted">
