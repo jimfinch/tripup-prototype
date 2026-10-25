@@ -10,6 +10,9 @@ type ScreenProps = {
   // so they stay pinned to the frame.
   overlays?: ReactNode;
   tabBar?: boolean;
+  // Figma "Home bg bottom": a violet fade behind the end of the content, for
+  // screens tall enough to scroll.
+  bottomGlow?: boolean;
   onScroll?: (e: UIEvent<HTMLElement>) => void;
   // Scroll back to the top whenever this changes (e.g. the story switches phone).
   scrollKey?: string;
@@ -22,6 +25,7 @@ export function Screen({
   children,
   overlays,
   tabBar = false,
+  bottomGlow = false,
   onScroll,
   scrollKey,
   className,
@@ -41,7 +45,17 @@ export function Screen({
           className,
         )}
       >
-        {children}
+        {bottomGlow ? (
+          <div className="relative min-h-full">
+            <div
+              aria-hidden
+              className="absolute inset-x-0 bottom-0 h-38 bg-home-bottom"
+            />
+            <div className="relative">{children}</div>
+          </div>
+        ) : (
+          children
+        )}
       </main>
       {tabBar && <TabBar />}
       {overlays}

@@ -84,6 +84,7 @@ export function TripView() {
   return (
     <Screen
       tabBar
+      bottomGlow
       className={cn("bg-white", mapOpen && "overflow-hidden")}
       scrollKey={phone}
       overlays={

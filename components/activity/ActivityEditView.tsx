@@ -86,6 +86,7 @@ export function ActivityEditView() {
   return (
     <Screen
       tabBar
+      bottomGlow
       className="bg-white"
       overlays={
         <>

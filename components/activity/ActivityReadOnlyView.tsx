@@ -57,6 +57,7 @@ export function ActivityReadOnlyView({ activityId }: { activityId: string }) {
   return (
     <Screen
       tabBar
+      bottomGlow
       className="bg-white"
       overlays={
         <>

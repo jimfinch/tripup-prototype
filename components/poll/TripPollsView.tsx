@@ -41,7 +41,7 @@ export function TripPollsView() {
   );
 
   return (
-    <Screen tabBar className="bg-white" overlays={<StatusScrim />}>
+    <Screen tabBar bottomGlow className="bg-white" overlays={<StatusScrim />}>
       <div className="flex flex-col gap-6 px-4 pb-33 pt-status-bar">
         <div className="pt-2">
           <BackButton href={`/trips/${LISBON.id}/`} />
@@ -84,7 +84,7 @@ export function TripClosedPollsView() {
     (p) => p.tripId === LISBON.id && p.status === "closed",
   );
   return (
-    <Screen tabBar className="bg-white" overlays={<StatusScrim />}>
+    <Screen tabBar bottomGlow className="bg-white" overlays={<StatusScrim />}>
       <div className="flex flex-col gap-6 px-4 pb-33 pt-status-bar">
         <div className="pt-2">
           <BackButton href={`/trips/${LISBON.id}/polls/`} />

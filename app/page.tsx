@@ -47,6 +47,7 @@ export default function HomePage() {
   return (
     <Screen
       tabBar
+      bottomGlow
       className="bg-white"
       onScroll={(e) => setScrolled(e.currentTarget.scrollTop > 8)}
       overlays={
@@ -64,10 +65,6 @@ export default function HomePage() {
         <div
           aria-hidden
           className="absolute inset-x-0 top-0 h-home-glow bg-home-top"
-        />
-        <div
-          aria-hidden
-          className="absolute inset-x-0 bottom-0 h-38 bg-home-bottom"
         />
 
         <div className="relative flex flex-col gap-6 px-4 pb-39 pt-below-nav">

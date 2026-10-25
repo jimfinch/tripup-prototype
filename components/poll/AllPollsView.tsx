@@ -19,7 +19,7 @@ export function AllPollsView() {
   const live = polls.filter((p) => p.status === "live");
 
   return (
-    <Screen tabBar className="bg-white" overlays={<StatusScrim />}>
+    <Screen tabBar bottomGlow className="bg-white" overlays={<StatusScrim />}>
       <div className="flex flex-col gap-6 px-4 pb-33 pt-status-bar">
         <h1 className="pt-4 text-center text-title-m text-gunmetal">
           All polls
@@ -68,7 +68,7 @@ export function AllClosedPollsView() {
     .sort((a, b) => closedTime(b.closedOn) - closedTime(a.closedOn));
 
   return (
-    <Screen tabBar className="bg-white" overlays={<StatusScrim />}>
+    <Screen tabBar bottomGlow className="bg-white" overlays={<StatusScrim />}>
       <div className="flex flex-col gap-6 px-4 pb-33 pt-status-bar">
         <ClosedHeader
           title="Closed polls"

@@ -16,7 +16,7 @@ export function PastTripsView() {
   const coming = members.filter((m) => m.status === "yes").length;
 
   return (
-    <Screen tabBar className="bg-white" overlays={<StatusScrim />}>
+    <Screen tabBar bottomGlow className="bg-white" overlays={<StatusScrim />}>
       <div className="flex flex-col gap-6 px-4 pb-33 pt-status-bar">
         <div className="relative mt-2 flex h-10 items-center justify-center">
           <div className="absolute left-0">

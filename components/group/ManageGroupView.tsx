@@ -47,6 +47,7 @@ export function ManageGroupView() {
   return (
     <Screen
       tabBar
+      bottomGlow
       className="bg-white"
       overlays={
         <>
