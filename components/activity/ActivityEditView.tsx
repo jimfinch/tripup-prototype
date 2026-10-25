@@ -206,7 +206,7 @@ export function ActivityEditView() {
                 <span>
                   Tap a person to{" "}
                   <span className="text-label text-gunmetal">exclude</span> them
-                  from the item.
+                  from the item
                 </span>
               </p>
               {items.map((item) => (
