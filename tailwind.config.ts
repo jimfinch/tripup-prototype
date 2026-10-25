@@ -121,6 +121,8 @@ const config: Config = {
         device: "56px",
         indicator: "10px",
         pill: "100px",
+        // Tab Bar Button.
+        tab: "16px",
       },
       boxShadow: {
         avatar: "0 0 4px 0 rgb(0 0 0 / 0.15)",
