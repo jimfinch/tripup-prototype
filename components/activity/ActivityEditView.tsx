@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { BillItemCard } from "@/components/activity/BillItemCard";
+import { AmountField } from "@/components/form/AmountField";
 import { TextField } from "@/components/form/TextField";
 import { ToggleRow } from "@/components/form/ToggleRow";
 import { Screen } from "@/components/shell/Screen";
@@ -22,7 +23,7 @@ import {
 } from "@/data/seed";
 import { useHint } from "@/lib/hints";
 import { cn } from "@/lib/cn";
-import { formatPence, sumPence } from "@/lib/money";
+import { sumPence } from "@/lib/money";
 import { selectBillShares, useScenario } from "@/store/scenario";
 
 const TYPES: { label: ActivityType | "Other"; icon: IconName }[] = [
@@ -53,7 +54,8 @@ export function ActivityEditView() {
   const owed = BELCANTO_ATTENDEES.filter(
     (p) => BELCANTO_STATUS[p] === "owes",
   ).reduce((sum, p) => sum + (shares.get(p) ?? 0), 0);
-  const total = sumPence(items.map((i) => i.amount));
+  // Equals the receipt total unless shares were typed in by hand.
+  const total = sumPence([...shares.values()]);
 
   const scan = () => {
     setScanning(true);
@@ -219,40 +221,46 @@ export function ActivityEditView() {
                   Add item
                 </Button>
               </div>
-
-              <p className="text-body-s text-ink-muted">Each person’s share</p>
-              <ul>
-                {BELCANTO_ATTENDEES.map((p) => (
-                  <AttendeeRow
-                    key={p}
-                    id={p}
-                    name={p === "ari" ? "You" : PEOPLE[p].name}
-                    sublabel={p === "ren" ? "Guest" : undefined}
-                    trailing={
-                      <span className="flex items-center gap-2">
-                        <StatusPill status={BELCANTO_STATUS[p]} />
-                        <AmountPill amount={shares.get(p) ?? 0} />
-                      </span>
-                    }
-                  />
-                ))}
-              </ul>
-              <p className="flex justify-between text-body-s text-ink-muted">
-                You are owed
-                <span className="text-headline text-gunmetal">
-                  {formatPence(owed)}
-                </span>
-              </p>
-              <p className="flex items-center justify-between text-title-m text-gunmetal">
-                Total
-                <AmountPill amount={total} large />
-              </p>
             </>
           ) : (
             <p className="rounded-sm bg-white p-4 text-center text-body-s text-ink-muted">
-              No items yet. Scan the receipt below to itemise the bill.
+              No items yet. Scan the receipt to itemise the bill, or enter each
+              person’s share below.
             </p>
           )}
+
+          <p className="text-body-s text-ink-muted">Each person’s share</p>
+          <ul>
+            {BELCANTO_ATTENDEES.map((p) => {
+              const name = p === "ari" ? "You" : PEOPLE[p].name;
+              return (
+                <AttendeeRow
+                  key={p}
+                  id={p}
+                  name={name}
+                  sublabel={p === "ren" ? "Guest" : undefined}
+                  trailing={
+                    <span className="flex items-center gap-1">
+                      <StatusPill status={BELCANTO_STATUS[p]} />
+                      <AmountField
+                        label={`${name}’s share`}
+                        amount={shares.get(p) ?? 0}
+                        onChange={(v) => s.setShare(p, v)}
+                      />
+                    </span>
+                  }
+                />
+              );
+            })}
+          </ul>
+          <p className="flex items-center justify-between text-body-s text-ink-muted">
+            You are owed
+            <AmountField label="You are owed" amount={owed} />
+          </p>
+          <p className="flex items-center justify-between text-title-m text-gunmetal">
+            Total
+            <AmountField label="Total" amount={total} />
+          </p>
 
           <div className="flex items-center justify-between">
             <span className="text-body-s text-gunmetal">
@@ -288,7 +296,7 @@ function StatusPill({ status }: { status: BillStatus }) {
   return (
     <span
       className={cn(
-        "inline-flex h-8 items-center gap-1 rounded-pill px-3 text-label",
+        "inline-flex h-10 items-center gap-1.5 rounded-pill px-4 text-label",
         status === "owes"
           ? "bg-gunmetal/10 text-gunmetal"
           : "bg-white text-gunmetal",
@@ -296,19 +304,6 @@ function StatusPill({ status }: { status: BillStatus }) {
     >
       {STATUS_LABEL[status]}
       {status === "bill" && <Icon framed name="receipt" size={16} />}
-    </span>
-  );
-}
-
-function AmountPill({ amount, large }: { amount: number; large?: boolean }) {
-  return (
-    <span
-      className={cn(
-        "inline-flex h-8 items-center rounded-pill border border-gunmetal/15 bg-white px-3 text-label text-gunmetal",
-        large && "h-10 px-4 text-headline",
-      )}
-    >
-      {formatPence(amount)}
     </span>
   );
 }

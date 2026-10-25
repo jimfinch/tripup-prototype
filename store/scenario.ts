@@ -21,6 +21,7 @@ import {
 } from "@/data/seed";
 import { getStep, PHONE_LABEL, type StepId } from "@/data/steps";
 import { billShares } from "@/lib/bill";
+import type { Pence } from "@/lib/money";
 
 // One in-memory store for the whole scenario (CLAUDE.md §6–7). A reload resets
 // the demo. Every step can be rebuilt from scratch with `stateAtStep`, so the
@@ -59,6 +60,17 @@ export type Belcanto = {
   scanned: boolean;
   logged: boolean;
   items: BillItem[];
+  // Shares typed in by the organiser (e.g. no receipt). Scanning or changing
+  // who's on an item recalculates the split and clears them.
+  overrides: Partial<Record<PersonId, Pence>>;
+};
+
+// Each attendee's Belcanto share: the itemised split, then any manual edits.
+export const belcantoShares = (b: Belcanto) => {
+  const shares = billShares(b.items, BELCANTO_ATTENDEES);
+  for (const [p, v] of Object.entries(b.overrides))
+    shares.set(p as PersonId, v as Pence);
+  return shares;
 };
 
 type Data = {
@@ -118,6 +130,7 @@ type Actions = {
   openBelcanto: () => void;
   scanReceipt: () => void;
   toggleExclude: (itemId: string, person: PersonId) => void;
+  setShare: (person: PersonId, amount: Pence) => void;
   updateActivity: () => void;
 
   pay: (scope: PayScope) => void;
@@ -143,6 +156,7 @@ const INITIAL: Data = {
     scanned: false,
     logged: false,
     items: [],
+    overrides: {},
   },
   settled: false,
   lastPayment: null,
@@ -306,13 +320,19 @@ const applyClosePoll = (d: Data, pollId: string): Data => {
 
 const applyScan = (d: Data): Data => ({
   ...d,
-  belcanto: { ...d.belcanto, scanned: true, items: BELCANTO_ITEMS },
+  belcanto: {
+    ...d.belcanto,
+    scanned: true,
+    items: BELCANTO_ITEMS,
+    overrides: {},
+  },
 });
 
 const applyExclude = (d: Data, itemId: string, person: PersonId): Data => ({
   ...d,
   belcanto: {
     ...d.belcanto,
+    overrides: {},
     items: d.belcanto.items.map((it) =>
       it.id !== itemId
         ? it
@@ -327,15 +347,15 @@ const applyExclude = (d: Data, itemId: string, person: PersonId): Data => ({
 });
 
 const applyUpdateActivity = (d: Data): Data => {
-  const ariShare =
-    billShares(d.belcanto.items, BELCANTO_ATTENDEES).get("ari") ?? 0;
+  const shares = belcantoShares(d.belcanto);
+  const ariShare = shares.get("ari") ?? 0;
   return {
     ...d,
     sheet: null,
     belcanto: {
       ...d.belcanto,
       isNew: false,
-      logged: d.belcanto.items.length > 0,
+      logged: [...shares.values()].some((v) => v > 0),
     },
     activities: d.activities.map((a) =>
       a.id === BELCANTO.id
@@ -557,6 +577,13 @@ export const useScenario = create<State>((set, get) => {
     openBelcanto: () => advance(8, { focus: null }),
     scanReceipt: () => set(applyScan(get())),
     toggleExclude: (itemId, person) => set(applyExclude(get(), itemId, person)),
+    setShare: (person, amount) =>
+      set((s) => ({
+        belcanto: {
+          ...s.belcanto,
+          overrides: { ...s.belcanto.overrides, [person]: amount },
+        },
+      })),
     updateActivity: () => {
       set(applyUpdateActivity(get()));
       advance(9);
@@ -589,8 +616,7 @@ export const selectUnpaidActivityTotal = (s: Readable) =>
     .filter((a) => !a.paid && !a.shell)
     .reduce((sum, a) => sum + a.share, 0);
 
-export const selectBillShares = (s: Readable) =>
-  billShares(s.belcanto.items, BELCANTO_ATTENDEES);
+export const selectBillShares = (s: Readable) => belcantoShares(s.belcanto);
 
 // What others still owe Ari for Belcanto (the "Owes" rows), once it's logged.
 export const selectOwedToAri = (s: Readable) => {
