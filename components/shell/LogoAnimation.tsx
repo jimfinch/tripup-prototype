@@ -1,8 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { Icon } from "@/components/ui/Icon";
+import { cn } from "@/lib/cn";
 import {
   Layout,
   Fit,
@@ -17,11 +18,24 @@ RuntimeLoader.setWasmUrl("/rive/rive-lite.wasm");
 // If the animation hasn't loaded by then, show the static palm instead.
 const FALLBACK_MS = 1200;
 
-// Designer's animated TripUp palm (public/rive/tripup_logo.riv): "Intro"
-// (island draws in, palm grows) then "Idle", driven by "State Machine 1".
+// Designer's animated TripUp palm: "Intro" (island draws in, palm grows) then
+// "Idle", driven by "State Machine 1". One file per splash tone.
+const SRC = {
+  dark: "/rive/tripup_logo.riv",
+  light: "/rive/tripup_logo_gunmetal.riv",
+} as const;
+
 // The tile stays empty until it's ready so the intro plays from the start.
 // Reduced motion, or a slow load, gets the static palm.
-export function LogoAnimation({ onReady }: { onReady: () => void }) {
+export function LogoAnimation({
+  onReady,
+  tone = "dark",
+}: {
+  onReady: () => void;
+  // The surface it sits on: "dark" = white palm on gunmetal, "light" = gunmetal
+  // palm on lime.
+  tone?: "dark" | "light";
+}) {
   const reduceMotion = useReducedMotion();
   const [ready, setReady] = useState(false);
   const [timedOut, setTimedOut] = useState(false);
@@ -30,7 +44,7 @@ export function LogoAnimation({ onReady }: { onReady: () => void }) {
     reduceMotion
       ? null
       : {
-          src: "/rive/tripup_logo.riv",
+          src: SRC[tone],
           stateMachines: "State Machine 1",
           autoplay: true,
           layout: new Layout({ fit: Fit.Contain }),
@@ -54,10 +68,15 @@ export function LogoAnimation({ onReady }: { onReady: () => void }) {
   }, [reduceMotion, onReady]);
 
   return (
-    <span className="relative flex size-33 items-center justify-center rounded-island bg-white/10">
-      {fallback && !ready && (
-        <Image src="/icons/tripup.svg" alt="" width={72} height={72} priority />
+    <span
+      className={cn(
+        "relative flex size-33 items-center justify-center rounded-island",
+        tone === "dark"
+          ? "bg-white/10 text-white"
+          : "bg-gunmetal/10 text-gunmetal",
       )}
+    >
+      {fallback && !ready && <Icon name="tripup" width={72} />}
       {!reduceMotion && (
         <RiveComponent
           aria-hidden

@@ -34,6 +34,7 @@ const ICONS = {
   share: [16.5, 19.5],
   copy: [18, 18],
   trash: [17, 18],
+  tripup: [24, 24],
 } as const;
 
 const BOX = 24;
