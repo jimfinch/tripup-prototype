@@ -7,7 +7,7 @@ import {
   type BillItem,
   type PersonId,
 } from "@/data/seed";
-import { itemPayers } from "@/lib/bill";
+import { splitLabel } from "@/lib/bill";
 import { useHint } from "@/lib/hints";
 import { cn } from "@/lib/cn";
 import { formatPence } from "@/lib/money";
@@ -26,12 +26,6 @@ export function BillItemCard({
   attendees = BELCANTO_ATTENDEES,
   onToggle,
 }: BillItemCardProps) {
-  const payers = itemPayers(item, attendees);
-  const each = payers.length ? Math.round(item.amount / payers.length) : 0;
-  // Listed guests-first, as in the wireflow ("Ren & Nic excluded").
-  const excluded = [...item.excluded]
-    .sort((a, b) => attendees.indexOf(b) - attendees.indexOf(a))
-    .map((p) => PEOPLE[p].firstName);
   const hintNic = useHint("exclude-nic");
   const hintRen = useHint("exclude-ren");
   const hintFor = (p: PersonId) =>
@@ -50,8 +44,7 @@ export function BillItemCard({
         <span>{formatPence(item.amount)}</span>
       </p>
       <p className="text-body-s text-ink-muted">
-        Split {payers.length} ways - {formatPence(each)} each
-        {excluded.length > 0 && ` - ${excluded.join(" & ")} excluded`}
+        {splitLabel(item, attendees)}
       </p>
       {onToggle && (
         <div className="flex flex-wrap gap-2">

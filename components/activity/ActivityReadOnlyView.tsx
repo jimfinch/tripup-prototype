@@ -1,13 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { BillItemCard } from "@/components/activity/BillItemCard";
 import { BillStatusPill } from "@/components/activity/BillStatusPill";
+import { ReceiptTile } from "@/components/activity/ReceiptTile";
 import { AmountField } from "@/components/form/AmountField";
 import { AttendeeRow } from "@/components/group/AttendeeRow";
 import { Screen } from "@/components/shell/Screen";
 import { StatusScrim } from "@/components/shell/StatusScrim";
 import { PaySheet } from "@/components/sheets/PaySheet";
+import {
+  ReceiptSheet,
+  type ReceiptView,
+} from "@/components/sheets/ReceiptSheet";
 import { BackButton } from "@/components/ui/BackButton";
 import { Button } from "@/components/ui/Button";
 import { Icon, type IconName } from "@/components/ui/Icon";
@@ -38,6 +44,7 @@ const PIN_AT: Record<
 // the bill. Only paying her share and Invite are actions.
 export function ActivityReadOnlyView({ activityId }: { activityId: string }) {
   const s = useScenario();
+  const [receipt, setReceipt] = useState<ReceiptView | null>(null);
   const a = s.activities.find((x) => x.id === activityId);
   if (!a) return null;
   const pin = PIN_AT[a.id];
@@ -55,6 +62,7 @@ export function ActivityReadOnlyView({ activityId }: { activityId: string }) {
         <>
           <StatusScrim />
           {sheet?.kind === "pay" && <PaySheet open scope={sheet.scope} />}
+          <ReceiptSheet receipt={receipt} onClose={() => setReceipt(null)} />
         </>
       }
     >
@@ -116,14 +124,23 @@ export function ActivityReadOnlyView({ activityId }: { activityId: string }) {
         <section className="flex flex-col gap-3">
           <h2 className="text-title-m text-gunmetal">Receipts</h2>
           <div className="grid grid-cols-4 gap-2">
-            {bill.receipts.map((r) => (
-              <span
+            {bill.receipts.map((r, i) => (
+              <ReceiptTile
                 key={r.label}
-                className="flex h-22 flex-col items-center justify-center gap-2 rounded-md bg-off-white text-label text-gunmetal"
-              >
-                <Icon framed name={r.icon} />
-                {r.label}
-              </span>
+                label={r.label}
+                icon={r.icon}
+                onOpen={() =>
+                  setReceipt({
+                    label: r.label,
+                    item: bill.items[i],
+                    venue: a.title,
+                    date: `${a.day} ${a.month} 2026`,
+                    time: a.time.split(" - ")[0],
+                    payer: bill.payer,
+                    attendees: bill.attendees,
+                  })
+                }
+              />
             ))}
           </div>
         </section>

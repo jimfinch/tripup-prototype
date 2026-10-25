@@ -6,10 +6,15 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { BillItemCard } from "@/components/activity/BillItemCard";
 import { BillStatusPill } from "@/components/activity/BillStatusPill";
+import { ReceiptTile } from "@/components/activity/ReceiptTile";
 import { AmountField } from "@/components/form/AmountField";
 import { TextField } from "@/components/form/TextField";
 import { ToggleRow } from "@/components/form/ToggleRow";
 import { Screen } from "@/components/shell/Screen";
+import {
+  ReceiptSheet,
+  type ReceiptView,
+} from "@/components/sheets/ReceiptSheet";
 import { StatusScrim } from "@/components/shell/StatusScrim";
 import { AttendeeRow } from "@/components/group/AttendeeRow";
 import { Button } from "@/components/ui/Button";
@@ -47,6 +52,7 @@ export function ActivityEditView() {
   const [type, setType] = useState<string>(BELCANTO.type);
   const [address, setAddress] = useState(BELCANTO.address);
   const [scanning, setScanning] = useState(false);
+  const [receipt, setReceipt] = useState<ReceiptView | null>(null);
   const hintScan = useHint("scan");
   const hintUpdate = useHint("update-activity");
 
@@ -71,7 +77,16 @@ export function ActivityEditView() {
   };
 
   return (
-    <Screen tabBar className="bg-white" overlays={<StatusScrim />}>
+    <Screen
+      tabBar
+      className="bg-white"
+      overlays={
+        <>
+          <StatusScrim />
+          <ReceiptSheet receipt={receipt} onClose={() => setReceipt(null)} />
+        </>
+      }
+    >
       <div className="flex flex-col gap-6 px-4 pb-33 pt-status-bar">
         <div className="flex items-center justify-between pt-2">
           <Link
@@ -162,14 +177,23 @@ export function ActivityEditView() {
                   ["Dinner", "receipt"],
                   ["Drinks", "drinks"],
                 ] as const
-              ).map(([r, icon]) => (
-                <span
+              ).map(([r, icon], i) => (
+                <ReceiptTile
                   key={r}
-                  className="flex h-22 flex-col items-center justify-center gap-2 rounded-md bg-off-white text-label text-gunmetal"
-                >
-                  <Icon framed name={icon} />
-                  {r}
-                </span>
+                  label={r}
+                  icon={icon}
+                  onOpen={() =>
+                    setReceipt({
+                      label: r,
+                      item: items[i],
+                      venue: title,
+                      date: BELCANTO.date,
+                      time: BELCANTO.time,
+                      payer: "ari",
+                      attendees: BELCANTO_ATTENDEES,
+                    })
+                  }
+                />
               ))}
             <button
               type="button"

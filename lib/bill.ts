@@ -1,5 +1,5 @@
-import type { BillItem, PersonId } from "@/data/seed";
-import type { Pence } from "@/lib/money";
+import { PEOPLE, type BillItem, type PersonId } from "@/data/seed";
+import { formatPence, type Pence } from "@/lib/money";
 
 // Splits an amount between people in integer pence. Leftover pence go to the
 // first people in list order, so the parts always add up to the amount.
@@ -36,4 +36,18 @@ export function billShares(
     }
   }
   return totals;
+}
+
+// "Split 5 ways - £23.28 each - Ren & Nic excluded". Excluded people are
+// listed latest-first, as in the wireflow.
+export function splitLabel(item: BillItem, attendees: PersonId[]): string {
+  const payers = itemPayers(item, attendees);
+  const each = payers.length ? Math.round(item.amount / payers.length) : 0;
+  const excluded = [...item.excluded]
+    .sort((a, b) => attendees.indexOf(b) - attendees.indexOf(a))
+    .map((p) => PEOPLE[p].firstName);
+  return (
+    `Split ${payers.length} ways - ${formatPence(each)} each` +
+    (excluded.length ? ` - ${excluded.join(" & ")} excluded` : "")
+  );
 }
