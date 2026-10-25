@@ -4,7 +4,7 @@ import { MotionConfig } from "framer-motion";
 import { useEffect, type ReactNode } from "react";
 import { GUIDES_KEY, STEPS_KEY, useScenario } from "@/store/scenario";
 import { cn } from "@/lib/cn";
-import { DemoPanel } from "@/components/shell/DemoPanel";
+import { DemoExtras, DemoPanel } from "@/components/shell/DemoPanel";
 import { HomeIndicator } from "@/components/shell/HomeIndicator";
 import { SceneCard } from "@/components/shell/SceneCard";
 import { Splash } from "@/components/shell/Splash";
@@ -47,7 +47,7 @@ export function DeviceShell({ children }: { children: ReactNode }) {
           <SceneCard />
           <Splash />
         </div>
-        <div aria-hidden className="hidden panel:block" />
+        <DemoExtras className="hidden w-full max-w-72 justify-self-start panel:block" />
       </div>
     </MotionConfig>
   );

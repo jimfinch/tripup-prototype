@@ -7,6 +7,46 @@ import { Icon } from "@/components/ui/Icon";
 import { Toggle } from "@/components/ui/Toggle";
 import { cn } from "@/lib/cn";
 
+const TRIP = "/trips/lisbon/";
+
+// Added-value screens off the main path (mirrors the README). `needs` loads a
+// step's state first when the screen only makes sense before or after settling.
+const EXTRAS: readonly {
+  title: string;
+  hint: string;
+  route: string;
+  needs?: { settled: boolean; step: StepId };
+}[] = [
+  { title: "Expandable map", hint: "Tap the map, then a pin", route: TRIP },
+  {
+    title: "Polls across trips",
+    hint: "Live polls by trip, then closed polls",
+    route: "/polls/",
+  },
+  {
+    title: "Groups",
+    hint: "Open Intrepid travellers to manage it",
+    route: "/groups/",
+  },
+  {
+    title: "Pay as you go",
+    hint: "Pay share on Pigmeu or the stay",
+    route: TRIP,
+    needs: { settled: false, step: 2 },
+  },
+  {
+    title: "Participant view",
+    hint: "Read-only, apart from Invite",
+    route: `${TRIP}activities/tasca/`,
+  },
+  {
+    title: "After the trip",
+    hint: "Milan next, Lisbon in Past trips",
+    route: "/",
+    needs: { settled: true, step: 10 },
+  },
+];
+
 // Desktop-only guide beside the phone. Lets a PM follow (and jump around)
 // the scenario. Deliberately quiet; the phone is the focus.
 export function DemoPanel({ className }: { className?: string }) {
@@ -129,6 +169,48 @@ export function DemoPanel({ className }: { className?: string }) {
         </p>
         <p className="mt-1 text-label text-white">James Finch</p>
       </div>
+    </aside>
+  );
+}
+
+// Desktop-only, right of the phone: the added-value screens the ten steps
+// don't reach (mirrors the README).
+export function DemoExtras({ className }: { className?: string }) {
+  const router = useRouter();
+  const goToStep = useScenario((s) => s.goToStep);
+  const settled = useScenario((s) => s.settled);
+
+  const explore = (extra: (typeof EXTRAS)[number]) => {
+    if (extra.needs && extra.needs.settled !== settled)
+      goToStep(extra.needs.step);
+    router.push(extra.route);
+  };
+
+  return (
+    <aside
+      aria-label="Beyond the scenario"
+      className={cn("text-white", className)}
+    >
+      <h2 className="px-3 text-caption-strong uppercase tracking-wide text-white/60">
+        Beyond the scenario
+      </h2>
+      <p className="mt-1 px-3 text-body-s text-white/50">
+        Also built, off the main path
+      </p>
+      <ul className="mt-4 flex flex-col gap-1">
+        {EXTRAS.map((extra) => (
+          <li key={extra.title}>
+            <button
+              type="button"
+              onClick={() => explore(extra)}
+              className="flex min-h-11 w-full flex-col gap-0.5 rounded-md px-3 py-2 text-left transition-colors duration-150 hover:bg-white/5 active:bg-white/10"
+            >
+              <span className="text-body-s text-white/80">{extra.title}</span>
+              <span className="text-body-s text-white/50">{extra.hint}</span>
+            </button>
+          </li>
+        ))}
+      </ul>
     </aside>
   );
 }
