@@ -9,6 +9,7 @@ import { Icon } from "@/components/ui/Icon";
 import { Sheet } from "@/components/ui/Sheet";
 import { BELCANTO, LISBON, SETTLE } from "@/data/seed";
 import { cn } from "@/lib/cn";
+import { useHintActive } from "@/lib/hints";
 import { formatPence } from "@/lib/money";
 import {
   selectOwedToAri,
@@ -36,7 +37,8 @@ export function PaySheet({ scope, open }: { scope: PayScope; open: boolean }) {
 
   const total = selectPayTotal(s, scope);
   const owed = scope.kind === "settle" ? selectOwedToAri(s) : 0;
-  const guided = s.step === 9 && scope.kind === "settle";
+  // Tap hint, only when hints are on (see lib/hints).
+  const guided = useHintActive("settle-confirm");
 
   const rows: { label: string; amount: number }[] = [];
   if ((scope.kind === "settle" || scope.kind === "stay") && !s.stay.paid) {

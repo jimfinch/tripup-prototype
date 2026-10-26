@@ -121,6 +121,8 @@ const config: Config = {
         banner: "22px",
         island: "32px",
         device: "56px",
+        // Bezel ring over the screen edge: 2px outside it, so 56 + 2.
+        "device-bezel": "58px",
         // Bezel around the screen: 56 + 10px bezel + 1px highlight.
         "device-outer": "67px",
         indicator: "10px",

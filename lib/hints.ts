@@ -21,13 +21,10 @@ export type HintId =
   | "exclude-ren"
   | "leave-activity"
   | "settle"
-  | "pay-method"
   | "settle-confirm"
   | "back-to-trip";
 
-type HintState = ReturnType<typeof useScenario.getState> & {
-  payMethod?: string | null;
-};
+type HintState = ReturnType<typeof useScenario.getState>;
 
 export function currentHint(s: HintState): HintId | null {
   switch (s.step) {
@@ -63,7 +60,9 @@ export function currentHint(s: HintState): HintId | null {
       return "leave-activity";
     }
     case 9:
-      return s.sheet?.kind === "pay" ? null : "settle";
+      if (s.sheet?.kind !== "pay") return "settle";
+      // The settle sheet rings Settle, or Pay with if no method is picked.
+      return s.sheet.scope.kind === "settle" ? "settle-confirm" : null;
     case 10:
       return "back-to-trip";
   }
