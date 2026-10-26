@@ -132,6 +132,10 @@ const config: Config = {
         pill: "100px",
         // Tab Bar Button.
         tab: "16px",
+        // Ask TripUp: answer card, chat bubble and its tail corner.
+        answer: "16px",
+        bubble: "20px",
+        "bubble-tail": "6px",
       },
       boxShadow: {
         avatar: "0 0 4px 0 rgb(0 0 0 / 0.15)",

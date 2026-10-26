@@ -13,6 +13,7 @@ Interactive prototype of TripUp, a group-trip planning app, built for a Bending 
 
 The ten steps cover the core journey. These also work, off the main path:
 
+- **Ask TripUp (AI assistant):** the Ask tab replaces Search. It answers a few example questions from the trip's live data ("What do I owe for Lisbon?", "Who hasn't voted on Fado?", "Start a dinner poll for tonight", "Find Belcanto"), and each answer hands off to the existing screen or sheet, such as Settle trip or a pre-filled New poll. Typed questions are matched by keyword; there's no real model, and the mic is a placeholder.
 - **Expandable map:** tap the map on the Lisbon trip to open it full screen, then tap a pin to go straight to that activity or stay.
 - **Polls:** the Polls tab lists live polls across trips, each labelled with its trip, then links to closed polls. Each trip has its own Polls page too. Vote, View votes and Close poll work the same everywhere, and a vote can be changed or taken back until the poll closes.
 - **Groups:** switch Home from Trips to Groups. Open _Intrepid travellers_ to manage members, invite people, see trips taken together and add a group image.

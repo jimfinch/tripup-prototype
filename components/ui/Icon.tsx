@@ -22,6 +22,8 @@ const ICONS = {
   drinks: [18, 18],
   kebab: [15, 2.25],
   lock: [18, 20],
+  // Mic is a 20 px frame glyph kept whole (pass size={20}).
+  mic: [24, 24],
   "map-pin": [15, 20],
   "pending-user": [18.85, 19.5],
   "people-add": [18, 18],
@@ -33,6 +35,8 @@ const ICONS = {
   refresh: [24, 24],
   search: [18, 18],
   share: [16.5, 19.5],
+  // Ask TripUp sparkle.
+  sparkle: [16, 16],
   copy: [18, 18],
   trash: [17, 18],
   tripup: [24, 24],

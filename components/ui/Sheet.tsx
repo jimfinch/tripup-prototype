@@ -23,6 +23,11 @@ type SheetProps = {
   closeHint?: HintId;
   // Pinned under the scroll area (e.g. a primary action).
   footer?: ReactNode;
+  // Full height (to the sheet top) rather than sized to the content, e.g. a
+  // conversation with its composer pinned at the bottom.
+  fill?: boolean;
+  // Scroll the content back to the end when this changes (new messages).
+  scrollKey?: number;
 };
 
 const SHEET_EASE = [0.32, 0.72, 0, 1] as const;
@@ -36,11 +41,20 @@ export function Sheet({
   children,
   closeHint,
   footer,
+  fill = false,
+  scrollKey,
 }: SheetProps) {
   const closeHintClass = useHint(closeHint ?? "close-sheet");
   const titleId = useId();
   const dragControls = useDragControls();
   const panelRef = useRef<HTMLDivElement>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollKey === undefined) return;
+    const body = bodyRef.current;
+    body?.scrollTo({ top: body.scrollHeight, behavior: "smooth" });
+  }, [scrollKey]);
 
   useEffect(() => {
     if (!open) return;
@@ -74,7 +88,10 @@ export function Sheet({
               aria-modal="true"
               aria-labelledby={titleId}
               tabIndex={-1}
-              className="pointer-events-auto flex max-h-full flex-col rounded-t-sheet border border-gunmetal/10 bg-white shadow-sheet outline-none"
+              className={cn(
+                "pointer-events-auto flex max-h-full flex-col rounded-t-sheet border border-gunmetal/10 bg-white shadow-sheet outline-none",
+                fill && "h-full",
+              )}
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
@@ -108,7 +125,10 @@ export function Sheet({
                   />
                 </button>
               </header>
-              <div className="no-scrollbar flex-1 overflow-y-auto overscroll-contain px-5 pb-10">
+              <div
+                ref={bodyRef}
+                className="no-scrollbar flex-1 overflow-y-auto overscroll-contain px-5 pb-10"
+              >
                 {children}
               </div>
               {footer && <div className="px-5 pb-8 pt-3">{footer}</div>}

@@ -152,7 +152,8 @@ When the app first loads (and after Reset), show the **Loading screen** frame fr
   - Tapping a pin navigates **straight to** that activity or stay screen. There is no pin-selected state.
   - The collapse control returns to the trip view.
 - **Not designed, so stub them:**
-  - **Search, Payments and Profile tabs:** show a simple, on-brand "Coming soon" screen with the tab bar intact. They must never be blank or broken.
+  - **Payments and Profile tabs:** show a simple, on-brand "Coming soon" screen with the tab bar intact. They must never be blank or broken.
+  - **Ask tab (replaces Search, designer decision):** opens the "Ask TripUp" assistant sheet (Working "AI assistant - Suggestions" / "- Answer" frames and notes). Canned, keyword-matched answers computed from the store; each ends in the existing UI (Settle / pay sheets, pre-filled New poll, the poll, Belcanto). No real model.
   - **"Add group" chip on Invite (03):** show it as **visibly inactive** (disabled styling, no action).
   - **Not built at all:** trip creation, real payments, real contacts, receipt OCR. Fake the scan with the existing receipt thumbnails.
 

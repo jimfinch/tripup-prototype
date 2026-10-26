@@ -22,6 +22,11 @@ import {
   type TripMember,
 } from "@/data/seed";
 import { getStep, PHONE_LABEL, type PhoneId, type StepId } from "@/data/steps";
+import {
+  ASK_LABEL,
+  type AssistantIntent,
+  type AssistantTurn,
+} from "@/lib/assistant";
 import { billShares } from "@/lib/bill";
 import type { Pence } from "@/lib/money";
 
@@ -107,6 +112,10 @@ type UI = {
   showSteps: boolean;
   sceneCard: string | null;
   toast: Toast | null;
+  // Ask TripUp, the assistant in the tab bar: whether its sheet is open, and
+  // the questions asked since it opened (each answered in place).
+  assistantOpen: boolean;
+  assistantThread: AssistantTurn[];
 };
 
 type Actions = {
@@ -121,6 +130,10 @@ type Actions = {
   showToast: (message: string) => void;
   dismissToast: () => void;
   clearFocus: () => void;
+  openAssistant: (intent?: AssistantIntent) => void;
+  closeAssistant: () => void;
+  // `text` is what was typed; a tapped suggestion uses its own label.
+  ask: (intent: AssistantIntent, text?: string) => void;
 
   openTrip: () => void;
   openSheet: (sheet: Sheet) => void;
@@ -503,6 +516,8 @@ export const useScenario = create<State>((set, get) => {
     resets: 0,
     sceneCard: null,
     toast: null,
+    assistantOpen: false,
+    assistantThread: [],
 
     goToStep: (step) => {
       clearTimers();
@@ -511,6 +526,8 @@ export const useScenario = create<State>((set, get) => {
         sceneCard: sceneCardFor(step),
         toast: null,
         returnToMap: false,
+        assistantOpen: false,
+        assistantThread: [],
       });
       if (step === 7) get().showToast("‘Belcanto’ won - added to itinerary");
     },
@@ -522,6 +539,8 @@ export const useScenario = create<State>((set, get) => {
         sceneCard: null,
         toast: null,
         returnToMap: false,
+        assistantOpen: false,
+        assistantThread: [],
         resets: s.resets + 1,
       }));
     },
@@ -556,6 +575,17 @@ export const useScenario = create<State>((set, get) => {
       })),
     dismissToast: () => set({ toast: null }),
     clearFocus: () => set({ focus: null }),
+    // Opens fresh each time, optionally with a question already asked.
+    openAssistant: (intent) =>
+      set({
+        assistantOpen: true,
+        assistantThread: intent ? [{ intent, text: ASK_LABEL[intent] }] : [],
+      }),
+    closeAssistant: () => set({ assistantOpen: false }),
+    ask: (intent, text = ASK_LABEL[intent]) =>
+      set((s) => ({
+        assistantThread: [...s.assistantThread, { intent, text }],
+      })),
 
     openTrip: () => advance(2),
     openSheet: (sheet) => {

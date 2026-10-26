@@ -5,6 +5,7 @@ import { PHONE_LABEL, STEPS, type StepId } from "@/data/steps";
 import { useCurrentStep, useScenario } from "@/store/scenario";
 import { Icon } from "@/components/ui/Icon";
 import { Toggle } from "@/components/ui/Toggle";
+import type { AssistantIntent } from "@/lib/assistant";
 import { cn } from "@/lib/cn";
 
 const TRIP = "/trips/lisbon/";
@@ -16,7 +17,21 @@ const EXTRAS: readonly {
   hint: string;
   route: string;
   needs?: { settled: boolean; step: StepId };
+  // Opens Ask TripUp on arrival, optionally with a question already asked.
+  assistant?: AssistantIntent | "welcome";
 }[] = [
+  {
+    title: "Ask TripUp",
+    hint: "AI assistant in place of Search",
+    route: TRIP,
+    assistant: "welcome",
+  },
+  {
+    title: "Ask: “What do I owe for Lisbon?”",
+    hint: "A live answer that hands off to Settle",
+    route: TRIP,
+    assistant: "owe",
+  },
   { title: "Expandable map", hint: "Tap the map, then a pin", route: TRIP },
   {
     title: "Polls across trips",
@@ -181,11 +196,16 @@ export function DemoExtras({ className }: { className?: string }) {
   const router = useRouter();
   const goToStep = useScenario((s) => s.goToStep);
   const settled = useScenario((s) => s.settled);
+  const openAssistant = useScenario((s) => s.openAssistant);
 
   const explore = (extra: (typeof EXTRAS)[number]) => {
     if (extra.needs && extra.needs.settled !== settled)
       goToStep(extra.needs.step);
     router.push(extra.route);
+    if (extra.assistant)
+      openAssistant(
+        extra.assistant === "welcome" ? undefined : extra.assistant,
+      );
   };
 
   return (

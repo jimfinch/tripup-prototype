@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, type ReactNode, type UIEvent } from "react";
 import { TabBar } from "@/components/shell/TabBar";
+import { AssistantSheet } from "@/components/sheets/AssistantSheet";
 import { cn } from "@/lib/cn";
 
 type ScreenProps = {
@@ -59,6 +60,8 @@ export function Screen({
       </main>
       {tabBar && <TabBar />}
       {overlays}
+      {/* Ask TripUp opens from the tab bar, over whatever screen is showing. */}
+      {tabBar && <AssistantSheet />}
     </div>
   );
 }

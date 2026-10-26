@@ -22,6 +22,7 @@ const DOT_ICON: CSSProperties = {
 };
 
 type Tab = {
+  // A route, or "assistant" for Ask TripUp, which opens a sheet in place.
   href: string;
   label: string;
   icon: string;
@@ -30,7 +31,8 @@ type Tab = {
 };
 
 const TABS: Tab[] = [
-  { href: "/search/", label: "Search", icon: "search" },
+  // Ask TripUp replaces Search (Working "AI assistant" frames and notes).
+  { href: "assistant", label: "Ask", icon: "ask" },
   { href: "/polls/", label: "Polls", icon: "polls" },
   {
     href: "/",
@@ -46,6 +48,8 @@ const TABS: Tab[] = [
 
 export function TabBar() {
   const pathname = usePathname();
+  const assistantOpen = useScenario((s) => s.assistantOpen);
+  const openAssistant = useScenario((s) => s.openAssistant);
   const hasActiveItems: Record<string, boolean> = {
     polls: useScenario((s) => selectLivePolls(s).length > 0),
     payments: useScenario((s) => selectPaymentsDue(s) > 0),
@@ -69,32 +73,53 @@ export function TabBar() {
       >
         <ul className="pointer-events-auto flex items-center rounded-pill bg-white/75 px-4 py-1.25 shadow-tab-bar backdrop-blur-glass">
           {TABS.map((tab) => {
-            const current =
-              tab.href === "/"
-                ? pathname === "/" || !!tab.section?.(pathname)
-                : pathname.startsWith(tab.href);
+            const isAssistant = tab.href === "assistant";
+            const current = isAssistant
+              ? assistantOpen
+              : !assistantOpen &&
+                (tab.href === "/"
+                  ? pathname === "/" || !!tab.section?.(pathname)
+                  : pathname.startsWith(tab.href));
             const dot = !!hasActiveItems[tab.icon];
             const src = `/icons/tab-${tab.icon}${dot ? "-dot" : ""}${current ? "-active" : ""}.svg`;
+            const className = cn(
+              "flex size-15 flex-col items-center justify-center gap-0.5 rounded-tab text-micro transition duration-150 active:opacity-60",
+              current ? "bg-gunmetal text-lime" : "text-gunmetal",
+            );
+            const content = (
+              <>
+                <span className="relative size-6">
+                  <span
+                    className="absolute inset-0"
+                    style={dot ? DOT_ICON : undefined}
+                  >
+                    <Image src={src} alt="" fill />
+                  </span>
+                </span>
+                {tab.label}
+              </>
+            );
             return (
               <li key={tab.href}>
-                <Link
-                  href={tab.href}
-                  aria-current={current ? "page" : undefined}
-                  className={cn(
-                    "flex size-15 flex-col items-center justify-center gap-0.5 rounded-tab text-micro transition duration-150 active:opacity-60",
-                    current ? "bg-gunmetal text-lime" : "text-gunmetal",
-                  )}
-                >
-                  <span className="relative size-6">
-                    <span
-                      className="absolute inset-0"
-                      style={dot ? DOT_ICON : undefined}
-                    >
-                      <Image src={src} alt="" fill />
-                    </span>
-                  </span>
-                  {tab.label}
-                </Link>
+                {isAssistant ? (
+                  <button
+                    type="button"
+                    onClick={() => openAssistant()}
+                    aria-label="Ask TripUp"
+                    aria-expanded={current}
+                    className={className}
+                  >
+                    {content}
+                  </button>
+                ) : (
+                  <Link
+                    href={tab.href}
+                    aria-current={current ? "page" : undefined}
+                    className={className}
+                  >
+                    {content}
+                  </Link>
+                )}
               </li>
             );
           })}
