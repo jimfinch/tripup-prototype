@@ -17,6 +17,7 @@ export function DeviceShell({ children }: { children: ReactNode }) {
   const setGuides = useScenario((s) => s.setGuides);
   const setShowSteps = useScenario((s) => s.setShowSteps);
   const splash = useScenario((s) => s.splash);
+  const resets = useScenario((s) => s.resets);
 
   // Restore the reviewer's demo-panel choices (per browser).
   useEffect(() => {
@@ -42,7 +43,10 @@ export function DeviceShell({ children }: { children: ReactNode }) {
           <div className="relative isolate h-dvh w-full overflow-hidden bg-white framed:h-device-h framed:w-device-w framed:transform-gpu framed:rounded-device">
             {/* Hidden behind the splash so it can't bleed through the anti-aliased
               corner; it reappears as the splash starts to fade. */}
-            <div className={cn("absolute inset-0", splash && "invisible")}>
+            <div
+              key={resets}
+              className={cn("absolute inset-0", splash && "invisible")}
+            >
               {children}
             </div>
             <StatusBar />

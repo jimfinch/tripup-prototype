@@ -96,6 +96,9 @@ type UI = {
   // A pin was tapped on the full-screen map, so going back to the trip view
   // reopens the map there.
   returnToMap: boolean;
+  // Bumped by Reset demo; the phone's screen tree is keyed on it, so every
+  // screen starts fresh (scroll position, local UI state).
+  resets: number;
   // In-phone tap hints (guided layer). Off by default so the product speaks for
   // itself; reviewers can switch them on from the demo panel.
   guides: boolean;
@@ -496,6 +499,7 @@ export const useScenario = create<State>((set, get) => {
     showSteps: true,
     groupImage: null,
     returnToMap: false,
+    resets: 0,
     sceneCard: null,
     toast: null,
 
@@ -511,13 +515,14 @@ export const useScenario = create<State>((set, get) => {
     },
     reset: () => {
       clearTimers();
-      set({
+      set((s) => ({
         ...INITIAL,
         splash: true,
         sceneCard: null,
         toast: null,
         returnToMap: false,
-      });
+        resets: s.resets + 1,
+      }));
     },
     setGroupImage: (groupImage) => set({ groupImage }),
     setReturnToMap: (returnToMap) => set({ returnToMap }),

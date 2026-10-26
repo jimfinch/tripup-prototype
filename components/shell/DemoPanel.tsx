@@ -64,9 +64,11 @@ export function DemoPanel({ className }: { className?: string }) {
     router.push(STEPS[id - 1].route);
   };
 
+  // Back to the start: step 01 on Home, fresh. Replace, so browser back
+  // doesn't step into the old run.
   const onReset = () => {
     reset();
-    router.push("/");
+    router.replace("/");
   };
 
   return (
