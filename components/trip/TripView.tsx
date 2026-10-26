@@ -111,7 +111,8 @@ export function TripView() {
         onExpand={expandMap}
         onCollapse={() => setMapOpen(false)}
         onPin={(id) => {
-          s.setReturnToMap(true);
+          // Back returns to whichever map state the pin was tapped from.
+          s.setReturnToMap(mapOpen);
           router.push(`/trips/${LISBON.id}/activities/${id}/`);
         }}
       />

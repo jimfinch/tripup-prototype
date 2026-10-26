@@ -84,8 +84,13 @@
   inset: 0;
   border-radius: 56px 56px 0 0;
 }
+/* Lighter than the status bar's: the tab bar has its own glass, so the edge
+   only needs to soften what slides under it. */
 .scroll-edge-bottom {
   --edge-to: to top;
+  --edge-blur-1: 0.5px;
+  --edge-blur-2: 1px;
+  --edge-blur-3: 3px;
 }
 .scroll-edge-bottom > span {
   border-radius: 0;
@@ -96,8 +101,8 @@
   }
 }
 .scroll-edge-blur-1 {
-  -webkit-backdrop-filter: blur(1px);
-  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(var(--edge-blur-1, 1px));
+  backdrop-filter: blur(var(--edge-blur-1, 1px));
   -webkit-mask-image: linear-gradient(
     var(--edge-to, to bottom),
     #000 0%,
@@ -112,8 +117,8 @@
   );
 }
 .scroll-edge-blur-2 {
-  -webkit-backdrop-filter: blur(3px);
-  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(var(--edge-blur-2, 3px));
+  backdrop-filter: blur(var(--edge-blur-2, 3px));
   -webkit-mask-image: linear-gradient(
     var(--edge-to, to bottom),
     #000 0%,
@@ -128,8 +133,8 @@
   );
 }
 .scroll-edge-blur-3 {
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(var(--edge-blur-3, 8px));
+  backdrop-filter: blur(var(--edge-blur-3, 8px));
   -webkit-mask-image: linear-gradient(
     var(--edge-to, to bottom),
     #000 0%,

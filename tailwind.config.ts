@@ -121,6 +121,8 @@ const config: Config = {
         banner: "22px",
         island: "32px",
         device: "56px",
+        // Bezel around the screen: 56 + 10px bezel + 1px highlight.
+        "device-outer": "67px",
         indicator: "10px",
         pill: "100px",
         // Tab Bar Button.
@@ -132,12 +134,13 @@ const config: Config = {
         "tab-bar": "0 0 12px 0 rgb(var(--color-gunmetal) / 0.1)",
         sheet: "0 0 16px 0 rgb(0 0 0 / 0.15)",
         toast: "0 8px 24px 0 rgb(0 0 0 / 0.18)",
-        device:
-          "0 0 0 10px rgb(var(--color-bezel)), 0 0 0 11px rgb(var(--color-white) / 0.12), 0 32px 80px 0 rgb(0 0 0 / 0.6)",
+        device: "0 32px 80px 0 rgb(0 0 0 / 0.6)",
       },
       scale: {
         press: "0.97",
       },
+      // Device bezel highlight.
+      opacity: { 12: "0.12" },
       backdropBlur: {
         glass: "6px",
       },

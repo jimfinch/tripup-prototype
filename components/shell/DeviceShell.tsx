@@ -35,17 +35,22 @@ export function DeviceShell({ children }: { children: ReactNode }) {
         {/* transform-gpu puts the screen on one compositing layer, so its
             rounded corner is clipped once rather than per stacked layer (which
             left a hairline of the page under the splash). */}
-        <div className="relative isolate h-dvh w-full overflow-hidden bg-white framed:h-device-h framed:w-device-w framed:shrink-0 framed:transform-gpu framed:rounded-device framed:bg-bezel framed:shadow-device">
-          {/* Hidden behind the splash so it can't bleed through the anti-aliased
+        {/* The bezel is a real element behind the screen (not a box-shadow
+            beside it), so the screen's rounded edge blends into solid bezel
+            with no anti-aliased hairline between them. */}
+        <div className="framed:border-white/12 framed:shrink-0 framed:rounded-device-outer framed:border framed:bg-bezel framed:p-2.5 framed:shadow-device">
+          <div className="relative isolate h-dvh w-full overflow-hidden bg-white framed:h-device-h framed:w-device-w framed:transform-gpu framed:rounded-device">
+            {/* Hidden behind the splash so it can't bleed through the anti-aliased
               corner; it reappears as the splash starts to fade. */}
-          <div className={cn("absolute inset-0", splash && "invisible")}>
-            {children}
+            <div className={cn("absolute inset-0", splash && "invisible")}>
+              {children}
+            </div>
+            <StatusBar />
+            <HomeIndicator />
+            <Toast />
+            <SceneCard />
+            <Splash />
           </div>
-          <StatusBar />
-          <HomeIndicator />
-          <Toast />
-          <SceneCard />
-          <Splash />
         </div>
         <DemoExtras className="hidden w-full max-w-72 justify-self-start panel:block" />
       </div>
