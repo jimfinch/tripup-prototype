@@ -42,3 +42,6 @@ next-env.d.ts
 
 # netlify
 .netlify
+
+# Agent rules file written by `next dev` (not part of the project)
+AGENTS.md
