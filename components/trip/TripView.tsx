@@ -29,6 +29,7 @@ import {
   selectUnpaidActivityTotal,
   useCurrentStep,
   useScenario,
+  viewFor,
   type Sheet,
 } from "@/store/scenario";
 
@@ -37,10 +38,12 @@ export function TripView() {
   const router = useRouter();
   const s = useScenario();
   const { phone } = useCurrentStep();
+  // Payment figures are the phone owner's (Charlie's own on step 05).
+  const view = viewFor(s, phone);
   const livePolls = selectLivePolls(s);
-  const paymentsDue = selectPaymentsDue(s);
-  const settleTotal = selectSettleTotal(s);
-  const unpaidActivities = selectUnpaidActivityTotal(s);
+  const paymentsDue = selectPaymentsDue(view);
+  const settleTotal = selectSettleTotal(view);
+  const unpaidActivities = selectUnpaidActivityTotal(view);
 
   const hintInvite = useHint("invite");
   const hintNewPoll = useHint("new-poll");
@@ -77,12 +80,13 @@ export function TripView() {
     s.openBelcanto();
     router.push(`/trips/${LISBON.id}/activities/${BELCANTO.id}/`);
   };
+  // Paying is Ari's story; on Charlie's phone it's not part of the demo.
   const pay = (scope: Extract<Sheet, { kind: "pay" }>["scope"]) =>
-    s.openSheet({ kind: "pay", scope });
+    phone === "ari" ? s.openSheet({ kind: "pay", scope }) : s.notInPrototype();
   const openPolls = () => router.push(`/trips/${LISBON.id}/polls/`);
 
   // The trip view shows the 4 most recent; "See all" is the full timeline.
-  const recent = s.activities.slice(-4);
+  const recent = view.activities.slice(-4);
 
   const sheet = s.sheet;
   return (
@@ -135,7 +139,7 @@ export function TripView() {
             stays: 1,
           }}
           settleTotal={settleTotal}
-          settled={s.settled || settleTotal === 0}
+          settled={(s.settled && phone === "ari") || settleTotal === 0}
           onSettle={() => pay({ kind: "settle" })}
           onPolls={openPolls}
           settleClassName={hintSettle}
@@ -227,15 +231,15 @@ export function TripView() {
                 New poll
               </Button>
             </div>
-            <StayCard {...s.stay} onPay={() => pay({ kind: "stay" })} />
-            {!s.stay.paid && (
+            <StayCard {...view.stay} onPay={() => pay({ kind: "stay" })} />
+            {!view.stay.paid && (
               <Button
                 theme="light"
                 size="xl"
                 onClick={() => pay({ kind: "stay" })}
                 rightIcon={<Icon framed name="card" />}
               >
-                Pay stay shares {formatPence(s.stay.share)}
+                Pay stay shares {formatPence(view.stay.share)}
               </Button>
             )}
           </div>

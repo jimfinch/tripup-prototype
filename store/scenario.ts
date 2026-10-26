@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import {
+  CHARLIE_UNPAID,
   ACTIVITIES,
   BELCANTO,
   BELCANTO_ATTENDEES,
@@ -20,7 +21,7 @@ import {
   type Stay,
   type TripMember,
 } from "@/data/seed";
-import { getStep, PHONE_LABEL, type StepId } from "@/data/steps";
+import { getStep, PHONE_LABEL, type PhoneId, type StepId } from "@/data/steps";
 import { billShares } from "@/lib/bill";
 import type { Pence } from "@/lib/money";
 
@@ -655,6 +656,20 @@ export const useCurrentStep = () => getStep(useScenario((s) => s.step));
 // Selectors
 
 type Readable = Data;
+
+// The trip as the phone's owner sees it: Charlie's phone swaps in his own
+// payment state, so the selectors below give his figures.
+export const viewFor = (s: Readable, phone: PhoneId): Readable =>
+  phone === "charlie"
+    ? {
+        ...s,
+        activities: s.activities.map((a) => ({
+          ...a,
+          paid: !CHARLIE_UNPAID.includes(a.id),
+        })),
+        stay: { ...s.stay, paid: true },
+      }
+    : s;
 
 export const selectLivePolls = (s: Readable) =>
   s.polls.filter((p) => p.status === "live");

@@ -241,6 +241,12 @@ export const STAY: Stay = {
   paid: false,
 };
 
+// Charlie's phone (step 05) shows his own payment state, not Ari's. Shares
+// are the same equal splits; Charlie paid the stay up front but hasn't paid
+// for these yet: 3 payments due, Settle trip £201.49 (£60.00 + £110.50 +
+// £30.99). Illustrative values, not in the brief (designer decision).
+export const CHARLIE_UNPAID: string[] = ["eurico", "ramiro", "pigmeu"];
+
 // ---------------------------------------------------------------------------
 // Polls
 
