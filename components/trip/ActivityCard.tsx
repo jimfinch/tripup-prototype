@@ -31,9 +31,10 @@ export type ActivityCardProps = {
 };
 
 // Figma "Activity Card" (linked-itinerary): 112 px, sized by its content; the
-// itinerary list spaces cards 8 px apart. The date block is lime for
-// activities happening today (both 24 Oct cards in the scenario); payment
-// state is shown by the Pay share / Paid button.
+// itinerary list spaces cards 8 px apart. Lime marks what needs Ari's action:
+// the details card is lime until her share is paid (or, for a poll's new
+// shell, until its details are added), then lilac. Date blocks are all
+// gunmetal; today's (24 Oct in the scenario) gets a small white dot.
 export function ActivityCard({
   id,
   day,
@@ -61,11 +62,17 @@ export function ActivityCard({
       <div className="flex shrink-0 flex-col items-center gap-2 self-stretch">
         <div
           className={cn(
-            "relative flex size-18 flex-col items-center justify-center rounded-sm p-2 text-center text-headline",
-            today ? "bg-lime text-gunmetal" : "bg-gunmetal text-lime",
+            "relative flex size-18 flex-col items-center justify-center rounded-sm bg-gunmetal p-2 text-center text-headline text-lime",
           )}
         >
           {isNew && <NewBadge className="absolute -left-1.5 -top-2.5" />}
+          {today && (
+            <span
+              role="img"
+              aria-label="Today"
+              className="absolute right-today-dot-inset top-2 size-today-dot rounded-pill bg-white"
+            />
+          )}
           <span>{day}</span>
           <span>{month}</span>
         </div>
@@ -73,7 +80,8 @@ export function ActivityCard({
       </div>
       <div
         className={cn(
-          "relative flex flex-1 items-start gap-3 rounded-sm bg-lilac p-3 transition",
+          "relative flex flex-1 items-start gap-3 rounded-sm p-3 transition",
+          shell || !paid ? "bg-lime" : "bg-lilac",
           onOpen && "active:scale-press",
           className,
         )}

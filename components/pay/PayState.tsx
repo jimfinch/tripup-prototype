@@ -4,7 +4,7 @@ import { Icon } from "@/components/ui/Icon";
 type PayStateProps = {
   paid: boolean;
   onPay?: () => void;
-  // Activity cards (lilac) use the white button; the stay card (lime) the
+  // Activity cards use the white button; the stay card the
   // gunmetal one, as in the hi-fi Trip view.
   theme?: "dark" | "light";
 };

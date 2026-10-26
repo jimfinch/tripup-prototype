@@ -1,11 +1,13 @@
 import { cn } from "@/lib/cn";
 
 // Figma "Pill Small": the NEW marker on a freshly added activity.
+// Lime on the gunmetal date block, so it reads against it (the date block
+// was lime before the today dot replaced it).
 export function NewBadge({ className }: { className?: string }) {
   return (
     <span
       className={cn(
-        "inline-flex h-6 items-center rounded bg-gunmetal px-2 text-micro text-lime",
+        "inline-flex h-6 items-center rounded bg-lime px-2 text-micro text-gunmetal",
         className,
       )}
     >

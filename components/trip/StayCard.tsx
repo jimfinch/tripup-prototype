@@ -1,5 +1,6 @@
 import { PayState } from "@/components/pay/PayState";
 import { Icon } from "@/components/ui/Icon";
+import { cn } from "@/lib/cn";
 import { formatPence, type Pence } from "@/lib/money";
 
 export type StayCardProps = {
@@ -15,7 +16,7 @@ export type StayCardProps = {
   onPay?: () => void;
 };
 
-// Figma "Stay Card".
+// Figma "Stay Card": lime while Ari's share is unpaid, lilac once paid.
 export function StayCard({
   from,
   to,
@@ -29,7 +30,12 @@ export function StayCard({
   onPay,
 }: StayCardProps) {
   return (
-    <article className="overflow-hidden rounded-md bg-lime text-gunmetal">
+    <article
+      className={cn(
+        "overflow-hidden rounded-md text-gunmetal transition-colors duration-300",
+        paid ? "bg-lilac" : "bg-lime",
+      )}
+    >
       <div className="flex items-center justify-between p-3">
         <div className="flex items-center gap-2">
           <span className="rounded-sm bg-gunmetal/10 px-4 py-2 text-headline">

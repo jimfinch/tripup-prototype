@@ -109,6 +109,9 @@ const config: Config = {
         island: "122px",
         indicator: "153px",
         "indicator-h": "5.5px",
+        // "Today" dot on itinerary date blocks.
+        "today-dot": "5.25px",
+        "today-dot-inset": "7.75px",
       },
       // Photo-picker selection circle (iOS Attach Sheet).
       borderWidth: { 1.5: "1.5px" },
