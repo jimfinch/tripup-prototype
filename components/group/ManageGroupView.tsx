@@ -216,9 +216,7 @@ export function ManageGroupView() {
                 <GroupImage src={t.image} position={t.imagePosition} />
                 <span className="flex flex-1 flex-col justify-center gap-0.5">
                   <span className="text-title-m text-gunmetal">{t.name}</span>
-                  <span className="text-headline text-ink-muted">
-                    {t.dates}
-                  </span>
+                  <span className="text-label text-ink-muted">{t.dates}</span>
                   <AvatarStack ids={t.faces} className="py-1" />
                   <span className="text-body-s text-ink-muted">
                     Organised by{" "}

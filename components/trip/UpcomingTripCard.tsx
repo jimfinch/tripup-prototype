@@ -24,7 +24,7 @@ export function UpcomingTripCard({ trip }: { trip: UpcomingTrip }) {
       </span>
       <span className="flex flex-1 flex-col justify-center gap-0.5">
         <span className="text-title-m text-gunmetal">{trip.name}</span>
-        <span className="text-headline text-ink-muted">{trip.dates}</span>
+        <span className="text-label text-ink-muted">{trip.dates}</span>
         <AvatarStack
           ids={trip.avatars}
           overflow={trip.overflow}
