@@ -92,7 +92,7 @@ export function AssistantSheet() {
             <button
               type="submit"
               aria-label="Send"
-              className="flex size-10 shrink-0 items-center justify-center rounded-pill bg-gunmetal text-white transition active:scale-press disabled:opacity-40"
+              className="flex size-10 shrink-0 items-center justify-center rounded-pill bg-lime text-gunmetal transition active:scale-press disabled:opacity-40"
               disabled={!draft.trim()}
             >
               <Icon name="arrow-right" size={20} className="-rotate-90" />
