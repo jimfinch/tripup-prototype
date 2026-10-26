@@ -4,13 +4,12 @@ import { Icon } from "@/components/ui/Icon";
 type PayStateProps = {
   paid: boolean;
   onPay?: () => void;
-  // Activity cards use the white button; the stay card the
-  // gunmetal one, as in the hi-fi Trip view.
+  // Unpaid cards are lime, so the gunmetal button by default (hi-fi Trip view).
   theme?: "dark" | "light";
 };
 
 // Itinerary / stay card payment state: "Pay share" (action) or "Paid ✓" (state).
-export function PayState({ paid, onPay, theme = "dark" }: PayStateProps) {
+export function PayState({ paid, onPay, theme = "light" }: PayStateProps) {
   if (paid) {
     return (
       <span className="inline-flex h-10 items-center gap-1.5 rounded-pill bg-white px-4.5 text-label text-gunmetal">

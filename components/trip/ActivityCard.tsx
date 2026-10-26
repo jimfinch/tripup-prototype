@@ -34,7 +34,8 @@ export type ActivityCardProps = {
 // itinerary list spaces cards 8 px apart. Lime marks what needs Ari's action:
 // the details card is lime until her share is paid (or, for a poll's new
 // shell, until its details are added), then lilac. Date blocks are all
-// gunmetal; today's (24 Oct in the scenario) gets a small white dot.
+// gunmetal; today's (24 Oct in the scenario) gets a small white dot, and an
+// activity added in the last 24 hours gets a NEW pill under its date.
 export function ActivityCard({
   id,
   day,
@@ -65,7 +66,6 @@ export function ActivityCard({
             "relative flex size-18 flex-col items-center justify-center rounded-sm bg-gunmetal p-2 text-center text-headline text-lime",
           )}
         >
-          {isNew && <NewBadge className="absolute -left-1.5 -top-2.5" />}
           {today && (
             <span
               role="img"
@@ -76,6 +76,7 @@ export function ActivityCard({
           <span>{day}</span>
           <span>{month}</span>
         </div>
+        {isNew && <NewBadge className="-mt-1" />}
         {connector && <span aria-hidden className="w-px flex-1 bg-violet" />}
       </div>
       <div

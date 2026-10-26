@@ -383,7 +383,7 @@ const applyUpdateActivity = (d: Data): Data => {
     sheet: null,
     belcanto: {
       ...d.belcanto,
-      isNew: false,
+      // NEW stays for 24 hours from creation (17:53), so through the story.
       logged: [...shares.values()].some((v) => v > 0),
     },
     activities: d.activities.map((a) =>
