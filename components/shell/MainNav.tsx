@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Icon } from "@/components/ui/Icon";
@@ -28,8 +27,13 @@ export function MainNav({ active, compact = false }: MainNavProps) {
           isActive ? "bg-gunmetal text-white" : "bg-off-white text-gunmetal",
         )}
       >
-        {isActive && key === "trips" && (
-          <Image src="/icons/tripup.svg" alt="" width={24} height={24} />
+        {/* The logo anchors the brand on Trips, so it stays when Groups is
+            selected: lime on gunmetal, gunmetal on off-white. */}
+        {key === "trips" && (
+          <Icon
+            name="tripup"
+            className={isActive ? "text-lime" : "text-gunmetal"}
+          />
         )}
         {label}
       </Link>
