@@ -146,77 +146,80 @@ export function ActivityReadOnlyView({ activityId }: { activityId: string }) {
           </div>
         </section>
 
-        <section className="flex flex-col gap-4 rounded-md bg-lilac p-4">
-          <h2 className="text-title-m text-gunmetal">Split payments</h2>
-          <div className="flex flex-col gap-2">
-            <p className="text-body-s text-ink-muted">Items on the bill.</p>
-            {bill.items.map((item) => (
-              <BillItemCard
-                key={item.id}
-                item={item}
-                attendees={bill.attendees}
-              />
-            ))}
-          </div>
-
-          <p className="text-body-s text-ink-muted">Each person’s share</p>
-          <ul>
-            {bill.attendees.map((p) => {
-              const name = p === "ari" ? "You" : PEOPLE[p].name;
-              return (
-                <AttendeeRow
-                  key={p}
-                  id={p}
-                  name={name}
-                  trailing={
-                    <span className="flex items-center gap-1">
-                      {p === "ari" && !a.paid ? (
-                        <Button theme="light" onClick={pay}>
-                          Pay
-                        </Button>
-                      ) : (
-                        <BillStatusPill
-                          status={
-                            p === bill.payer
-                              ? "bill"
-                              : bill.owes.includes(p)
-                                ? "owes"
-                                : "paid"
-                          }
-                        />
-                      )}
-                      <AmountField
-                        label={`${name}’s share`}
-                        amount={shares.get(p) ?? 0}
-                      />
-                    </span>
-                  }
+        {/* Who's attending sits below the bill, not in it: people are
+            mostly invited from the trip, but it's still here if needed. */}
+        <div className="flex flex-col gap-2">
+          <section className="flex flex-col gap-4 rounded-md bg-lilac p-4">
+            <h2 className="text-title-m text-gunmetal">Split payments</h2>
+            <div className="flex flex-col gap-2">
+              <p className="text-body-s text-ink-muted">Items on the bill.</p>
+              {bill.items.map((item) => (
+                <BillItemCard
+                  key={item.id}
+                  item={item}
+                  attendees={bill.attendees}
                 />
-              );
-            })}
-          </ul>
-          <p className="flex items-center justify-between text-title-m text-gunmetal">
-            Total
-            <AmountField
-              label="Total"
-              amount={sumPence(bill.items.map((i) => i.amount))}
-            />
-          </p>
+              ))}
+            </div>
 
+            <p className="text-body-s text-ink-muted">Each person’s share</p>
+            <ul>
+              {bill.attendees.map((p) => {
+                const name = p === "ari" ? "You" : PEOPLE[p].name;
+                return (
+                  <AttendeeRow
+                    key={p}
+                    id={p}
+                    name={name}
+                    trailing={
+                      <span className="flex items-center gap-1">
+                        {p === "ari" && !a.paid ? (
+                          <Button theme="light" onClick={pay}>
+                            Pay
+                          </Button>
+                        ) : (
+                          <BillStatusPill
+                            status={
+                              p === bill.payer
+                                ? "bill"
+                                : bill.owes.includes(p)
+                                  ? "owes"
+                                  : "paid"
+                            }
+                          />
+                        )}
+                        <AmountField
+                          label={`${name}’s share`}
+                          amount={shares.get(p) ?? 0}
+                        />
+                      </span>
+                    }
+                  />
+                );
+              })}
+            </ul>
+            <p className="flex items-center justify-between text-title-m text-gunmetal">
+              Total
+              <AmountField
+                label="Total"
+                amount={sumPence(bill.items.map((i) => i.amount))}
+              />
+            </p>
+          </section>
           <div className="flex items-center justify-between">
             <span className="text-body-s text-gunmetal">
               {a.coming}
               <span className="text-ink-muted"> attending</span>
             </span>
             <Button
-              theme="dark"
+              theme="secondary"
               onClick={s.notInPrototype}
               rightIcon={<Icon framed name="people-add" size={20} />}
             >
               Invite
             </Button>
           </div>
-        </section>
+        </div>
       </div>
     </Screen>
   );

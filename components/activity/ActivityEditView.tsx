@@ -232,96 +232,99 @@ export function ActivityEditView() {
           </div>
         </section>
 
-        <section className="flex flex-col gap-4 rounded-md bg-lilac p-4">
-          <h2 className="text-title-m text-gunmetal">Split payments</h2>
-          <ToggleRow
-            label="Split equally"
-            checked={false}
-            onChange={s.notInPrototype}
-            className="border-b border-gunmetal/15 pb-2"
-          />
+        {/* Who's attending sits below the bill, not in it: people are
+            mostly invited from the trip, but it's still here if needed. */}
+        <div className="flex flex-col gap-2">
+          <section className="flex flex-col gap-4 rounded-md bg-lilac p-4">
+            <h2 className="text-title-m text-gunmetal">Split payments</h2>
+            <ToggleRow
+              label="Split equally"
+              checked={false}
+              onChange={s.notInPrototype}
+              className="border-b border-gunmetal/15 pb-2"
+            />
 
-          {scanned ? (
-            <div className="flex flex-col gap-2">
-              <p className="flex items-center gap-2 text-body-s text-ink-muted">
-                <Icon framed name="hand-tap" className="text-gunmetal" />
-                <span>
-                  Tap a person to{" "}
-                  <span className="text-label text-gunmetal">exclude</span> them
-                  from the item
-                </span>
-              </p>
-              {items.map((item) => (
-                <BillItemCard
-                  key={item.id}
-                  item={item}
-                  onToggle={(p) => s.toggleExclude(item.id, p)}
-                />
-              ))}
-              <div className="flex justify-end">
-                <Button
-                  theme="dark"
-                  onClick={s.notInPrototype}
-                  rightIcon={<Icon framed name="plus" size={20} />}
-                >
-                  Add item
-                </Button>
+            {scanned ? (
+              <div className="flex flex-col gap-2">
+                <p className="flex items-center gap-2 text-body-s text-ink-muted">
+                  <Icon framed name="hand-tap" className="text-gunmetal" />
+                  <span>
+                    Tap a person to{" "}
+                    <span className="text-label text-gunmetal">exclude</span>{" "}
+                    them from the item
+                  </span>
+                </p>
+                {items.map((item) => (
+                  <BillItemCard
+                    key={item.id}
+                    item={item}
+                    onToggle={(p) => s.toggleExclude(item.id, p)}
+                  />
+                ))}
+                <div className="flex justify-end">
+                  <Button
+                    theme="dark"
+                    onClick={s.notInPrototype}
+                    rightIcon={<Icon framed name="plus" size={20} />}
+                  >
+                    Add item
+                  </Button>
+                </div>
               </div>
-            </div>
-          ) : (
-            <p className="rounded-sm bg-white p-4 text-center text-body-s text-ink-muted">
-              No items yet. Scan the receipt to itemise the bill, or enter each
-              person’s share below.
+            ) : (
+              <p className="rounded-sm bg-white p-4 text-center text-body-s text-ink-muted">
+                No items yet. Scan the receipt to itemise the bill, or enter
+                each person’s share below.
+              </p>
+            )}
+
+            <p className="text-body-s text-ink-muted">Each person’s share</p>
+            <ul>
+              {BELCANTO_ATTENDEES.map((p) => {
+                const name = p === "ari" ? "You" : PEOPLE[p].name;
+                return (
+                  <AttendeeRow
+                    key={p}
+                    id={p}
+                    name={name}
+                    sublabel={p === "ren" ? "Guest" : undefined}
+                    trailing={
+                      <span className="flex items-center gap-1">
+                        <BillStatusPill status={BELCANTO_STATUS[p]} />
+                        <AmountField
+                          label={`${name}’s share`}
+                          amount={shares.get(p) ?? 0}
+                          onChange={(v) => s.setShare(p, v)}
+                        />
+                      </span>
+                    }
+                  />
+                );
+              })}
+            </ul>
+            <p className="flex items-center justify-between text-body-s text-ink-muted">
+              You are owed
+              <AmountField label="You are owed" amount={owed} />
             </p>
-          )}
-
-          <p className="text-body-s text-ink-muted">Each person’s share</p>
-          <ul>
-            {BELCANTO_ATTENDEES.map((p) => {
-              const name = p === "ari" ? "You" : PEOPLE[p].name;
-              return (
-                <AttendeeRow
-                  key={p}
-                  id={p}
-                  name={name}
-                  sublabel={p === "ren" ? "Guest" : undefined}
-                  trailing={
-                    <span className="flex items-center gap-1">
-                      <BillStatusPill status={BELCANTO_STATUS[p]} />
-                      <AmountField
-                        label={`${name}’s share`}
-                        amount={shares.get(p) ?? 0}
-                        onChange={(v) => s.setShare(p, v)}
-                      />
-                    </span>
-                  }
-                />
-              );
-            })}
-          </ul>
-          <p className="flex items-center justify-between text-body-s text-ink-muted">
-            You are owed
-            <AmountField label="You are owed" amount={owed} />
-          </p>
-          <p className="flex items-center justify-between text-title-m text-gunmetal">
-            Total
-            <AmountField label="Total" amount={total} />
-          </p>
-
+            <p className="flex items-center justify-between text-title-m text-gunmetal">
+              Total
+              <AmountField label="Total" amount={total} />
+            </p>
+          </section>
           <div className="flex items-center justify-between">
             <span className="text-body-s text-gunmetal">
               {BELCANTO_ATTENDEES.length}
               <span className="text-ink-muted"> attending</span>
             </span>
             <Button
-              theme="dark"
+              theme="secondary"
               onClick={s.notInPrototype}
               rightIcon={<Icon framed name="people-add" size={20} />}
             >
               Invite
             </Button>
           </div>
-        </section>
+        </div>
       </div>
     </Screen>
   );
