@@ -47,22 +47,32 @@ export function BillItemCard({
         {splitLabel(item, attendees)}
       </p>
       {onToggle && (
-        <div className="flex flex-wrap gap-2">
+        // Fixed-width cells keep the avatars evenly spaced whatever the name
+        // length; the first name tells the PM who's who.
+        <div className="flex gap-1.5">
           {attendees.map((p) => {
             const out = item.excluded.includes(p);
+            const name = p === "ari" ? "You" : PEOPLE[p].firstName;
             return (
               <button
                 key={p}
                 type="button"
                 onClick={() => onToggle(p)}
                 aria-pressed={!out}
-                aria-label={`${PEOPLE[p].firstName}: ${out ? "excluded" : "included"} in ${item.label}`}
-                className={cn(
-                  "tap-target rounded-pill transition active:scale-press",
-                  hintFor(p),
-                )}
+                aria-label={`${name}: ${out ? "excluded" : "included"} in ${item.label}`}
+                className="tap-target flex w-10 flex-col items-center gap-1 transition active:scale-press"
               >
-                <Avatar id={p} dimmed={out} />
+                <span className={cn("rounded-pill", hintFor(p))}>
+                  <Avatar id={p} dimmed={out} />
+                </span>
+                <span
+                  className={cn(
+                    "max-w-full truncate text-micro text-gunmetal transition-opacity duration-150",
+                    out && "opacity-30",
+                  )}
+                >
+                  {name}
+                </span>
               </button>
             );
           })}

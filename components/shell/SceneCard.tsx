@@ -4,9 +4,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import { useScenario } from "@/store/scenario";
 
-const SCENE_CARD_MS = 1200;
+const SCENE_CARD_MS = 2200;
 
-// Signals a jump in the story (another phone, a time skip). Shown for ~1.2 s
+// Signals a jump in the story (another phone, a time skip). Shown for ~2.2 s
 // or until tapped.
 export function SceneCard() {
   const sceneCard = useScenario((s) => s.sceneCard);

@@ -41,8 +41,8 @@ const SCAN_MS = 900;
 
 // Step 08: the organiser's edit view for Belcanto (wireflow "08: Log dinner").
 // Order follows the wireflow: title, date, location, type, receipts (brought
-// up as the key action), split payments. There's no update button: changes
-// save as they're made, and leaving the screen logs the bill (wireflow updated).
+// up as the key action), split payments. Changes save as they're made;
+// Done editing (or back) leaves the screen, which logs the bill.
 // Ari created the poll, so she organises the activity and can log the bill.
 export function ActivityEditView() {
   const s = useScenario();
@@ -100,10 +100,7 @@ export function ActivityEditView() {
           <Link
             href="/trips/lisbon/"
             aria-label="Back to Lisbon trip"
-            className={cn(
-              "tap-target rounded-pill transition active:scale-press",
-              hintLeave,
-            )}
+            className="tap-target rounded-pill transition active:scale-press"
           >
             <Image src="/icons/back-button.svg" alt="" width={40} height={40} />
           </Link>
@@ -322,6 +319,17 @@ export function ActivityEditView() {
               rightIcon={<Icon framed name="people-add" size={20} />}
             >
               Invite
+            </Button>
+          </div>
+          <div className="pt-4">
+            <Button
+              theme="light"
+              size="xl"
+              href="/trips/lisbon/"
+              className={hintLeave}
+              rightIcon={<Icon framed name="check" />}
+            >
+              Done editing
             </Button>
           </div>
         </div>

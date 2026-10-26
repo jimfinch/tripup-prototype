@@ -40,10 +40,17 @@ export function TripHeaderCard(props: TripHeaderCardProps) {
               {PEOPLE[props.organiser].firstName}
             </span>
           </p>
-          <TripStat
-            label={pluralise(props.paymentsDue, "payment due", "payments due")}
-            icon="card"
-          />
+          {/* Hidden once everything's paid rather than "0 payments due". */}
+          {props.paymentsDue > 0 && (
+            <TripStat
+              label={pluralise(
+                props.paymentsDue,
+                "payment due",
+                "payments due",
+              )}
+              icon="card"
+            />
+          )}
         </div>
       </div>
       <div className="flex gap-2">

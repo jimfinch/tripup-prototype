@@ -22,7 +22,7 @@ The ten steps cover the core journey. These also work, off the main path:
 
 Anything outside the prototype's scope shows a "Not part of this prototype" toast rather than doing nothing.
 
-Editing an activity saves as you go, so there's no update button. Leaving Belcanto logs the bill and notifies the people who owe Ari.
+Editing an activity saves as you go. Tapping Done editing (or back) logs Belcanto's bill and notifies the people who owe Ari.
 
 ## Running locally
 

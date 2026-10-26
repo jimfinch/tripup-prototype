@@ -85,7 +85,7 @@ export const STEPS: readonly Step[] = [
     phone: "ari",
     clock: "22:15",
     route: `${TRIP}activities/belcanto/`,
-    next: "Tap **Scan**, tap **Nic** and **Ren** on the wine, then tap **back** - changes save as you go",
+    next: "Tap **Scan**, tap **Nic** and **Ren** on the wine, then **Done editing**",
     sceneCard: "Later that evening · 22:15",
   },
   {

@@ -3,10 +3,12 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { preload } from "react-dom";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Sheet } from "@/components/ui/Sheet";
+import { SETTLED_ILLUSTRATION } from "@/components/pay/SettledView";
 import { BELCANTO, LISBON, SETTLE } from "@/data/seed";
 import { cn } from "@/lib/cn";
 import { useHintActive } from "@/lib/hints";
@@ -30,6 +32,9 @@ const TITLE: Record<PayScope["kind"], string> = {
 // The settle sheet (wireflow 09), reused for every partial payment (§8).
 export function PaySheet({ scope, open }: { scope: PayScope; open: boolean }) {
   const s = useScenario();
+  // Settling lands on the settled screen; fetch its illustration now so it
+  // doesn't pop in after the page.
+  preload(SETTLED_ILLUSTRATION, { as: "image" });
   const router = useRouter();
   // Apple Pay is pre-selected so the demo is one tap; the others still work.
   const [method, setMethod] = useState<Method | null>("apple");

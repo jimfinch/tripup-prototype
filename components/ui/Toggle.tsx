@@ -10,7 +10,8 @@ type ToggleProps = {
   className?: string;
 };
 
-// Figma "Toggle": on = lime track with gunmetal knob (right); off inverts.
+// Figma "Toggle": on = lime track with gunmetal knob (right); off = gunmetal
+// track with a white knob (left), so off never reads as on.
 export function Toggle({ checked, onChange, label, className }: ToggleProps) {
   return (
     <button
@@ -30,7 +31,7 @@ export function Toggle({ checked, onChange, label, className }: ToggleProps) {
         transition={{ duration: 0.2, ease: "easeOut" }}
         className={cn(
           "h-6 w-knob rounded-pill",
-          checked ? "bg-gunmetal" : "bg-lime",
+          checked ? "bg-gunmetal" : "bg-white",
         )}
       />
     </button>

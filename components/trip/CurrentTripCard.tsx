@@ -73,14 +73,16 @@ export function CurrentTripCard(props: CurrentTripCardProps) {
                       )}
                       icon="poll"
                     />
-                    <TripStat
-                      label={pluralise(
-                        props.paymentsDue,
-                        "payment due",
-                        "payments due",
-                      )}
-                      icon="card"
-                    />
+                    {props.paymentsDue > 0 && (
+                      <TripStat
+                        label={pluralise(
+                          props.paymentsDue,
+                          "payment due",
+                          "payments due",
+                        )}
+                        icon="card"
+                      />
+                    )}
                   </div>
                 )}
             </div>

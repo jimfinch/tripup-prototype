@@ -10,6 +10,8 @@ import { useHint } from "@/lib/hints";
 import { formatPence } from "@/lib/money";
 import { selectTripTotal, useScenario } from "@/store/scenario";
 
+export const SETTLED_ILLUSTRATION = "/illustrations/settled-traveller.png";
+
 // Step 10: All squared up (wireflow "10: Settled page").
 export function SettledView() {
   const lastPayment = useScenario((s) => s.lastPayment);
@@ -27,7 +29,7 @@ export function SettledView() {
             You’ve settled, Ari!
           </h1>
           <Image
-            src="/illustrations/settled-traveller.png"
+            src={SETTLED_ILLUSTRATION}
             alt="A traveller walking with her suitcase"
             width={180}
             height={270}
