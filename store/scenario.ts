@@ -539,7 +539,15 @@ export const useScenario = create<State>((set, get) => {
       });
     },
     dismissSceneCard: () => set({ sceneCard: null }),
-    showToast: (message) => set({ toast: { id: ++toastId, message } }),
+    // Repeating the toast on screen keeps it in place (a fresh object restarts
+    // its timer) rather than animating a second copy in beside it.
+    showToast: (message) =>
+      set((s) => ({
+        toast:
+          s.toast?.message === message
+            ? { ...s.toast }
+            : { id: ++toastId, message },
+      })),
     dismissToast: () => set({ toast: null }),
     clearFocus: () => set({ focus: null }),
 

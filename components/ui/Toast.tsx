@@ -25,7 +25,9 @@ export function Toast() {
       aria-live="polite"
       className="pointer-events-none absolute inset-x-0 bottom-toast-bottom z-40 flex justify-center px-4"
     >
-      <AnimatePresence>
+      {/* A different message waits for the last to leave, so two toasts
+          never share the row and shove each other sideways. */}
+      <AnimatePresence mode="wait">
         {toast && (
           <motion.button
             key={toast.id}
