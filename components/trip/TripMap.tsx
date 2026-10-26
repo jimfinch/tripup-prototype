@@ -5,9 +5,12 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { Icon } from "@/components/ui/Icon";
+import { cn } from "@/lib/cn";
 import { ACTIVITIES } from "@/data/seed";
 
-// Map crop from the hi-fi Trip view (430 × 500 frame).
+// Map crop from the hi-fi Trip view (430 × 500 frame). The map and pins sit
+// in a fixed 430-wide stage, centred, so a narrower phone crops the edges
+// rather than squashing the image (the crop is a % of the stage width).
 const MAP_CROP: CSSProperties = {
   left: "-124.89%",
   top: "-67.14%",
@@ -73,27 +76,28 @@ export function TripMap({
       }}
       transition={GROW}
     >
-      <motion.div
-        aria-hidden
-        className="absolute left-0 top-0 h-map-h w-full"
-        style={{ transformOrigin: `${ZOOM.originX}px ${ZOOM.originY}px` }}
-        initial={false}
-        animate={{
-          scale: expanded ? ZOOM.scale : 1,
-          y: expanded ? ZOOM.shiftY : 0,
-        }}
-        transition={ZOOM_EASE}
-      >
-        <Image
-          src="/map/lisbon.jpg"
-          alt=""
-          width={2700}
-          height={2087}
-          className="absolute max-w-none"
-          style={MAP_CROP}
-          priority
-        />
-      </motion.div>
+      <div aria-hidden className={STAGE}>
+        <motion.div
+          className="absolute left-0 top-0 h-map-h w-full"
+          style={{ transformOrigin: `${ZOOM.originX}px ${ZOOM.originY}px` }}
+          initial={false}
+          animate={{
+            scale: expanded ? ZOOM.scale : 1,
+            y: expanded ? ZOOM.shiftY : 0,
+          }}
+          transition={ZOOM_EASE}
+        >
+          <Image
+            src="/map/lisbon.jpg"
+            alt=""
+            width={2700}
+            height={2087}
+            className="absolute max-w-none"
+            style={MAP_CROP}
+            priority
+          />
+        </motion.div>
+      </div>
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-map-h bg-map-fade"
@@ -108,31 +112,34 @@ export function TripMap({
         />
       )}
 
-      {PINS.map((pin) => {
-        const at = expanded
-          ? zoomed(pin.x + 20, pin.y + 48)
-          : { x: pin.x + 20, y: pin.y + 48 };
-        const title = ACTIVITIES.find((a) => a.id === pin.id)?.title ?? pin.id;
-        return (
-          <motion.button
-            key={pin.id}
-            type="button"
-            onClick={() => onPin(pin.id)}
-            aria-label={`Open ${title}`}
-            className="absolute left-0 top-0 transition-transform active:scale-press"
-            initial={false}
-            animate={{ x: at.x - 24, y: at.y - 48 }}
-            transition={ZOOM_EASE}
-          >
-            <Image
-              src={`/map/pin-${pin.kind}.svg`}
-              alt=""
-              width={48}
-              height={59}
-            />
-          </motion.button>
-        );
-      })}
+      <div className={cn(STAGE, "pointer-events-none")}>
+        {PINS.map((pin) => {
+          const at = expanded
+            ? zoomed(pin.x + 20, pin.y + 48)
+            : { x: pin.x + 20, y: pin.y + 48 };
+          const title =
+            ACTIVITIES.find((a) => a.id === pin.id)?.title ?? pin.id;
+          return (
+            <motion.button
+              key={pin.id}
+              type="button"
+              onClick={() => onPin(pin.id)}
+              aria-label={`Open ${title}`}
+              className="pointer-events-auto absolute left-0 top-0 transition-transform active:scale-press"
+              initial={false}
+              animate={{ x: at.x - 24, y: at.y - 48 }}
+              transition={ZOOM_EASE}
+            >
+              <Image
+                src={`/map/pin-${pin.kind}.svg`}
+                alt=""
+                width={48}
+                height={59}
+              />
+            </motion.button>
+          );
+        })}
+      </div>
 
       <div className="pointer-events-none absolute inset-x-0 top-0 flex items-center justify-between px-4 pt-status-bar">
         {/* Back steps out one level: full-screen map → trip view → Home. */}
@@ -171,6 +178,8 @@ export function TripMap({
     </motion.div>
   );
 }
+
+const STAGE = "absolute inset-y-0 left-1/2 w-device-w -translate-x-1/2";
 
 const BACK =
   "tap-target pointer-events-auto rounded-pill transition active:scale-press";
