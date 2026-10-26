@@ -52,42 +52,54 @@ export function TabBar() {
   };
 
   return (
-    <nav
-      aria-label="Main"
-      className="pointer-events-none absolute inset-x-0 bottom-tab-bar-bottom z-20 flex justify-center"
-    >
-      <ul className="pointer-events-auto flex items-center rounded-pill bg-white/75 px-4 py-1.25 shadow-tab-bar backdrop-blur-glass">
-        {TABS.map((tab) => {
-          const current =
-            tab.href === "/"
-              ? pathname === "/" || !!tab.section?.(pathname)
-              : pathname.startsWith(tab.href);
-          const dot = !!hasActiveItems[tab.icon];
-          const src = `/icons/tab-${tab.icon}${dot ? "-dot" : ""}${current ? "-active" : ""}.svg`;
-          return (
-            <li key={tab.href}>
-              <Link
-                href={tab.href}
-                aria-current={current ? "page" : undefined}
-                className={cn(
-                  "flex size-15 flex-col items-center justify-center gap-0.5 rounded-tab text-micro transition duration-150 active:opacity-60",
-                  current ? "bg-gunmetal text-lime" : "text-gunmetal",
-                )}
-              >
-                <span className="relative size-6">
-                  <span
-                    className="absolute inset-0"
-                    style={dot ? DOT_ICON : undefined}
-                  >
-                    <Image src={src} alt="" fill />
+    <>
+      {/* Soft scroll edge, as under the status bar: content sliding under
+          the bar blurs progressively, so the labels stay legible. */}
+      <div
+        aria-hidden
+        className="scroll-edge scroll-edge-bottom pointer-events-none absolute inset-x-0 bottom-0 z-20 h-tab-edge"
+      >
+        <span className="scroll-edge-blur-1" />
+        <span className="scroll-edge-blur-2" />
+        <span className="scroll-edge-blur-3" />
+      </div>
+      <nav
+        aria-label="Main"
+        className="pointer-events-none absolute inset-x-0 bottom-tab-bar-bottom z-20 flex justify-center"
+      >
+        <ul className="pointer-events-auto flex items-center rounded-pill bg-white/75 px-4 py-1.25 shadow-tab-bar backdrop-blur-glass">
+          {TABS.map((tab) => {
+            const current =
+              tab.href === "/"
+                ? pathname === "/" || !!tab.section?.(pathname)
+                : pathname.startsWith(tab.href);
+            const dot = !!hasActiveItems[tab.icon];
+            const src = `/icons/tab-${tab.icon}${dot ? "-dot" : ""}${current ? "-active" : ""}.svg`;
+            return (
+              <li key={tab.href}>
+                <Link
+                  href={tab.href}
+                  aria-current={current ? "page" : undefined}
+                  className={cn(
+                    "flex size-15 flex-col items-center justify-center gap-0.5 rounded-tab text-micro transition duration-150 active:opacity-60",
+                    current ? "bg-gunmetal text-lime" : "text-gunmetal",
+                  )}
+                >
+                  <span className="relative size-6">
+                    <span
+                      className="absolute inset-0"
+                      style={dot ? DOT_ICON : undefined}
+                    >
+                      <Image src={src} alt="" fill />
+                    </span>
                   </span>
-                </span>
-                {tab.label}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
+                  {tab.label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+    </>
   );
 }

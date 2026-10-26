@@ -73,8 +73,9 @@
   }
 }
 
-/* Soft scroll edge under the status bar: stacked blurs, each masked to fade
-   out lower down, so blur is strongest behind the clock and gone at the edge. */
+/* Soft scroll edge under the status bar (and, flipped, behind the tab bar):
+   stacked blurs, each masked to fade out away from the screen edge, so blur
+   is strongest at the edge and gone where it meets the content. */
 /* Backdrop blur escapes the frame's rounded clip in Chrome, so each layer is
    rounded to the device's top corners itself (theme borderRadius.device). A
    clip-path here would switch the blur off. */
@@ -83,38 +84,64 @@
   inset: 0;
   border-radius: 56px 56px 0 0;
 }
+.scroll-edge-bottom {
+  --edge-to: to top;
+}
+.scroll-edge-bottom > span {
+  border-radius: 0;
+}
+@media (min-width: 431px) {
+  .scroll-edge-bottom > span {
+    border-radius: 0 0 56px 56px;
+  }
+}
 .scroll-edge-blur-1 {
   -webkit-backdrop-filter: blur(1px);
   backdrop-filter: blur(1px);
   -webkit-mask-image: linear-gradient(
-    to bottom,
+    var(--edge-to, to bottom),
     #000 0%,
     #000 70%,
     transparent 100%
   );
-  mask-image: linear-gradient(to bottom, #000 0%, #000 70%, transparent 100%);
+  mask-image: linear-gradient(
+    var(--edge-to, to bottom),
+    #000 0%,
+    #000 70%,
+    transparent 100%
+  );
 }
 .scroll-edge-blur-2 {
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
   -webkit-mask-image: linear-gradient(
-    to bottom,
+    var(--edge-to, to bottom),
     #000 0%,
     #000 45%,
     transparent 80%
   );
-  mask-image: linear-gradient(to bottom, #000 0%, #000 45%, transparent 80%);
+  mask-image: linear-gradient(
+    var(--edge-to, to bottom),
+    #000 0%,
+    #000 45%,
+    transparent 80%
+  );
 }
 .scroll-edge-blur-3 {
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   -webkit-mask-image: linear-gradient(
-    to bottom,
+    var(--edge-to, to bottom),
     #000 0%,
     #000 25%,
     transparent 60%
   );
-  mask-image: linear-gradient(to bottom, #000 0%, #000 25%, transparent 60%);
+  mask-image: linear-gradient(
+    var(--edge-to, to bottom),
+    #000 0%,
+    #000 25%,
+    transparent 60%
+  );
 }
 .scroll-edge-tint-white {
   background: linear-gradient(

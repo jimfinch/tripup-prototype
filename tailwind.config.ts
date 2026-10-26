@@ -78,6 +78,8 @@ const config: Config = {
         "sheet-top": "82px",
         "toast-bottom": "132px",
         "tab-bar-bottom": "var(--tab-bar-bottom)",
+        // Scroll edge behind the tab bar: its offset, the bar, a fade above.
+        "tab-edge": "calc(var(--tab-bar-bottom) + 100px)",
         // Device chrome (status bar, home indicator, tab buttons).
         0.75: "3px",
         1.25: "5px",
